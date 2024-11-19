@@ -1,0 +1,53 @@
+{
+	"geode": "4.0.0",
+
+	"gd": {
+		"win": "2.2074"
+	},
+	"id": "hbg1010.20_20_20",
+	"name": "20 20 20",
+	"version": "v1.0.0",
+	"developer": "Hbg1010",
+	"description": "",
+	"settings": {
+		"interval": {
+			"type": "int",
+			"name": "interval",
+			"min": 0,
+			"max": 100,
+			"default": 20,
+			"controls": {
+				"arrows": true,
+				"arrow-step": 1,
+				"big-arrows": false,
+				"input": true
+			}
+		},
+	"breakTime": {
+		"type": "int",
+		"name": "Break Time",
+		"min": 0,
+		"max": 100,
+		"default": 5,
+		"controls": {
+			"arrows": true,
+			"arrow-step": 1,
+			"big-arrows": false,
+			"input": true
+			}
+		},
+	"playLayer": {
+		"type": "bool",
+		"name": "Play Layer",
+		"default": true,
+		"description": "This setting enables or disables whether or not the timer is used in gameplay"
+	},
+	"editorLayer": {
+		"type": "bool",
+		"name": "Editer",
+		"default": true,
+		"description": "This setting enables or disables whether or not the timer is used in gameplay"
+	}
+	}
+
+}
