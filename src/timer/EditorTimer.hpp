@@ -2,6 +2,23 @@
 #include <Geode/Geode.hpp>
 using namespace geode::prelude;
 
-using EditorTimerTask = Task<bool, bool>;
 
-EditorTimerTask startEditorTimer();
+// EditorTimerTask startEditorTimer();
+
+class popUpEnabledEvent : public Event {
+    public:
+        popUpEnabledEvent(bool isEnabled);
+        bool mode;
+
+};
+
+class popUpEnabledFilter : public EventFilter<popUpEnabledEvent> {
+    protected:
+        CCNode* m_target;
+
+    public:
+        using Callback = void(bool);
+        popUpEnabledFilter(CCNode* target);
+        ListenerResult handle(std::function<Callback> fn, popUpEnabledEvent* ev);
+
+};
