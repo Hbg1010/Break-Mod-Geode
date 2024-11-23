@@ -9,6 +9,13 @@
 	"version": "v1.0.0",
 	"developer": "Hbg1010",
 	"description": "",
+	"dependencies": [
+        {
+            "id": "geode.node-ids",
+            "version": "v1.17.0",
+            "importance": "required"
+        }
+    ],
 	"settings": {
 		"interval": {
 			"type": "int",
@@ -49,5 +56,4 @@
 		"description": "This setting enables or disables whether or not the timer is used in gameplay"
 	}
 	}
-
 }
