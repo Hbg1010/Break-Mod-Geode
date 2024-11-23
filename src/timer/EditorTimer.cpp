@@ -1,5 +1,8 @@
 #include "EditorTimer.hpp"
 
+
+using EditorTimerTask = Task<bool, bool>;
+
 //This is set up to check for each second, as an early canel would mean this event could just continue existing in memory
 EditorTimerTask startEditorTimer() {
     return EditorTimerTask::run([](auto progress, auto hasBeenCancelled) -> EditorTimerTask::Result {
@@ -7,8 +10,8 @@ EditorTimerTask startEditorTimer() {
 
         for (int i = 0; i < time; i++) {
              if (hasBeenCancelled()) {
-                return countTask::Cancel();
-            } else if (i % 60 = 0) {
+                return EditorTimerTask::Cancel();
+            } else if (i % 60 == 0) {
                 log::debug("minute {}", i / 60);
             }
             std::this_thread::sleep_for(std::chrono::seconds(1)); 
@@ -16,4 +19,26 @@ EditorTimerTask startEditorTimer() {
 
         return true;
     });
+}
+
+popUpEnabledEvent::popUpEnabledEvent(bool isEnabled) {
+    popUpEnabledEvent::mode = isEnabled;
+}
+
+popUpEnabledFilter::popUpEnabledFilter(CCNode* target) {
+    popUpEnabledFilter::m_target = target;
+}
+
+ListenerResult popUpEnabledFilter::handle(std::function<Callback> fn, popUpEnabledEvent* ev) {
+    try
+    {
+        fn(ev->mode);
+        return ListenerResult::Stop;
+    }
+    catch(const std::exception& e)
+    {
+        return ListenerResult::Propagate;
+    }
+    
+    
 }
