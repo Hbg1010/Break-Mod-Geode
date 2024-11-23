@@ -65,15 +65,16 @@ bool TimerLayer::setup(std::string const& waitTime) {
     m_closeBtn->setScale(0.5f);
     // m_closeBtn->setPosition(screenSize.width*2, screenSize.height * 3 / 4);
 
-    // this is the 
-    timerText = CCLabelBMFont::create("{waitTime} seconds", "bigFont.fnt");
+    // this is the extra text
+    timerText = CCLabelBMFont::create(fmt::format("{} seconds", waitTime).c_str(), "bigFont.fnt");
     timerText->setPosition(screenSize / 2);
     this->addChild(timerText);
     timerText->setID("Timer-Text"_spr);
 
     // this is the extra text above the countdown 
-    auto extraText = CCLabelBMFont::create("Look away from your screen for 20 seconds!", "bigFont.fnt");
-    extraText->setPosition(screenSize.width/2, screenSize.height/4);
+    auto extraText = CCLabelBMFont::create(fmt::format("Look away from your screen for {} seconds!", waitTime).c_str(), "bigFont.fnt");
+    extraText->setPosition(screenSize.width/2, screenSize.height/4*3);
+    extraText->setScale(.4f);
     this->addChild(extraText);
     extraText->setID("extraText"_spr);
 
@@ -96,9 +97,9 @@ void TimerLayer::countDown(countTask::Event* event) {
         // creates the finish button on screen
         auto spr = ButtonSprite::create("Finish");
         auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
-        log::debug("width?!?!{}", spr->m_width);
-        // btn->setAnchorPoint({1.f,1.f});
-        btn->setPosition(this->getContentWidth()/2, screenSize.height/8);
+        log::debug("width?!?!{}", this->getContentWidth()/2);
+        btn->setAnchorPoint({.5f,.5f});
+        btn->setPosition(this->getContentWidth()*.375f, screenSize.height/8);
 
         // places the new finish button onto the same menu layer as the extra button
         auto parent = (m_closeBtn->getParent());
@@ -116,7 +117,6 @@ void TimerLayer::countDown(countTask::Event* event) {
 
 
 }
-
 void TimerLayer::onClick(CCObject* sender){
     log::debug("clicked!");
     auto btn = static_cast<CCMenuItemSpriteExtra*>(sender);
@@ -128,5 +128,3 @@ void TimerLayer::onClose(cocos2d::CCObject*) {
     Popup::onClose(this);
     m_countTaskListener.getFilter().cancel();
 }
-
-
