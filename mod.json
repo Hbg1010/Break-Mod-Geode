@@ -35,7 +35,7 @@
 		"name": "Break Time",
 		"min": 0,
 		"max": 100,
-		"default": 5,
+		"default": 20,
 		"controls": {
 			"arrows": true,
 			"arrow-step": 1,
