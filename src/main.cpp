@@ -6,13 +6,12 @@
 #include <ctime>
 #include "timer/TimerEvent.cpp"
 #include "timer/TimerLayer.cpp"
-// #include "timer/EditorTimer.hpp"
+#include "timer/EditorTimer.cpp"
 
 /**
  * Brings cocos2d and all Geode namespaces to the current scope.
  */
 using namespace geode::prelude;
-
 
 // Controls pausing in game.
 #include <Geode/modify/PlayLayer.hpp> 
@@ -24,7 +23,7 @@ class $modify(PlayLayer) {
 		bool useTimer;
 		// resets the timer on call;
 		void resetTimer() {
-			endtime = std::chrono::system_clock::now() + std::chrono::minutes{20}; // TODO: Replace with setting
+			endtime = std::chrono::system_clock::now() + std::chrono::minutes{Mod::get()->getSettingValue<int64_t>("interval")}; // TODO: Replace with setting
 		}
 	};
 
@@ -34,7 +33,7 @@ class $modify(PlayLayer) {
 		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
 		if (m_fields->useTimer) {
-			auto tp1 = std::chrono::system_clock::now();
+			auto tp1 = std::chrono::system_clock::now() ;
 
 		// m_fields->starttime = std::chrono::system_clock::now();
 		m_fields->resetTimer();
@@ -71,7 +70,7 @@ class $modify(PlayLayer) {
 			log::debug("{}", this->getID());
 
 			// this posts the details of current events
-			TimerEvent(true, this->getParent()).post();
+			TimerEvent(true, this).post();
 			m_fields->resetTimer();
 			
 		} else {
@@ -80,36 +79,6 @@ class $modify(PlayLayer) {
 	}
 
 	
-};
-
-//Handles checking for timer if called
-
-#include <Geode/modify/PauseLayer.hpp>
-class $modify(MyPauseLayer, PauseLayer) {
-	struct Fields {
-		int x;
-		EventListener<TimerFilter> listener;
-	};
-
-	// this function is meant to bind the listener to the event
-	void customSetup() override {
-		PauseLayer::customSetup();
-		// MyPauseLayer->addEventListener<TimerFilter>
-	}
-
-	// this function occurs on an event
-	void onEvent() {
-		// this string SHOULD include the time set in json settings
-		std::string timerAlert = "Time to take a 20 second break!";
-
-		createQuickPopup("Timer", timerAlert, "Start", "Skip", [](bool btn1, auto) {
-				if (btn1) {
-					log::debug("Button 1 was pressed");
-					// this should then allow the custom TimerNode to appear. I dont know how well it will work
-				}
-			}
-		);
-	}
 };
 
 /**
@@ -122,6 +91,8 @@ class $modify(EditorUI) {
 	struct Fields {
 		bool isPlaytesting;
 		bool pauseAfterPlaytest;
+
+		// EventListener<EditorTimerTask> timer;
 	};
 
 	bool init(LevelEditorLayer* editorLayer) {
@@ -148,7 +119,7 @@ class $modify(EditorUI) {
 
 		if (m_fields->pauseAfterPlaytest) {
 			log::debug("x");
-			TimerEvent(true, this->getParent()).post();
+			TimerEvent(true, this).post();
 		}
 
 		m_fields->isPlaytesting = false;
@@ -173,7 +144,7 @@ class $modify(EditorUI) {
 			return;
 		}
 
-		TimerEvent(true, this->getParent()).post();
+		TimerEvent(true, this).post();
 	}
 
 	//TODO: impl function
@@ -182,36 +153,105 @@ class $modify(EditorUI) {
 	}
 };
 
+#include <Geode/modify/EditorPauseLayer.hpp>
+class $modify(EditorTimerFix, EditorPauseLayer) {
 
+	bool init(LevelEditorLayer* lvl) {
+
+		if (!EditorPauseLayer::init(lvl)) return false;
+		log::debug("INIT!!!");
+		// m_fields->listener = {
+		// 	this, &onPopupEvent
+		// }
+			// for (auto node : CCArrayExt<CCNode*>(this->getChildByID("resume-menu")->getChildren())) {
+			// 	changeButtonState(node, false);
+            // }
+
+		return true;
+	}
+
+	static void changeButtonState(CCNode* btn, bool mode) {
+		if (auto x = typeinfo_cast<CCMenuItemSpriteExtra*>(btn)) {
+			x->setEnabled(mode);
+		}
+	}
+
+	void onPopupEvent(bool x) {
+		for (auto node : CCArrayExt<CCNode*>(this->getChildByID("resume-menu")->getChildren())) {
+				changeButtonState(node, x);
+            }
+	}
+};
 
 // this executes the event when it occurs
 $execute{
 	new EventListener<EventFilter<TimerEvent>>(+[](TimerEvent* ev) {
 		if (ev->isActive()) {
 
-			// this string SHOULD include the time set in json settings
-			std::string timerAlert = "Time to take a 20 second break!";
+			auto layer = ev->getCurrentLayer()->getParent();
+			log::debug("{}", layer);
+			log::debug("kids {}", layer->getChildrenCount());
 
-			auto x =createQuickPopup("Timer", timerAlert, "Start", "Skip", [&](bool btn0, bool btn1) {
-					if (btn0) {
+			layer = layer->getChildByID("EditorPauseLayer");
+			log::debug("is the layer here {}", layer != nullptr);
+
+			/*
+			PROBLEM: THIS IS CALLED BEFORE PAUSE LAYER INITIATED
+			*/
+			if (layer != nullptr && layer->getID() == "EditorPauseLayer") {
+				layer->addEventListener<popUpEnabledFilter>(
+					[layer](bool mode) {
+						for (auto node : CCArrayExt<CCNode*>(layer->getChildByID("resume-menu")->getChildren())) { 
+									if (auto nodeAsBtn = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+										nodeAsBtn->setEnabled(mode);
+									}
+								}
+							}
+						);
+
+				log::debug("Pause Layer Found! Lets activate the event");
+				popUpEnabledEvent(true).post();
+			}
+
+			std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
+
+			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
+					// yeah I hate this too, don't blame me :)
+					if (!btn2) {
+						log::debug("{}", btn2);
 						// adds a new node to the layer parent
-						CCNode* x = CCNode::create();
-						TimerLayer* timePopUp = TimerLayer::create("20");
-						ev->getCurrentLayer()->addChild(timePopUp, 20);
+						CCNode* x = CCNode::create(); 
+						TimerLayer* timePopUp = TimerLayer::create(fmt::format("{}", Mod::get()->getSettingValue<int64_t>("breakTime")));
 
+						// returns the grandfather of a node, so The popup is placed at the top of the tree
+						CCNode* parent = ev->getCurrentLayer(); 
+
+						
+						while(parent->getParent() != nullptr) {
+							parent = parent->getParent();
+							log::debug("parent found!");
+						}
+
+						parent->addChild(timePopUp, 20);
 						timePopUp->setID("Timer-pop-up"_spr);
+
 						// log::debug("The current layer is {}", curr->getID());
 
 					// 	if (curr->getID() == "Play-Layer") {// TODOFIX THIS ID
 					// 	log::debug("Here, we'd add the timerNode!");
 					// }
 
-				} else if (btn1) {
-					return; // this should kill layer
+				} else {
+					popUpEnabledEvent(false).post();
 				}
-		});
+		}, true);
 
-		handleTouchPriority(x, true);
+		
+
+		x->setTouchPriority(-505);
+
+		// log::debug("{}", x->getTouchPriority());
+		// x->setID("TimerAlert"_spr);
 
 			return ListenerResult::Stop;
 
@@ -225,3 +265,33 @@ $execute{
 
 
 
+
+// //Handles checking for timer if called
+
+// #include <Geode/modify/PauseLayer.hpp>
+// class $modify(MyPauseLayer, PauseLayer) {
+// 	struct Fields {
+// 		int x;
+// 		EventListener<TimerFilter> listener;
+// 	};
+
+// 	// this function is meant to bind the listener to the event
+// 	void customSetup() override {
+// 		PauseLayer::customSetup();
+// 		// MyPauseLayer->addEventListener<TimerFilter>
+// 	}
+
+// 	// this function occurs on an event
+// 	void onEvent() {
+// 		// this string SHOULD include the time set in json settings
+// 		std::string timerAlert = "Time to take a 20 second break!";
+
+// 		createQuickPopup("Timer", timerAlert, "Start", "Skip", [](bool btn1, auto) {
+// 				if (btn1) {
+// 					log::debug("Button 1 was pressed");
+// 					// this should then allow the custom TimerNode to appear. I dont know how well it will work
+// 				}
+// 			}
+// 		);
+// 	}
+// };
