@@ -64,3 +64,4 @@ build-*/
 /cmake-build-*/
 
 a.txt
+src/a.txt
