@@ -6,7 +6,7 @@
 #include <ctime>
 #include "timer/TimerEvent.cpp"
 #include "timer/TimerLayer.cpp"
-#include "timer/EditorTimer.cpp"
+// #include "timer/EditorTimer.cpp"
 
 /**
  * Brings cocos2d and all Geode namespaces to the current scope.
@@ -33,7 +33,7 @@ class $modify(PlayLayer) {
 		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
 		if (m_fields->useTimer) {
-			auto tp1 = std::chrono::system_clock::now() ;
+			auto tp1 = std::chrono::system_clock::now();
 
 		// m_fields->starttime = std::chrono::system_clock::now();
 		m_fields->resetTimer();
@@ -81,18 +81,43 @@ class $modify(PlayLayer) {
 	
 };
 
+
+
+
+using EditorTimerTask = Task<bool, int>;
+
+//This is set up to check for each second, as an early canel would mean this event could just continue existing in memory
+EditorTimerTask startEditorTimer() {
+    return EditorTimerTask::run([](auto progress, auto hasBeenCancelled) -> EditorTimerTask::Result {
+        int time = Mod::get()->getSettingValue<int64_t>("interval") *60; // gets the amount of seconds 
+		log::debug("Starting editor timer!");
+
+        for (int i = 0; i < time; i++) {
+             if (hasBeenCancelled()) {
+                return EditorTimerTask::Cancel();
+            } else if (i % 60 == 0) {
+				progress(i / 60);
+                // 
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(1)); 
+        }
+
+		
+        return true;
+    });
+}
+
 /**
  * Modified editor UI
  * 
  * This is a modified editor UI paged used to track play testing and pausing on the editor. 
  */
 #include <Geode/modify/EditorUI.hpp> 
-class $modify(EditorUI) {
+class $modify(EditorUITimer, EditorUI) {
 	struct Fields {
 		bool isPlaytesting;
 		bool pauseAfterPlaytest;
-
-		// EventListener<EditorTimerTask> timer;
+		EventListener<EditorTimerTask> timer;
 	};
 
 	bool init(LevelEditorLayer* editorLayer) {
@@ -100,8 +125,11 @@ class $modify(EditorUI) {
 
 		m_fields->pauseAfterPlaytest = false;
 		m_fields->isPlaytesting = false;
+		m_fields->isPlaytesting = false;
 
-		// onEvent(); // may cause accesss exception ;)
+		m_fields->timer.bind(this, &EditorUITimer::onEvent);
+		m_fields->timer.setFilter(startEditorTimer());
+
 		return true;
 	}
 
@@ -110,41 +138,69 @@ class $modify(EditorUI) {
 		EditorUI::onPlaytest(sender);
 		m_fields->isPlaytesting = true;
 
-		m_fields->pauseAfterPlaytest = true; // temp
+		// m_fields->pauseAfterPlaytest = true; // temp
 	}
 
 	// unsets and checks pause layers
 	void playtestStopped() {
 		EditorUI::playtestStopped();
 
-		if (m_fields->pauseAfterPlaytest) {
-			log::debug("x");
-			TimerEvent(true, this).post();
-		}
-
 		m_fields->isPlaytesting = false;
 		
 	}
 
-	// pauses when button is pressed, so escape doesnt call 2 EditorPauseLayers
-	void onStopPlaytest(cocos2d::CCObject* sender) {
-		// this wont cause layering errors hopefully.
-		// if (m_fields->isPlaytesting) {
-		// 	EditorUI::onPause(this);
-		// }
-		
-			EditorUI::onStopPlaytest(sender);
+	// // pauses when button is pressed, so escape doesnt call 2 EditorPauseLayers
+	// void onStopPlaytest(cocos2d::CCObject* sender) {
+	// 		EditorUI::onStopPlaytest(sender);
+
+	// 		if (m_fields->pauseAfterPlaytest) {
+	// 			EditorUITimer::onPause(this);
+	// 		}
+	// }
+
+	void onPause(CCObject* sender) {
+		EditorUI::onPause(sender);
+
+		if (m_fields->pauseAfterPlaytest) {
+			TimerEvent(true, this).post();
+
+			m_fields->pauseAfterPlaytest = false;
+		}
 	}
 
+	// // 
+	// void onResume(CCObject* sender) {
+	// 	EditorUI::onResume(sender);
+
+	// 	if (m_fields->timer.getFilter().isFinished()) {
+	// 		m_fields->timer.setFilter(startEditorTimer());
+	// 	}
+
+	// }
+
 	// this event happens when binded with the event listener. it will throw a new event when the timer task attatched is called.
-	void onEvent() {
-		// validates if event shouldnt run due to condition
-		if (m_fields->isPlaytesting) {
+	void onEvent(EditorTimerTask::Event* ev) {
+
+		if (bool* result = ev->getValue()) {
+			log::debug("return true");
+
+			if (m_fields->isPlaytesting) {
 			m_fields->pauseAfterPlaytest = true;
 			return;
 		}
 
+		EditorUITimer::onPause(this);
 		TimerEvent(true, this).post();
+
+
+		} else if (int* progress = ev->getProgress()) {
+			log::debug("min: {}", *progress);
+
+		} else if (ev->isCancelled()) {
+			return;
+		}
+		// validates if event shouldnt run due to condition
+		
 	}
 
 	//TODO: impl function
@@ -195,23 +251,21 @@ $execute{
 			layer = layer->getChildByID("EditorPauseLayer");
 			log::debug("is the layer here {}", layer != nullptr);
 
-			/*
-			PROBLEM: THIS IS CALLED BEFORE PAUSE LAYER INITIATED
-			*/
-			if (layer != nullptr && layer->getID() == "EditorPauseLayer") {
-				layer->addEventListener<popUpEnabledFilter>(
-					[layer](bool mode) {
-						for (auto node : CCArrayExt<CCNode*>(layer->getChildByID("resume-menu")->getChildren())) { 
-									if (auto nodeAsBtn = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
-										nodeAsBtn->setEnabled(mode);
-									}
-								}
-							}
-						);
+			// if (layer != nullptr && layer->getID() == "EditorPauseLayer") {
+			// 	layer->addEventListener<popUpEnabledFilter>(
+			// 		[layer](bool mode) {
+			// 			for (auto node : CCArrayExt<CCNode*>(layer->getChildByID("resume-menu")->getChildren())) { 
+			// 						if (auto nodeAsBtn = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+			// 							nodeAsBtn->setEnabled(mode);
+			// 							log::debug("A");
+			// 						}
+			// 					}
+			// 				}
+			// 			);
 
-				log::debug("Pause Layer Found! Lets activate the event");
-				popUpEnabledEvent(true).post();
-			}
+			// 	log::debug("Pause Layer Found! Lets activate the event");
+			// 	// popUpEnabledEvent(false).post();
+			// }
 
 			std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
 
@@ -241,9 +295,7 @@ $execute{
 					// 	log::debug("Here, we'd add the timerNode!");
 					// }
 
-				} else {
-					popUpEnabledEvent(false).post();
-				}
+				} 
 		}, true);
 
 		
