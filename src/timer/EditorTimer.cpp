@@ -1,44 +1,27 @@
 #include "EditorTimer.hpp"
 
 
-using EditorTimerTask = Task<bool, bool>;
 
-//This is set up to check for each second, as an early canel would mean this event could just continue existing in memory
-EditorTimerTask startEditorTimer() {
-    return EditorTimerTask::run([](auto progress, auto hasBeenCancelled) -> EditorTimerTask::Result {
-        int time = Mod::get()->getSettingValue<int64_t>("interval") *60; // gets the amount of seconds 
 
-        for (int i = 0; i < time; i++) {
-             if (hasBeenCancelled()) {
-                return EditorTimerTask::Cancel();
-            } else if (i % 60 == 0) {
-                log::debug("minute {}", i / 60);
-            }
-            std::this_thread::sleep_for(std::chrono::seconds(1)); 
-        }
+// popUpEnabledEvent::popUpEnabledEvent(bool isEnabled) {
+//     popUpEnabledEvent::mode = isEnabled;
+//     log::debug("Event called with status: {}", isEnabled);
+// }
 
-        return true;
-    });
-}
+// popUpEnabledFilter::popUpEnabledFilter(CCNode* target) {
+//     popUpEnabledFilter::m_target = target;
+// }
 
-popUpEnabledEvent::popUpEnabledEvent(bool isEnabled) {
-    popUpEnabledEvent::mode = isEnabled;
-}
-
-popUpEnabledFilter::popUpEnabledFilter(CCNode* target) {
-    popUpEnabledFilter::m_target = target;
-}
-
-ListenerResult popUpEnabledFilter::handle(std::function<Callback> fn, popUpEnabledEvent* ev) {
-    try
-    {
-        fn(ev->mode);
-        return ListenerResult::Stop;
-    }
-    catch(const std::exception& e)
-    {
-        return ListenerResult::Propagate;
-    }
+// ListenerResult popUpEnabledFilter::handle(std::function<Callback> fn, popUpEnabledEvent* ev) {
+//     try
+//     {
+//         fn(ev->mode);
+//         return ListenerResult::Stop;
+//     }
+//     catch(const std::exception& e)
+//     {
+//         return ListenerResult::Propagate;
+//     }
     
     
-}
+// }
