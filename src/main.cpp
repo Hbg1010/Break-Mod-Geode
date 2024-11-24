@@ -90,7 +90,7 @@ using EditorTimerTask = Task<bool, int>;
 EditorTimerTask startEditorTimer() {
     return EditorTimerTask::run([](auto progress, auto hasBeenCancelled) -> EditorTimerTask::Result {
 		log::debug("Starting editor timer!");
-        int time = Mod::get()->getSettingValue<int64_t>("interval") *60; // gets the amount of seconds 
+        int time = Mod::get()->getSettingValue<int64_t>("interval") *6; // gets the amount of seconds 
 
 		// sleeps every second, as this needs to check if the event has been cancelled to not cause any problems!
         for (int i = 0; i < time; i++) {
@@ -166,15 +166,6 @@ class $modify(EditorUITimer, EditorUI) {
 		
 	}
 
-	// // pauses when button is pressed, so escape doesnt call 2 EditorPauseLayers
-	// void onStopPlaytest(cocos2d::CCObject* sender) {
-	// 		EditorUI::onStopPlaytest(sender);
-
-	// 		if (m_fields->pauseAfterPlaytest) {
-	// 			EditorUITimer::onPause(this);
-	// 		}
-	// }
-
 	void onPause(CCObject* sender) {
 		EditorUI::onPause(sender);
 
@@ -196,8 +187,6 @@ class $modify(EditorUITimer, EditorUI) {
 	void onEvent(EditorTimerTask::Event* ev) {
 
 		if (bool* result = ev->getValue()) {
-			log::debug("return true");
-
 			if (m_fields->isPlaytesting) {
 			m_fields->pauseAfterPlaytest = true;
 			return;
@@ -226,19 +215,20 @@ class $modify(EditorUITimer, EditorUI) {
 #include <Geode/modify/EditorPauseLayer.hpp>
 class $modify(EditorTimerFix, EditorPauseLayer) {
 
-	bool init(LevelEditorLayer* lvl) {
+	// bool init(LevelEditorLayer* lvl) {
 
-		if (!EditorPauseLayer::init(lvl)) return false;
-		// m_fields->listener = {
-		// 	this, &onPopupEvent
-		// }
-			// for (auto node : CCArrayExt<CCNode*>(this->getChildByID("resume-menu")->getChildren())) {
-			// 	changeButtonState(node, false);
-            // }
+	// 	if (!EditorPauseLayer::init(lvl)) return false;
+	// 	// m_fields->listener = {
+	// 	// 	this, &onPopupEvent
+	// 	// }
+	// 		// for (auto node : CCArrayExt<CCNode*>(this->getChildByID("resume-menu")->getChildren())) {
+	// 		// 	changeButtonState(node, false);
+    //         // }
 
-		return true;
-	}
+	// 	return true;
+	// }
 
+	// reseys the timer found in EditorUITimer
 	void onResume(CCObject* sender) {
 		EditorPauseLayer::onResume(sender);
 		auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
@@ -261,7 +251,6 @@ $execute{
 			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
 					// yeah I hate that not, but the constructor doesnt allow me to flip the things otherwise!
 					if (!btn2) {
-						log::debug("{}", btn2);
 						// adds a new node to the layer parent
 						CCNode* x = CCNode::create(); 
 						TimerLayer* timePopUp = TimerLayer::create(fmt::format("{}", Mod::get()->getSettingValue<int64_t>("breakTime")));
@@ -269,21 +258,12 @@ $execute{
 						// returns the grandfather of a node, so The popup is placed at the top of the tree
 						CCNode* parent = ev->getCurrentLayer(); 
 
-						
 						while(parent->getParent() != nullptr) {
 							parent = parent->getParent();
-							log::debug("parent found!");
 						}
 
 						parent->addChild(timePopUp, 20);
 						timePopUp->setID("Timer-pop-up"_spr);
-
-						// log::debug("The current layer is {}", curr->getID());
-
-					// 	if (curr->getID() == "Play-Layer") {// TODOFIX THIS ID
-					// 	log::debug("Here, we'd add the timerNode!");
-					// }
-
 				} 
 		}, true);
 

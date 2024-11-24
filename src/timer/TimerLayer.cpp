@@ -126,7 +126,7 @@ void TimerLayer::countDown(countTask::Event* event) {
 
 }
 void TimerLayer::onClick(CCObject* sender){
-    log::debug("clicked!");
+    // log::debug("clicked!");
     auto btn = static_cast<CCMenuItemSpriteExtra*>(sender);
     onClose(sender);   
 }
