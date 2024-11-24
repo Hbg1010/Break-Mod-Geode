@@ -1,5 +1,5 @@
 {
-	"geode": "4.0.0",
+	"geode": "4.0.1",
 
 	"gd": {
 		"win": "2.2074"
@@ -43,6 +43,12 @@
 			"input": true
 			}
 		},
+	"audioAlert": {
+		"type": "bool",
+		"name": "Use audio alerts",
+		"default": true,
+		"description": "enables sound effects to notify you when your timer is up!"
+	},
 	"playLayer": {
 		"type": "bool",
 		"name": "Play Layer",
