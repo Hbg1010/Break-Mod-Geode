@@ -95,16 +95,24 @@ void TimerLayer::countDown(countTask::Event* event) {
         CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
 
         // creates the finish button on screen
+        auto parent = (m_closeBtn->getParent());
+        
         auto spr = ButtonSprite::create("Finish");
         auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
-        log::debug("width?!?!{}", this->getContentWidth()/2);
-        btn->setAnchorPoint({.5f,.5f});
-        btn->setPosition(this->getContentWidth()*.375f, screenSize.height/8);
+      
+        // btn->setAnchorPoint({.5f,.5f});
+        btn->setPosition(parent->getPositionX(), screenSize.height/8);
 
         // places the new finish button onto the same menu layer as the extra button
-        auto parent = (m_closeBtn->getParent());
         parent->addChild(btn);
         btn->setID("finishBtn"_spr);
+
+        // plays audio when called
+        if (Mod::get()->getSettingValue<bool>("audioAlert")) {
+            FMODAudioEngine::sharedEngine()->resumeAllAudio();
+            // im using the 2nd channel (if thats what int p2 is) to allow sounds on PauseLayer 
+            FMODAudioEngine::sharedEngine()->playEffect("reward01.ogg", 1, 2, GameManager::get()->m_sfxVolume*3.f); 
+        }
 
     // displays time remaining from the task
     } else if (int* progress = event->getProgress()) {
