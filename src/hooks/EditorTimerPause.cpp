@@ -1,13 +1,13 @@
 #include "EditorTimerPause.hpp"
 
 
-void EditorTimerPause::onTimerSettings(CCObject* sender) {
-    log::debug("Settings menu was pressed");
-    auto layer = TimerSettingsLayer::create(this);
-    layer->m_scene = this;
-    layer->setTouchPriority(this->getTouchPriority() -1);
-    layer->show();
-}
+// void EditorTimerPause::onTimerSettings(CCObject* sender) {
+//     log::debug("Settings menu was pressed");
+//     auto layer = TimerSettingsLayer::create(this);
+//     layer->m_scene = this;
+//     layer->setTouchPriority(this->getTouchPriority() -1);
+//     layer->show();
+// }
 
 /* hooks
 ========== */
@@ -17,9 +17,11 @@ bool EditorTimerPause::init(LevelEditorLayer* lvl) {
     if (!EditorPauseLayer::init(lvl)) return false;
 
     // auto spr = CircleButtonSprite::createWithSpriteFrameName("particle_197_001.png");
-    auto spr = CCSprite::create("TimerSettings.png"_spr);
-    spr->setScale(.65f);
-    CCMenuItemSpriteExtra* timersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(EditorTimerPause::onTimerSettings));
+    // auto spr = CCSprite::create("TimerSettings.png"_spr);
+    // spr->setScale(.65f);
+    // CCMenuItemSpriteExtra* timersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(EditorTimerPause::onTimerSettings));
+
+    CCMenuItemSpriteExtra* timersettingsBtn = TimerSettingsButton::create(this);
 
     auto settingsMenu = this->getChildByID("settings-menu");
     settingsMenu->setContentHeight(this->getContentHeight()*2);
