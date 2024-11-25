@@ -21,6 +21,7 @@ $execute{
 
 			// creates popup before the timer
 			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
+				
 					// yeah I hate that not, but the constructor doesnt allow me to flip the things otherwise!
 					if (!btn2) {
 						// adds a new node to the layer parent
@@ -33,11 +34,15 @@ $execute{
 						while(parent->getParent() != nullptr) {
 							parent = parent->getParent();
 						}
-
+						timePopUp->m_noElasticity = CCDirector::get()->getFastMenu();
 						parent->addChild(timePopUp, 20);
 						timePopUp->setID("Timer-pop-up"_spr);
 				} 
-		}, true);
+		}, false);
+
+		// displays x
+		x->m_noElasticity = CCDirector::get()->getFastMenu();
+		x->show();
 
 		// if in editor, this will set the touch priority above the EditorPauseLayer
 		// very open to knowing a better way to do this! ! ! Unlike the editorUI though, theres no get function :(
