@@ -27,11 +27,15 @@ class $modify(EditorUITimer, EditorUI) {
 		}
 	};
 
-	bool init(LevelEditorLayer* editorLayer);
-	void onPlaytest(CCObject* sender);
-	void playtestStopped();
-	void onPause(CCObject* sender);
+	// EditorUITimer
 	void resetTimer();
 	void forceReset();
 	void onEvent(EditorTimerTask::Event* ev);
+
+	//hooked fns
+	bool init(LevelEditorLayer* editorLayer);
+	void onPlaytest(CCObject* sender);
+	void playtestStopped();
+	void onStopPlaytest(CCObject* sender);
+	void onPause(CCObject* sender);
 };

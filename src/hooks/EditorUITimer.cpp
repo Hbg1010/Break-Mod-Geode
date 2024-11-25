@@ -71,6 +71,15 @@ void EditorUITimer::playtestStopped() {
     m_fields->isPlaytesting = false;
 }
 
+void EditorUITimer::onStopPlaytest(CCObject* sender) {
+    if (m_fields->pauseAfterPlaytest) {
+        EditorUITimer::onPause(sender);
+
+    } else {
+        EditorUI::onStopPlaytest(sender);
+    }
+}
+
 void EditorUITimer::onPause(CCObject* sender) {
     EditorUI::onPause(sender);
 
