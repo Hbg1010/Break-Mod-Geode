@@ -9,9 +9,9 @@ using namespace geode::prelude;
 class $modify(TimerPlayLayer, PlayLayer) {
 
 	struct Fields {
-		// std::chrono::time_point<std::chrono::system_clock> starttime;
 		std::chrono::time_point<std::chrono::system_clock> endtime;
 		bool useTimer;
+		
 		// resets the timer on call;
 		void resetTimer() {
 			endtime = std::chrono::system_clock::now() + std::chrono::minutes{Mod::get()->getSettingValue<int64_t>("interval")}; // TODO: Replace with setting
