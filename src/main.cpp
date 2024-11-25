@@ -81,6 +81,40 @@ class $modify(PlayLayer) {
 	
 };
 
+#include <Geode/modify/PauseLayer.hpp>
+class $modify(TimerPauseLayer, PauseLayer) {
+	void customSetup() override {
+		PauseLayer::customSetup();
+
+		auto spr = CircleButtonSprite::createWithSpriteFrameName("particle_197_001.png");
+		spr->setScale(.65f);
+		CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerPauseLayer::onTimerSettings));
+
+		auto settingsMenu = this->getChildByID("right-button-menu");
+		CCMenuItemSpriteExtra* settingsBtn;
+
+		for (auto* node : CCArrayExt<CCNode*>(settingsMenu->getChildren())) {
+			if (node->getID() == "options-button") {
+				settingsBtn = static_cast<CCMenuItemSpriteExtra*>(node);
+				break;
+			}
+		}
+
+		if (settingsBtn == nullptr) {
+			log::error("Options button could not be found!");
+		}
+
+		TimersettingsBtn->setPosition(settingsBtn->getPositionX(), settingsBtn->getPositionY() - settingsBtn->getContentWidth() * 1.5f);
+		// TimersettingsBtn->setContentSize(settingsBtn->getScaledContentSize());
+		settingsMenu->addChild(TimersettingsBtn);
+		TimersettingsBtn->setID("timer-settings-btn"_spr);
+	}
+
+	void onTimerSettings(CCObject* sender) {
+		log::debug("Settings menu was pressed");
+	}
+};
+
 
 
 
