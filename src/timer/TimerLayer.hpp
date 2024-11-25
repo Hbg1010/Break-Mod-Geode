@@ -2,8 +2,6 @@
 #include <Geode/Geode.hpp>
 using namespace geode::prelude;
 
-// #include "TimerEvent.hpp"
-
 using countTask = Task<bool, int>;
 
 class TimerLayer : public Popup<std::string const&> {
