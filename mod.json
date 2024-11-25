@@ -16,6 +16,11 @@
             "importance": "required"
         }
     ],
+	"resources": {
+		"sprites": [
+			"resources/*.png"
+		]
+	},
 	"settings": {
 		"interval": {
 			"type": "int",

@@ -88,7 +88,8 @@ class $modify(TimerPauseLayer, PauseLayer) {
 	void customSetup() override {
 		PauseLayer::customSetup();
 
-		auto spr = CircleButtonSprite::createWithSpriteFrameName("particle_197_001.png");
+		// auto spr = CircleButtonSprite::createWithSpriteFrameName("particle_197_001.png");
+		auto spr = CCSprite::create("TimerSettings.png"_spr);
 		spr->setScale(.65f);
 		CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerPauseLayer::onTimerSettings));
 
