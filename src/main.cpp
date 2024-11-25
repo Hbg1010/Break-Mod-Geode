@@ -6,6 +6,8 @@
 #include <ctime>
 #include "timer/TimerEvent.cpp"
 #include "timer/TimerLayer.cpp"
+#include "timer/Layers/TimerSettingsLayer.cpp"
+
 // #include "timer/EditorTimer.cpp"
 
 /**
@@ -91,6 +93,15 @@ class $modify(TimerPauseLayer, PauseLayer) {
 		CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerPauseLayer::onTimerSettings));
 
 		auto settingsMenu = this->getChildByID("right-button-menu");
+
+		// adjusts the right menu to properly allow new buttons to be added
+		settingsMenu->setLayout(
+			ColumnLayout::create()
+				->setGap(5.f)
+				->setGrowCrossAxis(true)
+				->setAxisReverse(true)
+				->setAxisAlignment(AxisAlignment::End)
+				,true); 
 		CCMenuItemSpriteExtra* settingsBtn;
 
 		for (auto* node : CCArrayExt<CCNode*>(settingsMenu->getChildren())) {
@@ -104,14 +115,20 @@ class $modify(TimerPauseLayer, PauseLayer) {
 			log::error("Options button could not be found!");
 		}
 
-		TimersettingsBtn->setPosition(settingsBtn->getPositionX(), settingsBtn->getPositionY() - settingsBtn->getContentWidth() * 1.5f);
+		
+		// TimersettingsBtn->setPosition(settingsBtn->getPositionX(), settingsBtn->getPositionY() - settingsBtn->getContentWidth() * 1.5f);
 		// TimersettingsBtn->setContentSize(settingsBtn->getScaledContentSize());
 		settingsMenu->addChild(TimersettingsBtn);
 		TimersettingsBtn->setID("timer-settings-btn"_spr);
+
+		settingsMenu->updateLayout();
 	}
 
 	void onTimerSettings(CCObject* sender) {
 		log::debug("Settings menu was pressed");
+		auto layer = TimerSettingsLayer::create(this->getID());
+		layer->m_scene = this;
+		layer->show();
 	}
 };
 
