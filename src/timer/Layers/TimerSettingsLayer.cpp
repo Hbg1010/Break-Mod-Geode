@@ -1,6 +1,6 @@
 #include "TimerSettingsLayer.hpp"
 
-TimerSettingsLayer* TimerSettingsLayer::create(std::string const& menuID) {
+TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     auto temp = new TimerSettingsLayer();
 
     // trys to make node
@@ -15,7 +15,7 @@ TimerSettingsLayer* TimerSettingsLayer::create(std::string const& menuID) {
     }
 }
 
-bool TimerSettingsLayer::setup(std::string const& menuID) {
+bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     TimerSettingsLayer::m_menuID = menuID;
     CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
     log::debug("{}", menuID);
@@ -45,6 +45,13 @@ bool TimerSettingsLayer::setup(std::string const& menuID) {
     menu->addChild(addButton);
     addButton->setID("add-button"_spr);
 
+    //TODO: Find propper nodeIDs
+    // disables buttons if the current layer is disabled.
+    if ((!Mod::get()->getSettingValue<bool>("playLayer") && menuID->getID() == "PauseLayer") || (!Mod::get()->getSettingValue<bool>("editorLayer") && menuID->getID() == "EditorPauseLayer")) {
+        resetButton->setEnabled(false);
+        addButton->setEnabled(false);
+    }
+
     // settings button
     auto settingsSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");//"GJ_optionsBtn_001.png"
     CCMenuItemSpriteExtra* settingsButton = CCMenuItemSpriteExtra::create(settingsSpr, this, nullptr);
@@ -56,6 +63,14 @@ bool TimerSettingsLayer::setup(std::string const& menuID) {
     return true;
 }
 
+// this callback occurs when the button is clicked
 void TimerSettingsLayer::resetTimer(CCObject* sender) {
-    log::debug("reseting the timer!");
+    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
+        log::debug("todo");
+    } else {
+        // // reseting here is very easy. 
+        // auto layer = EditorUITimer::get();
+        // auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
+		// x->forceReset();
+    }
 }
