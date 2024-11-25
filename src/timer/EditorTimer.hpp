@@ -6,19 +6,19 @@ using namespace geode::prelude;
 // EditorTimerTask startEditorTimer();
 
 class popUpEnabledEvent : public Event {
-    public:
-        popUpEnabledEvent(bool isEnabled);
-        bool mode;
+public:
+    popUpEnabledEvent(bool isEnabled);
+    bool mode;
 
 };
 
 class popUpEnabledFilter : public EventFilter<popUpEnabledEvent> {
-    protected:
-        CCNode* m_target;
+protected:
+    CCNode* m_target;
 
-    public:
-        using Callback = void(bool);
-        popUpEnabledFilter(CCNode* target);
-        ListenerResult handle(std::function<Callback> fn, popUpEnabledEvent* ev);
+public:
+    using Callback = void(bool);
+    popUpEnabledFilter(CCNode* target);
+    ListenerResult handle(std::function<Callback> fn, popUpEnabledEvent* ev);
 
 };
