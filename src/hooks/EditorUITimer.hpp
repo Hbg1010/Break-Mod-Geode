@@ -1,3 +1,5 @@
+#pragma once
+
 /**
  * Modified editor UI
  * 
@@ -31,6 +33,7 @@ class $modify(EditorUITimer, EditorUI) {
 	void resetTimer();
 	void forceReset();
 	void onEvent(EditorTimerTask::Event* ev);
+	bool checkEndPlaytest();
 
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);
@@ -38,4 +41,5 @@ class $modify(EditorUITimer, EditorUI) {
 	void playtestStopped();
 	void onStopPlaytest(CCObject* sender);
 	void onPause(CCObject* sender);
+	void showUI(bool p0);
 };
