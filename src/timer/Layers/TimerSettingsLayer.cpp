@@ -54,7 +54,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // settings button
     auto settingsSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");//"GJ_optionsBtn_001.png"
-    CCMenuItemSpriteExtra* settingsButton = CCMenuItemSpriteExtra::create(settingsSpr, this, nullptr);
+    CCMenuItemSpriteExtra* settingsButton = CCMenuItemSpriteExtra::create(settingsSpr, this, menu_selector(TimerSettingsLayer::changeSettings));
     menu->addChild(settingsButton);
     settingsButton->setID("settings-button"_spr);
 
@@ -78,3 +78,25 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
     }
 }
 
+void TimerSettingsLayer::pauseTime(CCObject* sender) {
+    log::debug("paused");
+}
+
+// opens geode settings page
+void TimerSettingsLayer::changeSettings(CCObject* sender) {
+    geode::openSettingsPopup(Mod::get());
+
+    /*
+    TODO: 
+    */
+}
+
+$execute {
+    new EventListener<EventFilter<ModLogoUIEvent>>(+[](ModLogoUIEvent* event) {
+        if (event->getModID() == "hbg1010.20_20_20") {
+            log::debug("hbg");
+        }
+        // You should always propagate Geode UI events
+        return ListenerResult::Propagate;
+    });
+}
