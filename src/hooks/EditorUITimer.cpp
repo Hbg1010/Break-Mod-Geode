@@ -2,8 +2,8 @@
 
 
 // resets the timer on call!
-void EditorUITimer::resetTimer() {
-    if (m_fields->reset(this)) {
+void EditorUITimer::resetTimer(int time) {
+    if (m_fields->reset(this, time)) {
         log::debug("timer was reset!");
     }
 }
@@ -27,9 +27,15 @@ void EditorUITimer::forceReset() {
 		EditorUITimer::onPause(this);
 		TimerEvent(true, this).post();
 
-
 		} else if (int* progress = ev->getProgress()) {
-			log::debug("min: {}", *progress);
+
+            // if this is paused, this will recieve progress when cancelled
+            if (m_fields->paused) {
+                m_fields->remainingTime = *progress;
+
+            } else {
+			    log::debug("min: {}", *progress);
+            }
 
 		} else if (ev->isCancelled()) {
 			return;
@@ -44,9 +50,14 @@ void EditorUITimer::forceReset() {
             EditorUI::onPause(this);   
 		    TimerEvent(true, this).post();
             return true;
+
         } else {
             return false;
         }
+    }
+
+    void onUnpause() {
+
     }
 
 /* hooks
@@ -57,11 +68,11 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
 
     m_fields->pauseAfterPlaytest = false;
     m_fields->isPlaytesting = false;
-    m_fields->isPlaytesting = false;
-    
+    m_fields->paused = false;
+
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
         m_fields->timer.bind(this, &EditorUITimer::onEvent);
-        m_fields->timer.setFilter(startEditorTimer());
+        m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 6));
     }
     
     return true;
@@ -97,8 +108,6 @@ void EditorUITimer::onPause(CCObject* sender) {
 
 void EditorUITimer::showUI(bool p0){
     EditorUI::showUI(p0);
-
-    log::debug("x");
 
     if (checkEndPlaytest() && m_fields->isPlaytesting){
         CCMenuItemSpriteExtra* stopButton = static_cast<CCMenuItemSpriteExtra*>(this->getChildByID("playtest-menu")->getChildByID("stop-playtest-button"));
