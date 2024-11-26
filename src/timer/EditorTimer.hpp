@@ -3,4 +3,4 @@
 using namespace geode::prelude;
 
 using EditorTimerTask = Task<bool, int>;
-EditorTimerTask startEditorTimer();
+EditorTimerTask startEditorTimer(int time);
