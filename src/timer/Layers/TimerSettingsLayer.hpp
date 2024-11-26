@@ -1,6 +1,10 @@
 #pragma once
 
 #include <Geode/Geode.hpp>
+#include "../../hooks/EditorUITimer.hpp"
+#include "../../hooks/TimerPlayLayer.hpp"
+
+
 using namespace geode::prelude;
 
 class TimerSettingsLayer : public Popup<CCNode* const&> {

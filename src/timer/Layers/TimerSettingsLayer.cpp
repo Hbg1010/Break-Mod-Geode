@@ -35,7 +35,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // reset button
     auto resetSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_updateBtn_001.png");//"GJ_updateBtn_001.png" 
-    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, nullptr); //menu_selector(TimerSettingsLayer::resetTimer)
+    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
 
@@ -65,12 +65,16 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
 // this callback occurs when the button is clicked
 void TimerSettingsLayer::resetTimer(CCObject* sender) {
+    log::debug("{}", TimerSettingsLayer::m_menuID->getID());
     if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
-        log::debug("todo");
+        auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
+        layer->m_fields->resetTimer();
+
     } else {
-        // // reseting here is very easy. 
-        // auto layer = EditorUITimer::get();
-        // auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
-		// x->forceReset();
+        //reseting here is very easy. 
+        auto layer = EditorUITimer::get();
+        auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
+		x->forceReset();
     }
 }
+
