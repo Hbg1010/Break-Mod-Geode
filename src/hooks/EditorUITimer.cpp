@@ -38,6 +38,17 @@ void EditorUITimer::forceReset() {
 		
 	}
 
+    bool EditorUITimer::checkEndPlaytest() {
+        if (m_fields->pauseAfterPlaytest) {
+            m_fields->pauseAfterPlaytest = false;
+            EditorUI::onPause(this);   
+		    TimerEvent(true, this).post();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 /* hooks
 ========== */
 
@@ -72,20 +83,34 @@ void EditorUITimer::playtestStopped() {
 }
 
 void EditorUITimer::onStopPlaytest(CCObject* sender) {
-    if (m_fields->pauseAfterPlaytest) {
-        EditorUITimer::onPause(sender);
-
-    } else {
+    // if that function doesnt run, normal behavior occurs
+    if (!checkEndPlaytest()) {
         EditorUI::onStopPlaytest(sender);
     }
 }
 
 void EditorUITimer::onPause(CCObject* sender) {
-    EditorUI::onPause(sender);
+    if (!checkEndPlaytest()) {
+        EditorUI::onPause(sender);
+    }
+}
 
-    if (m_fields->pauseAfterPlaytest) {
-        TimerEvent(true, this).post();
+void EditorUITimer::showUI(bool p0){
+    EditorUI::showUI(p0);
 
-        m_fields->pauseAfterPlaytest = false;
+    log::debug("x");
+
+    if (checkEndPlaytest() && m_fields->isPlaytesting){
+        CCMenuItemSpriteExtra* stopButton = static_cast<CCMenuItemSpriteExtra*>(this->getChildByID("playtest-menu")->getChildByID("stop-playtest-button"));
+
+        if (stopButton != nullptr) {
+            stopButton->setVisible(false);
+            stopButton->setEnabled(false);
+        } 
+
+
+        // if (stopButton->getChildByID("stop-playtest-button") != nullptr) {
+        //     stopButton->removeChildByID("stop-playtest-button");
+        // }
     }
 }
