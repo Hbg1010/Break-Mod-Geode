@@ -11,6 +11,7 @@ class $modify(TimerPlayLayer, PlayLayer) {
 	struct Fields {
 		std::chrono::time_point<std::chrono::system_clock> endtime;
 		bool useTimer;
+		bool paused;
 		
 		// resets the timer on call;
 		void resetTimer() {

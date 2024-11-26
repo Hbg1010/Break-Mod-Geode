@@ -5,26 +5,27 @@
 
 	bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 		if (!PlayLayer::init(p0,p1,p2)) return false;
-		// NodeIDs::provideFor(this);
-		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
+			m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
+			m_fields->paused = false;
+			
+			if (m_fields->useTimer) {
+				auto tp1 = std::chrono::system_clock::now();
 
-		if (m_fields->useTimer) {
-			auto tp1 = std::chrono::system_clock::now();
-
-		// m_fields->starttime = std::chrono::system_clock::now();
-		m_fields->resetTimer();
+				// m_fields->starttime = std::chrono::system_clock::now();
+				m_fields->resetTimer();
+				// std::time_t time = std::chrono::system_clock::to_time_t(m_fields->endtime);
+				// log::debug("TIme is {}", std::ctime(&time));
 		}
 		
 	
-		// std::time_t time = std::chrono::system_clock::to_time_t(m_fields->endtime);
-		// log::debug("TIme is {}", std::ctime(&time));
+
 		return true;
 	}
 
     void TimerPlayLayer::resetLevel() {
 		PlayLayer::resetLevel();
 
-		if (!m_fields->useTimer) return;
+		if (!m_fields->useTimer || !m_fields->paused) return;
 
 		// condition. checks if current time > start time + 20min
 		auto difference = m_fields->endtime - std::chrono::system_clock::now();
