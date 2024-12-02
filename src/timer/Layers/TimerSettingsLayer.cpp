@@ -80,6 +80,18 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
 
 void TimerSettingsLayer::pauseTime(CCObject* sender) {
     log::debug("paused");
+
+    // sets it to the opposite val on click
+    TimerSettingsLayer::paused = !TimerSettingsLayer::paused;
+
+    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
+        auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
+
+        layer->pauseTimer(TimerSettingsLayer::paused);
+    } else {
+        log::debug("todo");
+    }
+
 }
 
 // opens geode settings page

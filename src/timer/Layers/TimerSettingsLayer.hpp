@@ -18,4 +18,6 @@ protected:
     void resetTimer(CCObject* sender);
     void changeSettings(CCObject* sender);
     void pauseTime(CCObject* sender);
+
+    void updateButtons();
 };

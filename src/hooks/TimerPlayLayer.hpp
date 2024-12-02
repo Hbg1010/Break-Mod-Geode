@@ -12,6 +12,7 @@ class $modify(TimerPlayLayer, PlayLayer) {
 		std::chrono::time_point<std::chrono::system_clock> endtime;
 		bool useTimer;
 		bool paused;
+		std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period> difference;
 		
 		// resets the timer on call;
 		void resetTimer() {
@@ -21,4 +22,5 @@ class $modify(TimerPlayLayer, PlayLayer) {
 
 	bool init(GJGameLevel* p0, bool p1, bool p2);
 	void resetLevel();
+	void pauseTimer(bool pauseState);
 };

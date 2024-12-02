@@ -1,5 +1,18 @@
 #include "TimerPlayLayer.hpp"
 
+// changes the bool to true / false
+void TimerPlayLayer::pauseTimer(bool pauseState) {
+	log::debug("paused");
+
+	m_fields->paused = pauseState;
+
+	if (m_fields->paused) {
+		m_fields->difference = m_fields->endtime - std::chrono::system_clock::now();
+	} else {
+		m_fields->endtime = std::chrono::system_clock::now() + m_fields->difference;
+	}
+}
+
 /* hooks
 ========== */
 
