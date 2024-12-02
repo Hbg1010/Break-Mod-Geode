@@ -15,10 +15,17 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     }
 }
 
+// sets up the layer!
 bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     TimerSettingsLayer::m_menuID = menuID;
     CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
     log::debug("{}", menuID);
+
+    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
+        TimerSettingsLayer::paused = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->m_fields->paused;
+    } else {
+        TimerSettingsLayer::paused = static_cast<EditorUITimer*>(EditorUITimer::get())->m_fields->paused;
+    }
 
     this->setTitle("Timer Settings!");
 
@@ -30,6 +37,8 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
         ->setAxisAlignment(AxisAlignment::Even)
     );
 
+    TimerSettingsLayer::menuPointer = menu; // stores pointer
+
     this->addChild(menu);
     menu->setID("timer-settings-menu"_spr);
 
@@ -40,17 +49,10 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     resetButton->setID("reset-button"_spr);
 
     // add button
-    auto addSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");//"GJ_plusBtn_001.png"
-    CCMenuItemSpriteExtra* addButton = CCMenuItemSpriteExtra::create(addSpr, this, nullptr);
-    menu->addChild(addButton);
-    addButton->setID("add-button"_spr);
-
-    //TODO: Find propper nodeIDs
-    // disables buttons if the current layer is disabled.
-    if ((!Mod::get()->getSettingValue<bool>("playLayer") && menuID->getID() == "PauseLayer") || (!Mod::get()->getSettingValue<bool>("editorLayer") && menuID->getID() == "EditorPauseLayer")) {
-        resetButton->setEnabled(false);
-        addButton->setEnabled(false);
-    }
+    auto pauseSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");//"GJ_plusBtn_001.png"
+    CCMenuItemSpriteExtra* pauseButton = CCMenuItemSpriteExtra::create(pauseSpr, this, menu_selector(TimerSettingsLayer::pauseTime));
+    menu->addChild(pauseButton);
+    pauseButton->setID("pause-button"_spr);
 
     // settings button
     auto settingsSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");//"GJ_optionsBtn_001.png"
@@ -60,6 +62,8 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // updates the layout 
     menu->updateLayout();
+
+    updateButtons();
     return true;
 }
 
@@ -80,7 +84,6 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
 
 void TimerSettingsLayer::pauseTime(CCObject* sender) {
     log::debug("paused");
-
     // sets it to the opposite val on click
     TimerSettingsLayer::paused = !TimerSettingsLayer::paused;
 
@@ -92,19 +95,60 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
         log::debug("todo");
     }
 
+    updateButtons();
+
 }
 
 // opens geode settings page
 void TimerSettingsLayer::changeSettings(CCObject* sender) {
-    geode::openSettingsPopup(Mod::get());
+    geode::openSettingsPopup(Mod::get(), false);
+    auto parent = this->getParent();
 
-    /*
-    TODO: 
-    */
+    updateButtons();
+    
+}
+
+// this will update the visuals shown by the ui
+void TimerSettingsLayer::updateButtons() {
+    CCMenuItemSpriteExtra* btnPointer = static_cast<CCMenuItemSpriteExtra*>(TimerSettingsLayer::menuPointer->getChildByID("pause-button"_spr));
+    if (btnPointer == nullptr) {
+        log::error("Button is nullptr");
+    }
+    auto sprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
+    btnPointer->setSprite(sprite);
+
+    // checks if the pause and play should be enabled
+    bool enabled = (Mod::get()->getSettingValue<bool>("playLayer") && m_menuID->getID() == "PauseLayer") || (Mod::get()->getSettingValue<bool>("editorLayer") && m_menuID->getID() == "EditorPauseLayer");
+
+    for (CCNode* node : CCArrayExt<CCNode*>(menuPointer->getChildren())) {
+        if (node->getID() != "settings-button"_spr) {
+            TimerSettingsLayer::disableButton(node, enabled);
+        }
+    }
+}
+
+// static function to disable a button on call
+void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
+    //TODO Find a better spot to put this
+    const ccColor3B greyScale = {.r = 90, .g = 90, .b = 90};
+    const ccColor3B color = {.r = 255, .g = 255, .b = 255};
+
+    if (auto btn = typeinfo_cast<CCMenuItemSpriteExtra*>(node)) {
+        btn->setEnabled(enable);
+        auto spr = typeinfo_cast<CCRGBAProtocol*>(btn->getNormalImage());
+            spr->setCascadeColorEnabled(true);
+            spr->setCascadeOpacityEnabled(true);
+            spr->setColor(enable ? color : greyScale);
+            spr->setOpacity(200);
+    }
+}
+
+TimerSettingsLayer::~TimerSettingsLayer() {
+    log::debug("destructed");
 }
 
 $execute {
-    new EventListener<EventFilter<ModLogoUIEvent>>(+[](ModLogoUIEvent* event) {
+    new EventListener<EventFilter<ModPopupUIEvent>>(+[](ModPopupUIEvent* event) {
         if (event->getModID() == "hbg1010.20_20_20") {
             log::debug("hbg");
         }
