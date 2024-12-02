@@ -18,17 +18,18 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 
 	bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 		if (!PlayLayer::init(p0,p1,p2)) return false;
-			m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 			m_fields->paused = false;
-			
-			if (m_fields->useTimer) {
-				auto tp1 = std::chrono::system_clock::now();
+			m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
-				// m_fields->starttime = std::chrono::system_clock::now();
-				m_fields->resetTimer();
-				// std::time_t time = std::chrono::system_clock::to_time_t(m_fields->endtime);
-				// log::debug("TIme is {}", std::ctime(&time));
-		}
+			m_fields->resetTimer();
+
+
+		// 	if (m_fields->useTimer) {
+		// 		// auto tp1 = std::chrono::system_clock::now();
+		// 		// m_fields->starttime = std::chrono::system_clock::now();
+		// 		// std::time_t time = std::chrono::system_clock::to_time_t(m_fields->endtime);
+		// 		// log::debug("TIme is {}", std::ctime(&time));
+		// }
 		
 	
 
@@ -38,7 +39,16 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
     void TimerPlayLayer::resetLevel() {
 		PlayLayer::resetLevel();
 
-		if (!m_fields->useTimer || !m_fields->paused) return;
+		if (!Mod::get()->getSettingValue<bool>("playLayer") || m_fields->paused) {
+			m_fields->useTimer = false;
+			return;
+		} else if (!m_fields->useTimer) {
+			m_fields->resetTimer();
+			m_fields->useTimer = true;
+		}
+
+	
+		log::debug("this ran!");
 
 		// condition. checks if current time > start time + 20min
 		auto difference = m_fields->endtime - std::chrono::system_clock::now();
