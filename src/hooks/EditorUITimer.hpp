@@ -24,7 +24,7 @@ class $modify(EditorUITimer, EditorUI) {
 
 		// resets timer when it is finished
 		bool reset(EditorUITimer* sender, int time) {
-			if (this->timer.getFilter().isFinished()) {
+			if (this->timer.getFilter().isFinished() || this->timer.getCallback() == nullptr) {
 				this->timer.bind(sender, &EditorUITimer::onEvent);
 				this->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
 				return true;
@@ -36,7 +36,7 @@ class $modify(EditorUITimer, EditorUI) {
 
 	// EditorUITimer
 	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * 6);
-	void forceReset();
+	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * 6);
 	void onEvent(EditorTimerTask::Event* ev);
 	bool checkEndPlaytest();
 	void onUnpause();
