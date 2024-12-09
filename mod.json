@@ -62,7 +62,7 @@
 	},
 	"editorLayer": {
 		"type": "bool",
-		"name": "Editer",
+		"name": "Editor",
 		"default": true,
 		"description": "This setting enables or disables whether or not the timer is used in gameplay"
 	}
