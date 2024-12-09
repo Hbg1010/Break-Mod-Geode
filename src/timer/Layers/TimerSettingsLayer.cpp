@@ -1,4 +1,11 @@
 #include "TimerSettingsLayer.hpp"
+#include <memory>
+
+// EventListener<SettingChangedFilterV3> m_listener = {this, upd};
+
+// geode::EventListener<Popup::CloseEventFilter> m_listener = {
+//     this, &TimerSettingsLayer::updateButtons(), CloseEventFilter(this, )
+// }
 
 TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     auto temp = new TimerSettingsLayer();
@@ -9,7 +16,7 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
         return temp;
 
     } else {
-        CC_SAFE_DELETE(temp);
+        // CC_SAFE_DELETE(temp);
 
         return nullptr;
     }
@@ -17,6 +24,13 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
 
 // sets up the layer!
 bool TimerSettingsLayer::setup(CCNode* const& menuID) {
+
+
+    // TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", &TimerSettingsLayer::updateButtons);
+    TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
+        this->updateButtons();
+    });
+
     TimerSettingsLayer::m_menuID = menuID;
     CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
     log::debug("{}", menuID);
@@ -64,6 +78,23 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->updateLayout();
 
     updateButtons();
+
+    // m_listener.setFilter(SettingChangedFilterV3(Mod::get(), "playLayer"));
+    // m_listener.bind([&](SettingChangedEventV3* ev) {
+    //     log::debug("IM GONNA KMS");
+    // });
+
+    // m_listener = EventListener<SettingChangedFilterV3>(this, &onSettingsChanged, SettingChangedFilterV3(Mod::get(), "playLayer"));
+    // TimerSettingsLayer::m_listener.setFilter(SettingChangedFilterV3(Mod::get(), "playLayer"));
+    // TimerSettingsLayer::m_listener.bind(&[](SettingChangedEventV3* ev) {
+
+    // });
+
+    // m_listener.bind(this, &TimerSettingsLayer::onSettingsChanged);
+    //  = {
+    //     this, updateButtons(), SettingChangedFilterV3(Mod::get(), "playLayer")
+    // };
+
     return true;
 }
 
@@ -101,10 +132,7 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
 
 // opens geode settings page
 void TimerSettingsLayer::changeSettings(CCObject* sender) {
-    geode::openSettingsPopup(Mod::get(), false);
-    auto parent = this->getParent();
-
-    updateButtons();
+   auto settingsPopup = geode::openSettingsPopup(Mod::get(), true);
     
 }
 
@@ -143,16 +171,9 @@ void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
     }
 }
 
+// dtor to drop this global listener.
 TimerSettingsLayer::~TimerSettingsLayer() {
     log::debug("destructed");
-}
-
-$execute {
-    new EventListener<EventFilter<ModPopupUIEvent>>(+[](ModPopupUIEvent* event) {
-        if (event->getModID() == "hbg1010.20_20_20") {
-            log::debug("hbg");
-        }
-        // You should always propagate Geode UI events
-        return ListenerResult::Propagate;
-    });
+    m_listener->disable();
+    CC_SAFE_DELETE(m_listener);
 }
