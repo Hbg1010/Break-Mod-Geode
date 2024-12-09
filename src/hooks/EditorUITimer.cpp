@@ -9,10 +9,9 @@ void EditorUITimer::resetTimer(int time) {
 }
 
 // cancels the timer before reseting
-void EditorUITimer::forceReset() {
-    m_fields->timer.getFilter().shallowCancel();
-
-    resetTimer();
+void EditorUITimer::forceReset(int time) {
+    m_fields->timer.bind(this, &EditorUITimer::onEvent);
+	m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
 }
 
 // this event happens when binded with the event listener. it will throw a new event when the timer task attatched is called.
@@ -70,9 +69,11 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
     m_fields->isPlaytesting = false;
     m_fields->paused = false;
 
+    m_fields->timer.bind(this, &EditorUITimer::onEvent);
+
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
-        m_fields->timer.bind(this, &EditorUITimer::onEvent);
         m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 6));
+        
     }
     
     return true;

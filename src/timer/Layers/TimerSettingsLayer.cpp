@@ -29,6 +29,9 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     // TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", &TimerSettingsLayer::updateButtons);
     TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
         this->updateButtons();
+        if (resault) {
+            resetTimer(this);
+        }
     });
 
     TimerSettingsLayer::m_menuID = menuID;

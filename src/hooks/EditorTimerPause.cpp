@@ -46,6 +46,9 @@ void EditorTimerPause::onResume(CCObject* sender) {
     EditorPauseLayer::onResume(sender);
     auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
 
-    x->resetTimer();
+    if (Mod::get()->getSettingValue<bool>("editorLayer") && !x->m_fields->paused) {
+        x->resetTimer();
+    }
+    
 
 }
