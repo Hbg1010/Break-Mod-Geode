@@ -15,7 +15,7 @@ CCMenuItemSpriteExtra* TimerSettingsButton::create(CCNode* target) {
 // this is the buttons callback
 void TimerSettingsButton::onTimerSettings(CCObject* sender) {
     log::debug("Settings menu was pressed");
-    auto layer = TimerSettingsLayer::create(PARENT);
+    TimerSettingsLayer* layer = TimerSettingsLayer::create(PARENT);
     layer->m_scene = PARENT;
 
     if (PARENT->getID() == "EditorPauseLayer") {
