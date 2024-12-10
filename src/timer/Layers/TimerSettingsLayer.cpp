@@ -126,7 +126,12 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
 
         layer->pauseTimer(TimerSettingsLayer::paused);
     } else {
-        log::debug("todo");
+        auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
+        if (paused) {
+            layer->resetTimer(layer->getRemainder());
+        } else {
+            layer->cancelTimer();
+        }
     }
 
     updateButtons();

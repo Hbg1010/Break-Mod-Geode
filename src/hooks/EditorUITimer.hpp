@@ -40,6 +40,8 @@ class $modify(EditorUITimer, EditorUI) {
 	void onEvent(EditorTimerTask::Event* ev);
 	bool checkEndPlaytest();
 	void onUnpause();
+	int getRemainder();
+	void cancelTimer();
 	
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);

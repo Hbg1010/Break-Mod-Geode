@@ -4,12 +4,14 @@
 // resets the timer on call!
 void EditorUITimer::resetTimer(int time) {
     if (m_fields->reset(this, time)) {
+        m_fields->remainingTime = time; // remaining time resets on force reset as a resault
         log::debug("timer was reset!");
     }
 }
 
 // cancels the timer before reseting
 void EditorUITimer::forceReset(int time) {
+    m_fields->remainingTime = time; // remaining time resets on force reset as a resault
     m_fields->timer.bind(this, &EditorUITimer::onEvent);
 	m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
 }
@@ -55,9 +57,13 @@ void EditorUITimer::forceReset(int time) {
         }
     }
 
-    void onUnpause() {
+int EditorUITimer::getRemainder() {
+    return m_fields->remainingTime;
+}
 
-    }
+void EditorUITimer::cancelTimer() {
+    m_fields->timer.getFilter().cancel();
+}
 
 /* hooks
 ========== */
