@@ -60,10 +60,12 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->setID("timer-settings-menu"_spr);
 
     // reset button
-    auto resetSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_updateBtn_001.png");//"GJ_updateBtn_001.png" 
+    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
+    resetSpr->setScale(.75f);
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
+    
 
     // add button
     auto pauseSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");//"GJ_plusBtn_001.png"
@@ -148,7 +150,16 @@ void TimerSettingsLayer::updateButtons() {
     if (btnPointer == nullptr) {
         log::error("Button is nullptr");
     }
+
     auto sprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
+
+    // TODO: ADJUST SIZES SLIGHTLY
+    if (TimerSettingsLayer::paused) {
+        sprite->setScale(.65f);
+    } else {
+        sprite->setScale(1.275f);
+    }
+
     btnPointer->setSprite(sprite);
 
     // checks if the pause and play should be enabled
