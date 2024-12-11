@@ -2,14 +2,19 @@
 
 // changes the bool to true / false
 void TimerPlayLayer::pauseTimer(bool pauseState) {
-	log::debug("paused");
+	// log::debug("paused");
 
 	m_fields->paused = pauseState;
 
 	if (m_fields->paused) {
 		m_fields->difference = m_fields->endtime - std::chrono::system_clock::now();
+		log::debug("{}", m_fields->difference.count());
+		
 	} else {
 		m_fields->endtime = std::chrono::system_clock::now() + m_fields->difference;
+		// auto x = std::chrono::system_clock::to_time_t(m_fields->endtime);
+		// // auto y = ;
+		// log::debug("time is now {}", std::ctime(&x));
 	}
 }
 
@@ -22,16 +27,6 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 			m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
 			m_fields->resetTimer();
-
-
-		// 	if (m_fields->useTimer) {
-		// 		// auto tp1 = std::chrono::system_clock::now();
-		// 		// m_fields->starttime = std::chrono::system_clock::now();
-		// 		// std::time_t time = std::chrono::system_clock::to_time_t(m_fields->endtime);
-		// 		// log::debug("TIme is {}", std::ctime(&time));
-		// }
-		
-	
 
 		return true;
 	}
@@ -47,17 +42,10 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 			m_fields->useTimer = true;
 		}
 
-	
-		log::debug("this ran!");
-
-		// condition. checks if current time > start time + 20min
 		auto difference = m_fields->endtime - std::chrono::system_clock::now();
 		log::debug("{}", difference.count());
-		/*
-		TODO: REVERSE INEQUALITY TO <= WHEN TESTING COMPLETE
-		 */
+
 		if (difference.count() <= 0) {
-			// calls the pause function. On windows, Pause (init) is out of line!
 			PlayLayer::pauseGame(true);
 
 			log::debug("{}", this->getID());
@@ -66,7 +54,5 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 			TimerEvent(true, this).post();
 			m_fields->resetTimer();
 			
-		} else {
-			log::debug("Timer not called! {}", difference.count());
-		}
+		} 
 	}
