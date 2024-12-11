@@ -112,26 +112,24 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
         //reseting here is very easy. 
         auto layer = EditorUITimer::get();
         auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
-		x->forceReset();
+        if (paused) {
+		    x->forceReset();
+        } else {
+            x->m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval");
+        }
     }
 }
 
+// pauses the timer manager on either layer
 void TimerSettingsLayer::pauseTime(CCObject* sender) {
-    log::debug("paused");
     // sets it to the opposite val on click
     TimerSettingsLayer::paused = !TimerSettingsLayer::paused;
+    log::debug("this is {}", paused);
 
     if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
-        auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
-
-        layer->pauseTimer(TimerSettingsLayer::paused);
+        static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->pauseTimer(TimerSettingsLayer::paused);
     } else {
-        auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
-        if (paused) {
-            layer->resetTimer(layer->getRemainder());
-        } else {
-            layer->cancelTimer();
-        }
+        static_cast<EditorUITimer*>(EditorUITimer::get())->pauseTimer(TimerSettingsLayer::paused);
     }
 
     updateButtons();

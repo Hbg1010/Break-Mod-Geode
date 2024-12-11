@@ -23,22 +23,24 @@ void EditorUITimer::forceReset(int time) {
 			if (m_fields->isPlaytesting) {
 			m_fields->pauseAfterPlaytest = true;
 			return;
-		}
+		    }   
 
 		EditorUITimer::onPause(this);
 		TimerEvent(true, this).post();
 
 		} else if (int* progress = ev->getProgress()) {
+            m_fields->remainingTime = *progress;
+            if (m_fields->remainingTime % 60 == 0) log::debug("{}", m_fields->remainingTime);
 
             // if this is paused, this will recieve progress when cancelled
-            if (m_fields->paused) {
-                m_fields->remainingTime = *progress;
+            // if (m_fields->paused) {
 
-            } else {
-			    log::debug("min: {}", *progress);
-            }
+
+            // }
 
 		} else if (ev->isCancelled()) {
+            // m_fields->remainingTime = *ev->getProgress();
+            log::debug("{}", m_fields->remainingTime);
 			return;
 		}
 		// validates if event shouldnt run due to condition
@@ -61,10 +63,17 @@ int EditorUITimer::getRemainder() {
     return m_fields->remainingTime;
 }
 
-void EditorUITimer::cancelTimer() {
-    m_fields->timer.getFilter().cancel();
-}
+void EditorUITimer::pauseTimer(bool isPaused) {
+    m_fields->paused = isPaused;
 
+    if (m_fields->paused) {
+            m_fields->timer.getFilter().cancel();
+
+        } else {
+            log::debug("{}", m_fields->remainingTime);
+            resetTimer(m_fields->remainingTime);
+        }
+}
 /* hooks
 ========== */
 
@@ -79,7 +88,6 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
 
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
         m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 6));
-        
     }
     
     return true;

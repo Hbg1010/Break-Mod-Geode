@@ -24,8 +24,10 @@ class $modify(EditorUITimer, EditorUI) {
 
 		// resets timer when it is finished
 		bool reset(EditorUITimer* sender, int time) {
-			if (this->timer.getFilter().isFinished() || this->timer.getCallback() == nullptr) {
+			if (this->timer.getFilter().isFinished() || this->timer.getFilter().isCancelled()) {
+				log::debug("{}", time);
 				this->timer.bind(sender, &EditorUITimer::onEvent);
+				// log::debug("time {}", time);
 				this->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
 				return true;
 			}
@@ -41,8 +43,8 @@ class $modify(EditorUITimer, EditorUI) {
 	bool checkEndPlaytest();
 	void onUnpause();
 	int getRemainder();
-	void cancelTimer();
-	
+	void pauseTimer(bool isPaused);
+
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);
 	void onPlaytest(CCObject* sender);

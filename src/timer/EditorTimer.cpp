@@ -9,12 +9,10 @@ EditorTimerTask startEditorTimer(int time) {
 		// sleeps every second, as this needs to check if the event has been cancelled to not cause any problems!
         for (int i = 0; i < time; i++) {
              if (hasBeenCancelled()) {
-                progress(time - i); // returns the seconds val before announcing cancel, so it can be stored if timer is paused
                 return EditorTimerTask::Cancel();
-
-            } else if (i % 60 == 0) {
-				progress(i / 60);
             }
+            log::debug("{}", time - i);
+            progress(time - i);
             std::this_thread::sleep_for(std::chrono::seconds(1)); 
         }
 
