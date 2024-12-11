@@ -7,5 +7,4 @@ using namespace geode::prelude;
 
 class $modify(TimerPauseLayer, PauseLayer) {
 	void customSetup();
-	void onTimerSettings(CCObject* sender);
 };
