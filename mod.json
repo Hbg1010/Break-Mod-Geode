@@ -6,7 +6,7 @@
 	},
 	"id": "hbg1010.20_20_20",
 	"name": "20 20 20",
-	"version": "v1.0.0",
+	"version": "v1.1.0-Alpha1",
 	"developer": "Hbg1010",
 	"description": "",
 	"dependencies": [
@@ -53,6 +53,12 @@
 		"name": "Use audio alerts",
 		"default": true,
 		"description": "enables sound effects to notify you when your timer is up!"
+	},
+	"useQuickSettings": {
+		"type": "bool",
+		"name": "Enable Settings Menu",
+		"default": true,
+		"description": "Disables the button to open timer modificaitons and settings from pause menus"
 	},
 	"playLayer": {
 		"type": "bool",

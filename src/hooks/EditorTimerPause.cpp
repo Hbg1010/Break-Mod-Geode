@@ -15,15 +15,13 @@
 bool EditorTimerPause::init(LevelEditorLayer* lvl) {
 
     if (!EditorPauseLayer::init(lvl)) return false;
-
-    // auto spr = CircleButtonSprite::createWithSpriteFrameName("particle_197_001.png");
-    // auto spr = CCSprite::create("TimerSettings.png"_spr);
-    // spr->setScale(.65f);
-    // CCMenuItemSpriteExtra* timersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(EditorTimerPause::onTimerSettings));
+    
+    if (!Mod::get()->getSettingValue<bool>("useQuickSettings")) return true; // early return if the timer button is disabled
 
     CCMenuItemSpriteExtra* timersettingsBtn = TimerSettingsButton::create(this);
 
     auto settingsMenu = this->getChildByID("settings-menu");
+
     settingsMenu->setContentHeight(this->getContentHeight()*2);
     settingsMenu->setPositionY(settingsMenu->getPositionY()+5.f);
         settingsMenu->setLayout(

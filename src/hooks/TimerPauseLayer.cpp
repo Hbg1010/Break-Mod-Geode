@@ -1,16 +1,5 @@
 #include "TimerPauseLayer.hpp"
 
-
-    // void TimerPauseLayer::onTimerSettings(CCObject* sender) {
-    //     log::debug("Settings menu was pressed");
-	// 	auto layer = TimerSettingsLayer::create(this);
-	// 	layer->m_scene = this;
-	// 	layer->show();
-    // }
-
-/* hooks
-========== */
-
 void TimerPauseLayer::customSetup() {
 	PauseLayer::customSetup();
 
@@ -18,6 +7,8 @@ void TimerPauseLayer::customSetup() {
 	// auto spr = CCSprite::create("TimerSettings.png"_spr);
 	// spr->setScale(.65f);
 	// CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerPauseLayer::onTimerSettings));
+
+    if (!Mod::get()->getSettingValue<bool>("useQuickSettings")) return; // early return if the timer button is disabled
 
 	CCMenuItemSpriteExtra* TimersettingsBtn = TimerSettingsButton::create(this);
 
