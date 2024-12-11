@@ -1,5 +1,3 @@
-
-
 #include <Geode/modify/EditorPauseLayer.hpp>
 #include "../timer/Layers/TimerSettingsLayer.hpp"
 #include "../timer/Layers/TimerSettingsButton.hpp"
