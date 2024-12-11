@@ -17,10 +17,13 @@
         }
     ],
 	"resources": {
-		"sprites": [
-			"resources/*.png"
-		]
+		"spritesheets": {
+			"TL_ButtonSheet_001-uhd": [
+				"resources/*.png"
+			]
+		}
 	},
+
 	"settings": {
 		"interval": {
 			"type": "int",
