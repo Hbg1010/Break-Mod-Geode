@@ -4,8 +4,8 @@
 	"gd": {
 		"win": "2.2074"
 	},
-	"id": "hbg1010.20_20_20",
-	"name": "20 20 20",
+	"id": "hbg1010.break_mod",
+	"name": "Break Mod",
 	"version": "v1.1.0-alpha.1",
 	"developer": "Hbg1010",
 	"description": "",
@@ -17,11 +17,10 @@
         }
     ],
 	"resources": {
-		"spritesheets": {
-			"TL_ButtonSheet_001-uhd": [
-				"resources/*.png"
-			]
-		}
+		"sprites": [
+			"resources/*.png"
+		]
+		
 	},
 
 	"settings": {
@@ -75,5 +74,9 @@
 		"default": true,
 		"description": "This setting enables or disables whether or not the timer is used in gameplay"
 	}
-	}
+	},
+	"tags":[
+		"offline",
+		"universal"
+	]
 }
