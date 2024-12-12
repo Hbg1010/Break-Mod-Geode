@@ -1,13 +1,10 @@
-# 202020
+# Break mod
 
-This mod 
+This mod reminds you to take breaks while playing levels or using the editor!
 
 <img src="logo.png" width="150" alt="the mod's logo" />
 
 
-
-## Getting started
-We recommend heading over to [the getting started section on our docs](https://docs.geode-sdk.org/getting-started/) for useful info on what to do next.
 
 ## Build instructions
 For more info, see [our docs](https://docs.geode-sdk.org/getting-started/create-mod#build)
@@ -16,4 +13,4 @@ For more info, see [our docs](https://docs.geode-sdk.org/getting-started/create-
 geode build
 ```
 
-# 20-20-20-Geode
+# break-mod-Geode
