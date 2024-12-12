@@ -4,9 +4,9 @@
 	"gd": {
 		"win": "2.2074"
 	},
-	"id": "hbg1010.20_20_20",
-	"name": "20 20 20",
-	"version": "v1.0.0",
+	"id": "hbg1010.break_mod",
+	"name": "Break Mod",
+	"version": "v1.1.0-alpha.1",
 	"developer": "Hbg1010",
 	"description": "",
 	"dependencies": [
@@ -16,6 +16,13 @@
             "importance": "required"
         }
     ],
+	"resources": {
+		"sprites": [
+			"resources/*.png"
+		]
+		
+	},
+
 	"settings": {
 		"interval": {
 			"type": "int",
@@ -49,6 +56,12 @@
 		"default": true,
 		"description": "enables sound effects to notify you when your timer is up!"
 	},
+	"useQuickSettings": {
+		"type": "bool",
+		"name": "Enable Settings Menu",
+		"default": true,
+		"description": "Disables the button to open timer modificaitons and settings from pause menus"
+	},
 	"playLayer": {
 		"type": "bool",
 		"name": "Play Layer",
@@ -57,9 +70,13 @@
 	},
 	"editorLayer": {
 		"type": "bool",
-		"name": "Editer",
+		"name": "Editor",
 		"default": true,
 		"description": "This setting enables or disables whether or not the timer is used in gameplay"
 	}
-	}
+	},
+	"tags":[
+		"offline",
+		"universal"
+	]
 }
