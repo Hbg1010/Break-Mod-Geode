@@ -61,7 +61,7 @@ TimerLayer* TimerLayer::create(std::string const& waitTime) {
 bool TimerLayer::setup(std::string const& waitTime) {
     CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
     currentCount = std::stoi(waitTime);
-    this->setTitle("20 20 20");
+    this->setTitle("Break Time!");
     m_closeBtn->setScale(0.5f);
     // m_closeBtn->setPosition(screenSize.width*2, screenSize.height * 3 / 4);
 
