@@ -87,7 +87,7 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
     m_fields->timer.bind(this, &EditorUITimer::onEvent);
 
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
-        m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 6));
+        m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 60));
     }
     
     return true;

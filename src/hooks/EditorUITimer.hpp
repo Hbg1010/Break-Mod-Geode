@@ -37,8 +37,8 @@ class $modify(EditorUITimer, EditorUI) {
 	};
 
 	// EditorUITimer
-	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * 6);
-	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * 6);
+	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * 60);
+	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * 60);
 	void onEvent(EditorTimerTask::Event* ev);
 	bool checkEndPlaytest();
 	void onUnpause();
