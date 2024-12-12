@@ -11,7 +11,7 @@ EditorTimerTask startEditorTimer(int time) {
              if (hasBeenCancelled()) {
                 return EditorTimerTask::Cancel();
             }
-            log::debug("{}", time - i);
+            // log::debug("{}", time - i);
             progress(time - i);
             std::this_thread::sleep_for(std::chrono::seconds(1)); 
         }
