@@ -2,6 +2,14 @@
 
 This mod reminds you to take breaks while playing levels or using the editor!
 
+
+
+Todo:
+- audio engine not working
+- add a sound for popup
+- add animation for menu button
+- pause layer super screwed up 
+- add information on settins + descriptions
 <img src="logo.png" width="150" alt="the mod's logo" />
 
 
