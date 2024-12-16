@@ -67,15 +67,15 @@ bool TimerLayer::setup(std::string const& waitTime) {
 
     // this is the extra text
     timerText = CCLabelBMFont::create(fmt::format("{} seconds", waitTime).c_str(), "bigFont.fnt");
-    timerText->setPosition(screenSize / 2);
-    this->addChild(timerText);
+    timerText->setPosition({m_mainLayer->getContentWidth()/2,m_mainLayer->getContentHeight()/2});
+    m_mainLayer->addChild(timerText);
     timerText->setID("Timer-Text"_spr);
 
     // this is the extra text above the countdown 
     auto extraText = CCLabelBMFont::create(fmt::format("Look away from your screen for {} seconds!", waitTime).c_str(), "bigFont.fnt");
-    extraText->setPosition(screenSize.width/2, screenSize.height/4*3);
+    extraText->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight() /4*3);
     extraText->setScale(.4f);
-    this->addChild(extraText);
+    m_mainLayer->addChild(extraText);
     extraText->setID("extraText"_spr);
 
     // starts the count down here
@@ -109,7 +109,10 @@ void TimerLayer::countDown(countTask::Event* event) {
 
         // plays audio when called
         if (Mod::get()->getSettingValue<bool>("audioAlert")) {
-            FMODAudioEngine::sharedEngine()->resumeAllAudio();
+            timerText->setString(fmt::format("Time is up!").c_str());
+            log::debug("sound here! {} volume", GameManager::get()->m_sfxVolume*3.f);
+
+            // FMODAudioEngine::sharedEngine()->resumeAllAudio();
             // im using the 2nd channel (if thats what int p2 is) to allow sounds on PauseLayer 
             FMODAudioEngine::sharedEngine()->playEffect("reward01.ogg", 1, 2, GameManager::get()->m_sfxVolume*3.f); 
         }
