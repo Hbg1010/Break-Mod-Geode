@@ -29,7 +29,7 @@ $execute{
 				log::debug("layer exists");
 				return ListenerResult::Stop;
 			}
-			
+
 			// creates popup before the timer
 			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
 				
@@ -52,8 +52,9 @@ $execute{
 
 		// if in editor, this will set the touch priority above the EditorPauseLayer
 		// very open to knowing a better way to do this! ! ! Unlike the editorUI though, theres no get function :(
+		// also set to -2 so that it has a higher priority than the timer pause, solving conflicts!
 		auto editorPauseLayer = ev->getCurrentLayer()->getParent()->getChildByID("EditorPauseLayer");
-		if (editorPauseLayer != nullptr) x->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 1);
+		if (editorPauseLayer != nullptr) x->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 2);
 
 			return ListenerResult::Stop;
 		}
