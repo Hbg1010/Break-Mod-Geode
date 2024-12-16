@@ -36,7 +36,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     TimerSettingsLayer::m_menuID = menuID;
     CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
-    log::debug("{}", menuID);
+    // log::debug("{}", menuID);
 
     if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
         TimerSettingsLayer::paused = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->m_fields->paused;
@@ -53,7 +53,6 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
 
     CCMenu* menu = CCMenu::create();
-    log::debug("{}", resetButton->getScaledContentWidth());
     menu->setPosition({(m_mainLayer->getPositionX() + resetButton->getContentWidth() * 1.25f)/2.f, m_mainLayer->getPositionY()/2.f});
     menu->setContentWidth(300);
     menu->setLayout(
@@ -110,7 +109,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
 // this callback occurs when the button is clicked
 void TimerSettingsLayer::resetTimer(CCObject* sender) {
-    log::debug("{}", TimerSettingsLayer::m_menuID->getID());
+    // log::debug("{}", TimerSettingsLayer::m_menuID->getID());
     if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
         auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
         layer->m_fields->resetTimer();
@@ -195,7 +194,6 @@ void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
 
 // dtor to drop this global listener.
 TimerSettingsLayer::~TimerSettingsLayer() {
-    log::debug("destructed");
     m_listener->disable();
     CC_SAFE_DELETE(m_listener);
 }
