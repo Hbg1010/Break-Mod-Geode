@@ -46,14 +46,8 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     this->setTitle("Timer Settings!");
 
-
-        // reset button
-    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
-    resetSpr->setScale(.75f);
-    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
-
     CCMenu* menu = CCMenu::create();
-    menu->setPosition({(m_mainLayer->getPositionX() + resetButton->getContentWidth() * 1.25f)/2.f, m_mainLayer->getPositionY()/2.f});
+    menu->setPosition({m_mainLayer->getContentWidth()/2, m_mainLayer->getPositionY()/2.f});
     menu->setContentWidth(300);
     menu->setLayout(
         RowLayout::create()
@@ -63,10 +57,12 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     TimerSettingsLayer::menuPointer = menu; // stores pointer
 
     m_mainLayer->addChild(menu);
-    // this->addChildAtPosition(menu,Anchor::Center);
     menu->setID("timer-settings-menu"_spr);
 
-
+    // reset button
+    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
+    resetSpr->setScale(.75f);
+    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
     
@@ -83,11 +79,13 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->addChild(settingsButton);
     settingsButton->setID("settings-button"_spr);
 
+    // creates the menu where the info button is placed
     auto extraMenu = CCMenu::create();
     extraMenu->setPosition({m_mainLayer->getContentWidth(), m_mainLayer->getContentHeight()});
     m_mainLayer->addChild(extraMenu);
-    extraMenu->setID("info-menu");
+    extraMenu->setID("info-menu"_spr);
 
+    // creates the info button
     auto infoSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
     CCMenuItemSpriteExtra* infoButton = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(TimerSettingsLayer::createInfoPopup));
     extraMenu->addChild(infoButton);
@@ -190,6 +188,7 @@ void TimerSettingsLayer::createInfoPopup(CCObject* sender) {
     "<cy>Reset Button:</c> Resets the timer\n<cy>Pause Button:</c> Pauses the timer\n<cy>Settings Button:</c> Opens mod settings", "Ok");
     x->setTouchPriority(this->getTouchPriority()-1);
     x->show();
+    x->setID("timer-info-popup"_spr);
 }
 
 // dtor to drop this global listener.
