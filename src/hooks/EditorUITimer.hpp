@@ -26,9 +26,10 @@ class $modify(EditorUITimer, EditorUI) {
 		bool reset(EditorUITimer* sender, int time) {
 			if (this->timer.getFilter().isFinished() || this->timer.getFilter().isCancelled()) {
 				log::debug("{}", time);
-				this->timer.bind(sender, &EditorUITimer::onEvent);
-				// log::debug("time {}", time);
+				this->timer.disable();
 				this->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
+				this->timer.enable();
+				// log::debug("time {}", time);
 				return true;
 			}
 			
