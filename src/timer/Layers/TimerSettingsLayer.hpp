@@ -29,5 +29,6 @@ protected:
     void changeSettings(CCObject* sender);
     void pauseTime(CCObject* sender);
     void updateButtons();
+    void createInfoPopup(CCObject* sender);
     ~TimerSettingsLayer();
 };

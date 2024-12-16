@@ -83,10 +83,19 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->addChild(settingsButton);
     settingsButton->setID("settings-button"_spr);
 
+    auto extraMenu = CCMenu::create();
+    extraMenu->setPosition({m_mainLayer->getContentWidth(), m_mainLayer->getContentHeight()});
+    m_mainLayer->addChild(extraMenu);
+    extraMenu->setID("info-menu");
+
+    auto infoSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_infoIcon_001.png");
+    CCMenuItemSpriteExtra* infoButton = CCMenuItemSpriteExtra::create(infoSpr, this, menu_selector(TimerSettingsLayer::createInfoPopup));
+    extraMenu->addChild(infoButton);
+    infoButton->setID("info-btn"_spr);
+
     // updates the layout 
     menu->updateLayout();
-
-    updateButtons();
+    updateButtons(); // runs the update fn
 
     return true;
 }
@@ -123,7 +132,6 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
     }
 
     updateButtons();
-
 }
 
 // opens geode settings page
@@ -174,6 +182,14 @@ void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
             spr->setColor(enable ? color : greyScale);
             spr->setOpacity(enable ? 255 : 200);
     }
+}
+
+// shows info when the info button is pressed
+void TimerSettingsLayer::createInfoPopup(CCObject* sender) {
+    auto x = FLAlertLayer::create("Info", 
+    "<cy>Reset Button:</c> Resets the timer\n<cy>Pause Button:</c> Pauses the timer\n<cy>Settings Button:</c> Opens mod settings", "Ok");
+    x->setTouchPriority(this->getTouchPriority()-1);
+    x->show();
 }
 
 // dtor to drop this global listener.
