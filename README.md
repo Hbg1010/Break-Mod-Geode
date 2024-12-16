@@ -1,4 +1,4 @@
-# Break mod
+# Break mod by Hbg1010
 
 This mod reminds you to take breaks while playing levels or using the editor!
 
@@ -12,4 +12,5 @@ Code problems: Cvolton
 - add a sound for popup
 - add information on settins + descriptions
 <img src="logo.png" width="150" alt="the mod's logo" />
-# break-mod-Geode
+
+Thank you :)
