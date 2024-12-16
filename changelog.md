@@ -1,8 +1,10 @@
+# 1.1.0-alpha.5
+- Fixed Typos and added more details to text. 
+
 # 1.1.0-alpha.4
 - Fixed timer popup not being animated
 - Added more descriptions to settings and details to popups
 - Added an info button into the timer settings layer
-- 
 
 # 1.1.0-alpha.3
 - Fixed timer settings popup not being animated
