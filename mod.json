@@ -26,10 +26,11 @@
 	"settings": {
 		"interval": {
 			"type": "int",
-			"name": "interval",
-			"min": 0,
+			"name": "Interval",
+			"min": 1,
 			"max": 100,
-			"default": 20,
+			"default": 120,
+			"description": "This measures the amount of minutes between popups! Time does not save between sessions, so it is recommended you use 10 - 20 minutes!",
 			"controls": {
 				"arrows": true,
 				"arrow-step": 1,
@@ -40,9 +41,10 @@
 	"breakTime": {
 		"type": "int",
 		"name": "Break Time",
-		"min": 0,
-		"max": 100,
+		"min": 1,
+		"max": 300,
 		"default": 20,
+		"description": "This measures the amount of seconds your counter will start counting down from when you take a break!",
 		"controls": {
 			"arrows": true,
 			"arrow-step": 1,
@@ -54,25 +56,25 @@
 		"type": "bool",
 		"name": "Use audio alerts",
 		"default": true,
-		"description": "enables sound effects to notify you when your timer is up!"
+		"description": "Enables sound effects to notify you when your timer is up!"
 	},
 	"useQuickSettings": {
 		"type": "bool",
 		"name": "Enable Settings Menu",
 		"default": true,
-		"description": "Disables the button to open timer modificaitons and settings from pause menus"
+		"description": "Disables the button to open timer modificaitons and settings from pause menus."
 	},
 	"playLayer": {
 		"type": "bool",
 		"name": "Play Layer",
 		"default": true,
-		"description": "This setting enables or disables whether or not the timer is used in gameplay"
+		"description": "This setting enables or disables whether or not the timer is used while playing levels!"
 	},
 	"editorLayer": {
 		"type": "bool",
 		"name": "Editor",
 		"default": true,
-		"description": "This setting enables or disables whether or not the timer is used in gameplay"
+		"description": "This setting enables or disables whether or not the timer is active on the editor!"
 	}
 	},
 	"tags":[
