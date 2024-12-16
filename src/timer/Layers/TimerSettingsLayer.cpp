@@ -46,9 +46,16 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     this->setTitle("Timer Settings!");
 
-    CCMenu* menu = CCMenu::create();
 
-    menu->setContentWidth(300.f);
+        // reset button
+    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
+    resetSpr->setScale(.75f);
+    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
+
+    CCMenu* menu = CCMenu::create();
+    log::debug("{}", resetButton->getScaledContentWidth());
+    menu->setPosition({(m_mainLayer->getPositionX() + resetButton->getContentWidth() * 1.25f)/2.f, m_mainLayer->getPositionY()/2.f});
+    menu->setContentWidth(300);
     menu->setLayout(
         RowLayout::create()
         ->setAxisAlignment(AxisAlignment::Even)
@@ -56,13 +63,11 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     TimerSettingsLayer::menuPointer = menu; // stores pointer
 
-    this->addChild(menu);
+    m_mainLayer->addChild(menu);
+    // this->addChildAtPosition(menu,Anchor::Center);
     menu->setID("timer-settings-menu"_spr);
 
-    // reset button
-    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
-    resetSpr->setScale(.75f);
-    CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
+
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
     
@@ -184,7 +189,7 @@ void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
             spr->setCascadeColorEnabled(true);
             spr->setCascadeOpacityEnabled(true);
             spr->setColor(enable ? color : greyScale);
-            spr->setOpacity(200);
+            spr->setOpacity(enable ? 255 : 200);
     }
 }
 
