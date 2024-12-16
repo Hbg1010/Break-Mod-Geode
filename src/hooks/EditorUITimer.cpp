@@ -11,6 +11,7 @@ void EditorUITimer::resetTimer(int time) {
 
 // cancels the timer before reseting
 void EditorUITimer::forceReset(int time) {
+    m_fields->timer.getFilter().cancel();
     m_fields->remainingTime = time; // remaining time resets on force reset as a resault
     m_fields->timer.bind(this, &EditorUITimer::onEvent);
 	m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
