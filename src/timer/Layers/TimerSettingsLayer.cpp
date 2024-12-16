@@ -88,22 +88,6 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     updateButtons();
 
-    // m_listener.setFilter(SettingChangedFilterV3(Mod::get(), "playLayer"));
-    // m_listener.bind([&](SettingChangedEventV3* ev) {
-    //     log::debug("IM GONNA KMS");
-    // });
-
-    // m_listener = EventListener<SettingChangedFilterV3>(this, &onSettingsChanged, SettingChangedFilterV3(Mod::get(), "playLayer"));
-    // TimerSettingsLayer::m_listener.setFilter(SettingChangedFilterV3(Mod::get(), "playLayer"));
-    // TimerSettingsLayer::m_listener.bind(&[](SettingChangedEventV3* ev) {
-
-    // });
-
-    // m_listener.bind(this, &TimerSettingsLayer::onSettingsChanged);
-    //  = {
-    //     this, updateButtons(), SettingChangedFilterV3(Mod::get(), "playLayer")
-    // };
-
     return true;
 }
 
