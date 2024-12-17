@@ -8,5 +8,4 @@ using namespace geode::prelude;
 class $modify(EditorTimerPause, EditorPauseLayer) {
 	bool init(LevelEditorLayer* lvl);
 	void onResume(CCObject* sender);
-	// void onTimerSettings(CCObject* sender);
 };

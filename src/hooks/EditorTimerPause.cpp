@@ -1,14 +1,5 @@
 #include "EditorTimerPause.hpp"
 
-
-// void EditorTimerPause::onTimerSettings(CCObject* sender) {
-//     log::debug("Settings menu was pressed");
-//     auto layer = TimerSettingsLayer::create(this);
-//     layer->m_scene = this;
-//     layer->setTouchPriority(this->getTouchPriority() -1);
-//     layer->show();
-// }
-
 /* hooks
 ========== */
 

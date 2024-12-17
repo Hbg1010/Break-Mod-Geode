@@ -110,9 +110,8 @@ void TimerLayer::countDown(countTask::Event* event) {
         // plays audio when called
         if (Mod::get()->getSettingValue<bool>("audioAlert")) {
             timerText->setString(fmt::format("Time is up!").c_str());
-            log::debug("sound here! {} volume", GameManager::get()->m_sfxVolume*3.f);
+            log::debug("sound here! {} volume", GameManager::get()->m_sfxVolume);
 
-            // FMODAudioEngine::sharedEngine()->resumeAllAudio();
             // im using the 2nd channel (if thats what int p2 is) to allow sounds on PauseLayer 
             FMODAudioEngine::sharedEngine()->playEffect("reward01.ogg", 1, 2, GameManager::get()->m_sfxVolume*3.f); 
         }

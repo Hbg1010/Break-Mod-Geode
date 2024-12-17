@@ -1,6 +1,5 @@
 #include "EditorUITimer.hpp"
 
-
 // resets the timer on call!
 void EditorUITimer::resetTimer(int time) {
     if (m_fields->reset(this, time)) {
@@ -32,12 +31,6 @@ void EditorUITimer::forceReset(int time) {
 		} else if (int* progress = ev->getProgress()) {
             m_fields->remainingTime = *progress;
             if (m_fields->remainingTime % 60 == 0) log::debug("{}", m_fields->remainingTime);
-
-            // if this is paused, this will recieve progress when cancelled
-            // if (m_fields->paused) {
-
-
-            // }
 
 		} else if (ev->isCancelled()) {
             // m_fields->remainingTime = *ev->getProgress();
