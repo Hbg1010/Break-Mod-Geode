@@ -2,7 +2,8 @@
 	"geode": "4.0.1",
 
 	"gd": {
-		"win": "2.2074"
+		"win": "2.2074",
+		"android": "2.2074"
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
@@ -28,8 +29,8 @@
 			"type": "int",
 			"name": "Interval",
 			"min": 1,
-			"max": 100,
-			"default": 120,
+			"max": 120,
+			"default": 20,
 			"description": "This measures the amount of minutes between popups! **Time does not save between sessions**, so it is recommended you use 10 - 20 minutes!",
 			"controls": {
 				"arrows": true,
