@@ -113,7 +113,7 @@ void TimerLayer::countDown(countTask::Event* event) {
             log::debug("sound here! {} volume", GameManager::get()->m_sfxVolume);
 
             // im using the 2nd channel (if thats what int p2 is) to allow sounds on PauseLayer 
-            FMODAudioEngine::sharedEngine()->playEffect("reward01.ogg", 1, 2, GameManager::get()->m_sfxVolume*3.f); 
+            FMODAudioEngine::sharedEngine()->playEffect("reward01.ogg", 1, 1, GameManager::get()->m_sfxVolume); 
         }
 
     // displays time remaining from the task

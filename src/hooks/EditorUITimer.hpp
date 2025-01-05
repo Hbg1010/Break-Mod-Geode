@@ -14,7 +14,7 @@ using namespace geode::prelude;
 class $modify(EditorUITimer, EditorUI) {
 	struct Fields {
 		bool isPlaytesting;
-		bool pauseAfterPlaytest;
+		bool pauseAfterPlaytest; // tells the game to pause once play testing is completed
 		bool paused;
 		int remainingTime; // this is for keeping the time left after pause
 

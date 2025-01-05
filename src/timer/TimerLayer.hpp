@@ -13,5 +13,4 @@ protected:
     bool setup(std::string const& waitTime);
     void onClick(CCObject* sender);
     virtual void onClose(cocos2d::CCObject*);
-
 };
