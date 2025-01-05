@@ -23,4 +23,5 @@ class $modify(TimerPlayLayer, PlayLayer) {
 	bool init(GJGameLevel* p0, bool p1, bool p2);
 	void resetLevel();
 	void pauseTimer(bool pauseState);
+	void resetTimer();
 };

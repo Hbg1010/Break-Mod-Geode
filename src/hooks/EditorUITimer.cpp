@@ -10,10 +10,14 @@ void EditorUITimer::resetTimer(int time) {
 
 // cancels the timer before reseting
 void EditorUITimer::forceReset(int time) {
-    m_fields->timer.getFilter().cancel();
     m_fields->remainingTime = time; // remaining time resets on force reset as a resault
-    m_fields->timer.bind(this, &EditorUITimer::onEvent);
-	m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
+    log::debug("{}", m_fields->remainingTime);
+
+    if (!m_fields->paused) {
+        m_fields->timer.getFilter().cancel();
+        m_fields->timer.bind(this, &EditorUITimer::onEvent);
+        m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
+    }
 }
 
 // this event happens when binded with the event listener. it will throw a new event when the timer task attatched is called.
@@ -30,7 +34,7 @@ void EditorUITimer::forceReset(int time) {
 
 		} else if (int* progress = ev->getProgress()) {
             m_fields->remainingTime = *progress;
-            if (m_fields->remainingTime % 60 == 0) log::debug("{}", m_fields->remainingTime);
+            // if (m_fields->remainingTime % 60 == 0) log::debug("{}", m_fields->remainingTime);
 
 		} else if (ev->isCancelled()) {
             // m_fields->remainingTime = *ev->getProgress();

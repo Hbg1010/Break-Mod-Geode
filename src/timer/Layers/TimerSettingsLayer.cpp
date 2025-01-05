@@ -103,17 +103,12 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
     // log::debug("{}", TimerSettingsLayer::m_menuID->getID());
     if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
         auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
-        layer->m_fields->resetTimer();
+        layer->resetTimer();
 
     } else {
         //reseting here is very easy. 
-        auto layer = EditorUITimer::get();
-        auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
-        if (paused) {
-		    x->forceReset();
-        } else {
-            x->m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval");
-        }
+        auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
+		layer->forceReset();
     }
 }
 

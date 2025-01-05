@@ -18,6 +18,10 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 	}
 }
 
+void TimerPlayLayer::resetTimer() {
+	m_fields->resetTimer();
+}
+
 /* hooks
 ========== */
 
