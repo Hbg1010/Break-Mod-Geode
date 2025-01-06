@@ -30,7 +30,7 @@ void TimerPlayLayer::resetTimer() {
 			m_fields->paused = false;
 			m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
-			m_fields->resetTimer();
+			resetTimer();
 
 		return true;
 	}
@@ -47,8 +47,8 @@ void TimerPlayLayer::resetTimer() {
 		}
 
 		auto difference = m_fields->endtime - std::chrono::system_clock::now();
-		log::debug("{}", difference.count());
-
+		// log::debug("{}", difference.count());
+		
 		if (difference.count() <= 0) {
 			PlayLayer::pauseGame(true);
 
