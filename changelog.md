@@ -1,3 +1,13 @@
+# 1.1.0
+- Added timer modifications layer to each pause menu
+    - Reset Timer 
+    - Pause Timer
+    - Change Settings
+- Sound Effects
+- Bug fixes
+- Added more text descriptors and details and proofread existing text
+- Optimized
+
 # 1.1.0-alpha.5
 - Fixed Typos and added more details to text. 
 
@@ -20,11 +30,3 @@
 
 # 1.0.0
 - Implemented Timer
-
-<!-- # 1.1.0
-- Added timer modifications layer
-    - Reset Timer
-    - Pause Timer
-    - Change Settings
-- Fixed bugs
-- Optimized -->
