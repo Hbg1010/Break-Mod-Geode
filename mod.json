@@ -1,5 +1,5 @@
 {
-	"geode": "4.0.1",
+	"geode": "4.1.2",
 
 	"gd": {
 		"win": "2.2074",
@@ -7,7 +7,7 @@
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.1.0-alpha.5",
+	"version": "v1.1.0",
 	"developer": "Hbg1010",
 	"description": "This mod reminds players to take breaks",
 	"dependencies": [
@@ -61,7 +61,7 @@
 	},
 	"useQuickSettings": {
 		"type": "bool",
-		"name": "Enable Settings Menu",
+		"name": "Enable Quick settings Menu",
 		"default": true,
 		"description": "Disables the button to open timer modificaitons and settings from pause menus."
 	},
@@ -75,7 +75,7 @@
 		"type": "bool",
 		"name": "Editor",
 		"default": true,
-		"description": "This setting enables or disables whether or not the timer is active on the editor!"
+		"description": "This setting enables or disables whether or not the timer is active in the editor!"
 	}
 	},
 	"tags":[
