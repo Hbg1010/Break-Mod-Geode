@@ -38,9 +38,12 @@ void TimerPlayLayer::resetTimer() {
     void TimerPlayLayer::resetLevel() {
 		PlayLayer::resetLevel();
 
+
+		//TODO DELTE THIS EW
 		if (!Mod::get()->getSettingValue<bool>("playLayer") || m_fields->paused) {
 			m_fields->useTimer = false;
 			return;
+
 		} else if (!m_fields->useTimer) {
 			m_fields->resetTimer();
 			m_fields->useTimer = true;
