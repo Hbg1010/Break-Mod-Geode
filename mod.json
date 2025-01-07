@@ -2,11 +2,12 @@
 	"geode": "4.1.2",
 
 	"gd": {
-		"win": "2.2074"
+		"win": "2.2074",
+		"android": "2.2074"
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.1.0",
+	"version": "v1.1.1",
 	"developer": "Hbg1010",
 	"description": "This mod reminds players to take breaks",
 	"repository": "https://github.com/Hbg1010/Break-Mod-Geode",
