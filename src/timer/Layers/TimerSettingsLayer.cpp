@@ -60,8 +60,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->setID("timer-settings-menu"_spr);
 
     // reset button
-    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
-    resetSpr->setScale(.75f);
+    auto resetSpr = CircleButtonSprite::createWithSprite("gold_reset.png"_spr, 1.5f);
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);

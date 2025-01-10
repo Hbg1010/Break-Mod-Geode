@@ -5,7 +5,7 @@ static CCNode* PARENT;
 CCMenuItemSpriteExtra* TimerSettingsButton::create(CCNode* target) {
 
     PARENT = target;
-    auto spr = CCSprite::create("TimerSettings.png"_spr);
+    auto spr = CircleButtonSprite::createWithSprite("TimerSettings_nobtn.png"_spr, 1.5f);
 	spr->setScale(.65f);
 	CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, target, menu_selector(TimerSettingsButton::onTimerSettings));
 
