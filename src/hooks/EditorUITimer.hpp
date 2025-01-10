@@ -45,6 +45,7 @@ class $modify(EditorUITimer, EditorUI) {
 	void onUnpause();
 	int getRemainder();
 	void pauseTimer(bool isPaused);
+	bool isPaused();
 
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);

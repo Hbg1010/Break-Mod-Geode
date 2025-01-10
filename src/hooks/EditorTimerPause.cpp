@@ -33,10 +33,10 @@ bool EditorTimerPause::init(LevelEditorLayer* lvl) {
 
 void EditorTimerPause::onResume(CCObject* sender) {
     EditorPauseLayer::onResume(sender);
-    auto x = static_cast<EditorUITimer*>(EditorUITimer::get());
+    auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
 
-    if (Mod::get()->getSettingValue<bool>("editorLayer") && !x->m_fields->paused) {
-        x->resetTimer();
+    if (Mod::get()->getSettingValue<bool>("editorLayer") && !layer->isPaused()) {
+        layer->resetTimer();
     }
     
 

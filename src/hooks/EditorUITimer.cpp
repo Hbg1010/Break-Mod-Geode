@@ -64,28 +64,34 @@ int EditorUITimer::getRemainder() {
 void EditorUITimer::pauseTimer(bool isPaused) {
     m_fields->paused = isPaused;
 
-    if (m_fields->paused) {
+    if (isPaused) {
             m_fields->timer.getFilter().cancel();
 
-        } else {
-            log::debug("{}", m_fields->remainingTime);
-            resetTimer(m_fields->remainingTime);
+        // } else {
+        //     log::debug("{}", m_fields->remainingTime);
+        //     resetTimer(m_fields->remainingTime);
         }
 }
+
+bool EditorUITimer::isPaused() {
+    return m_fields->paused;
+}
+
 /* hooks
 ========== */
 
 bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
     if (!EditorUI::init(editorLayer)) return false;
 
-    m_fields->pauseAfterPlaytest = false;
-    m_fields->isPlaytesting = false;
-    m_fields->paused = false;
+    auto fields = m_fields.self();
+    fields->pauseAfterPlaytest = false;
+    fields->isPlaytesting = false;
+    fields->paused = false;
 
-    m_fields->timer.bind(this, &EditorUITimer::onEvent);
+    fields->timer.bind(this, &EditorUITimer::onEvent);
 
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
-        m_fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 60));
+        fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 60));
     }
     
     return true;
@@ -95,14 +101,11 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
 void EditorUITimer::onPlaytest(CCObject* sender) {
     EditorUI::onPlaytest(sender);
     m_fields->isPlaytesting = true;
-
-    // m_fields->pauseAfterPlaytest = true; // temp
 }
 
 // unsets and checks pause layers
 void EditorUITimer::playtestStopped() {
     EditorUI::playtestStopped();
-
     m_fields->isPlaytesting = false;
 }
 
