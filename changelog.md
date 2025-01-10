@@ -1,3 +1,12 @@
+# 1.1.2
+- Made assets work better with texture packs
+- Improved code, removed some useless stuff
+
+# 1.1.1
+- Android support! Yay
+- added repo to mod.json. oops
+- improved code
+
 # 1.1.0
 - Added timer modifications layer to each pause menu
     - Reset Timer 
