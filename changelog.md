@@ -1,6 +1,7 @@
 # 1.1.2
 - Made assets work better with texture packs
 - Improved code, removed some useless stuff
+- Updated Mod.json with new 4.2.0 changes, new tag, new description, and fixed github link
 
 # 1.1.1
 - Android support! Yay
