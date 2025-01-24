@@ -16,8 +16,7 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
         return temp;
 
     } else {
-        // CC_SAFE_DELETE(temp);
-
+        CC_SAFE_DELETE(temp);
         return nullptr;
     }
 }
