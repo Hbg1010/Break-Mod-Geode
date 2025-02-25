@@ -1,3 +1,8 @@
+# 1.1.3
+- Mac Support 
+- Updated readmes
+- optimized and improved code.
+
 # 1.1.2
 - Made assets work better with texture packs
 - Improved code, removed some useless stuff

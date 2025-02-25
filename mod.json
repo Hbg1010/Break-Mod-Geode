@@ -3,11 +3,12 @@
 
 	"gd": {
 		"win": "2.2074",
-		"android": "2.2074"
+		"android": "2.2074",
+		"mac": "2.2074"
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.1.2",
+	"version": "v1.1.3",
 	"developer": "Hbg1010",
 	"description": "Break reminders without interuptions",
 	"links": {
