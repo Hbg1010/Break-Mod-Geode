@@ -1,5 +1,7 @@
 # 1.1.4
 - Improved code again. 
+    - Added some dev stuff
+    - optimized the code
 
 # 1.1.3
 - Mac Support 
