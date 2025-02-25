@@ -1,4 +1,5 @@
 # Break mod by Hbg1010
+[Mod Page](https://geode-sdk.org/mods/hbg1010.break_mod)
 
 This mod reminds you to take breaks while playing levels or using the editor!
 
