@@ -1,7 +1,10 @@
+#pragma once
+
 #include <Geode/modify/PlayLayer.hpp>
 #include "../timer/TimerEvent.hpp"
 #include <chrono>
 #include <ctime>
+#include "../utils/devMode.hpp"
 
 using namespace geode::prelude;
 
@@ -16,7 +19,12 @@ class $modify(TimerPlayLayer, PlayLayer) {
 		
 		// resets the timer on call;
 		void resetTimer() {
-			endtime = std::chrono::system_clock::now() + std::chrono::minutes{Mod::get()->getSettingValue<int64_t>("interval")}; // TODO: Replace with setting
+			#ifndef SHORTEN_TIMER_TIME
+				endtime = std::chrono::system_clock::now() + std::chrono::minutes{Mod::get()->getSettingValue<int64_t>("interval")};
+			#else
+				endtime = std::chrono::system_clock::now() + std::chrono::seconds{Mod::get()->getSettingValue<int64_t>("interval")};
+			#endif
+			
 		}
 	};
 

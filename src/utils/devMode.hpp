@@ -1,18 +1,21 @@
 #pragma once
 
-static class devMode
-{
-private:
-    bool isEnabled;
-public:
-    devMode(bool enabled);
-    ~devMode();
-};
+// #define useDev
+// #define SHORTEN_TIMER_TIME 
 
-devMode::devMode(bool enabled) {
-    isEnabled = enabled;
-}
+// static class devMode
+// {
+// private:
+//     bool isEnabled;
+// public:
+//     devMode(bool enabled);
+//     ~devMode();
+// };
 
-devMode::~devMode()
-{
-}
+// devMode::devMode(bool enabled) {
+//     isEnabled = enabled;
+// }
+
+// devMode::~devMode()
+// {
+// }
