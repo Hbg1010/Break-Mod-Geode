@@ -1,3 +1,6 @@
+# 1.1.4
+- Improved code again. 
+
 # 1.1.3
 - Mac Support 
 - Updated readmes
