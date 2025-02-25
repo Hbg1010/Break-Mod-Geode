@@ -3,7 +3,6 @@
 static CCNode* PARENT;
 
 CCMenuItemSpriteExtra* TimerSettingsButton::create(CCNode* target) {
-
     PARENT = target;
     auto spr = CircleButtonSprite::createWithSprite("TimerSettings_nobtn.png"_spr, 1.5f);
 	spr->setScale(.65f);
@@ -19,7 +18,7 @@ void TimerSettingsButton::onTimerSettings(CCObject* sender) {
     layer->m_scene = PARENT;
 
     if (PARENT->getID() == "EditorPauseLayer") {
-        log::debug("a");
+        // log::debug("a");
         layer->setTouchPriority(static_cast<CCLayer*>(PARENT)->getTouchPriority() - 1);
     }
 

@@ -12,9 +12,6 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 		
 	} else {
 		m_fields->endtime = std::chrono::system_clock::now() + m_fields->difference;
-		// auto x = std::chrono::system_clock::to_time_t(m_fields->endtime);
-		// // auto y = ;
-		// log::debug("time is now {}", std::ctime(&x));
 	}
 }
 
@@ -38,8 +35,6 @@ void TimerPlayLayer::resetTimer() {
     void TimerPlayLayer::resetLevel() {
 		PlayLayer::resetLevel();
 
-
-		//TODO DELTE THIS EW
 		if (!Mod::get()->getSettingValue<bool>("playLayer") || m_fields->paused) {
 			m_fields->useTimer = false;
 			return;
@@ -54,8 +49,6 @@ void TimerPlayLayer::resetTimer() {
 		
 		if (difference.count() <= 0) {
 			PlayLayer::pauseGame(true);
-
-			log::debug("{}", this->getID());
 
 			// this posts the details of current events
 			TimerEvent(true, this).post();

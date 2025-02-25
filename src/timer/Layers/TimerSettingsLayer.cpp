@@ -1,11 +1,5 @@
 #include "TimerSettingsLayer.hpp"
-#include <memory>
-
-// EventListener<SettingChangedFilterV3> m_listener = {this, upd};
-
-// geode::EventListener<Popup::CloseEventFilter> m_listener = {
-//     this, &TimerSettingsLayer::updateButtons(), CloseEventFilter(this, )
-// }
+// #include <memory>
 
 TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     auto temp = new TimerSettingsLayer();

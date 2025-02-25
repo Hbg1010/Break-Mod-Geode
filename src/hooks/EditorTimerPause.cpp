@@ -1,5 +1,14 @@
 #include "EditorTimerPause.hpp"
 
+void EditorTimerPause::onResume(CCObject* sender) {
+    EditorPauseLayer::onResume(sender);
+    auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
+
+    if (Mod::get()->getSettingValue<bool>("editorLayer") && !layer->isPaused()) {
+        layer->resetTimer();
+    }
+}
+
 /* hooks
 ========== */
 
@@ -19,7 +28,6 @@ bool EditorTimerPause::init(LevelEditorLayer* lvl) {
         ColumnLayout::create()
             ->setGap(5.f)
             ->setGrowCrossAxis(true)
-            // ->setAxisReverse(true)
             ->setAxisAlignment(AxisAlignment::Center)
             ,true); 
 
@@ -29,15 +37,4 @@ bool EditorTimerPause::init(LevelEditorLayer* lvl) {
 
     settingsMenu->updateLayout();
     return true;
-}
-
-void EditorTimerPause::onResume(CCObject* sender) {
-    EditorPauseLayer::onResume(sender);
-    auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
-
-    if (Mod::get()->getSettingValue<bool>("editorLayer") && !layer->isPaused()) {
-        layer->resetTimer();
-    }
-    
-
 }
