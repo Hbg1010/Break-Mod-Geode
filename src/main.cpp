@@ -24,7 +24,7 @@ $execute{
 				parent = parent->getParent();
 			}
 
-			// should stop c
+			// should stop copies being created
 			if (parent->getChildByID("TimerAlert"_spr) != nullptr && parent->getChildByID("Timer-pop-up"_spr) != nullptr) {
 				log::debug("layer exists");
 				return ListenerResult::Stop;
