@@ -20,6 +20,11 @@ public:
 protected:
 
     CCNode* m_menuID; // ptr to buttons attatched to this layer
+    enum LayerEnum {
+        OTHER, PLAYLAYER, EDITOR
+    };
+
+    LayerEnum layerType;
     EventListener<SettingChangedFilter>* m_listener;
     bool paused;
     CCMenu* menuPointer;
