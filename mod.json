@@ -13,6 +13,10 @@
 	"links": {
 		"source": "https://github.com/Hbg1010/Break-Mod-Geode"
 	},
+	"issues": {
+		"url": "https://github.com/Hbg1010/Break-Mod-Geode/issues",
+		"info": "If you find any bugs, or have any feature requests, please post them on the github!"
+	},
 	"dependencies": {
   "geode.node-ids": ">=v1.17.0"
  },
