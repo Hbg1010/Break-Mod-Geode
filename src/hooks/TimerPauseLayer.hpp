@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../timer/Layers/TimerSettingsLayer.hpp"
 #include "../timer/Layers/TimerSettingsButton.hpp"
 #include "../timer/Layers/TimerSettingsButton.hpp"
