@@ -18,12 +18,12 @@ If you find any issues with this mod, I highly recommend creating an issue on th
 
 ## Credits
 
-### Mod and Resources by Hbg1010 
+### Mod and Resources by [Hbg](user:9115450)
 
 ### Playtesters: 
 
-Gdultim8, Kraken, PenPenLiddy
+[Gdultim8](user:7454910), [Kraken](user:12042561), [PenPenLiddy](user:7398078)
 
 ### Special Thanks:
 
-Cvolton for helping me solve a problem that I couldn't solve for the life of me lmao
+[Cvolton](user:761691) for helping me solve a problem that I couldn't solve for the life of me lmao

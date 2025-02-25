@@ -6,6 +6,8 @@ This mod reminds you to take breaks while playing levels or using the editor!
 Created as a way to learn more C++, GUI, and just for fun :)
 ## Credits: 
 
+Mod and assets by Hbg
+
 Playtesters: Gdultim8, Kraken, PenPenLiddy
 
 Special thanks to Cvolton for solving a question that i could not solve for the life of me lmao
