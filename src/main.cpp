@@ -17,7 +17,7 @@ $execute{
 	new EventListener<EventFilter<TimerEvent>>(+[](TimerEvent* ev) {
 		if (ev->isActive()) {
 
-			std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
+			// std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
 			CCNode* parent = ev->getCurrentLayer(); 
 
 			while(parent->getParent() != nullptr) {
@@ -31,9 +31,12 @@ $execute{
 			}
 
 			// creates popup before the timer
-			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
-				
-					// yeah I hate that not, but the constructor doesnt allow me to flip the things otherwise!
+			auto x = geode::createQuickPopup("Timer",
+				 fmt::format("Time to take a {} second break!", 
+					Mod::get()->getSettingValue<int64_t>("breakTime")), 
+					"Start", "Skip", 
+					[ev](auto, bool btn2) {
+					// yeah I hate that !btn2, but the constructor doesnt allow me to flip the things otherwise!
 					if (!btn2) {
 						// adds a new node to the layer parent
 						CCNode* x = CCNode::create(); 
