@@ -55,7 +55,6 @@ $execute{
 		// also set to -2 so that it has a higher priority than the timer pause, solving conflicts!
 		auto editorPauseLayer = ev->getCurrentLayer()->getParent()->getChildByID("EditorPauseLayer");
 		if (editorPauseLayer != nullptr) x->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 2);
-
 			return ListenerResult::Stop;
 		}
 
