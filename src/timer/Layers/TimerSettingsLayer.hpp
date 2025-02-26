@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Geode/Geode.hpp>
+// #include <Geode/Geode.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Popup.hpp>
 #include "../../hooks/EditorUITimer.hpp"
