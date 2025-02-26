@@ -26,15 +26,29 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     });
 
     TimerSettingsLayer::m_menuID = menuID;
-    log::debug("{}", TimerSettingsLayer::m_menuID->getID());
-    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
-        TimerSettingsLayer::paused = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->m_fields->paused;
+
+    #ifdef extraPrints
+        log::debug("{}", TimerSettingsLayer::m_menuID->getID());
+    #endif
+
+    if (auto pl = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())) {
+        #ifdef extraPrints 
+            log::debug("Play Layer");
+        #endif
+        TimerSettingsLayer::paused = pl->m_fields->paused;
         layerType = PLAYLAYER;
 
-    } else if (TimerSettingsLayer::m_menuID->getID() == "EditorPauseLayer"){
-        TimerSettingsLayer::paused = static_cast<EditorUITimer*>(EditorUITimer::get())->m_fields->paused;
+    } else if (auto eui = static_cast<EditorUITimer*>(EditorUITimer::get())){
+        #ifdef extraPrints 
+            log::debug("Editor Layer");
+        #endif
+        TimerSettingsLayer::paused = eui->isPaused();
         layerType = EDITOR;
+
     } else {
+        #ifdef extraPrints 
+            log::debug("random layer");
+        #endif
         layerType = OTHER;
     }
 
