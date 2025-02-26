@@ -5,6 +5,7 @@
 #include <Geode/ui/Popup.hpp>
 #include "../../hooks/EditorUITimer.hpp"
 #include "../../hooks/TimerPlayLayer.hpp"
+#include "../../utils/devMode.hpp"
 
 using namespace geode::prelude;
 

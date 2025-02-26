@@ -2,6 +2,7 @@
 
 // #define useDev
 // #define SHORTEN_TIMER_TIME 
+#define extraPrints
 
 // static class devMode
 // {

@@ -5,7 +5,9 @@ void EditorUITimer::resetTimer(int time) {
     auto field = m_fields.self();
     if (field->reset(this, time)) {
         field->remainingTime = time; // remaining time resets on force reset as a resault
-        log::debug("timer was reset!");
+        #ifdef extraPrints
+            log::debug("timer was reset!");
+        #endif
     }
 }
 
