@@ -27,7 +27,10 @@ bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 		m_fields->paused = false;
 		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
-		resetTimer(Mod::get()->getSavedValue("savedTime", (float) Mod::get()->getSettingValue<int64_t>("interval")));
+		resetTimer(Mod::get()->getSettingValue<bool>("useSaving") ? 
+			Mod::get()->getSavedValue("savedTime", (float) Mod::get()->getSettingValue<int64_t>("interval")) :
+			(float) Mod::get()->getSettingValue<int64_t>("interval")
+		);
 
 	return true;
 }
@@ -40,10 +43,11 @@ void TimerPlayLayer::resetLevel() {
 		m_fields->useTimer = false;
 		return;
 
-	} else if (!m_fields->useTimer) {
-		m_fields->resetTimer();
-		m_fields->useTimer = true;
-	}
+	// actually what the fuck was i doing?
+	} //else if (!m_fields->useTimer) {
+		// m_fields->resetTimer(); seems wrong
+		// m_fields->useTimer = true;
+	//}
 
 	auto difference = m_fields->endtime - std::chrono::system_clock::now();
 	// log::debug("{}", difference.count());

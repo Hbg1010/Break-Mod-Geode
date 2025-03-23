@@ -92,8 +92,15 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
 
     fields->timer.bind(this, &EditorUITimer::onEvent);
 
+    // sorry this SUCKS. idk how to format ternary like this :(
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
-        fields->timer.setFilter(startEditorTimer(Mod::get()->getSettingValue<int64_t>("interval") * 60));
+        fields->timer.setFilter(
+            startEditorTimer(
+                Mod::get()->getSettingValue<bool>("useSaving") ? 
+                Mod::get()->getSavedValue<float>("savedTime", (float) Mod::get()->getSettingValue<int64_t>("interval")) * 60 :
+                Mod::get()->getSettingValue<int64_t>("interval")
+            )
+        );
     }
     
     return true;
