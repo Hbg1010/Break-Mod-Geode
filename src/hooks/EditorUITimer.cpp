@@ -2,21 +2,25 @@
 
 // resets the timer on call!
 void EditorUITimer::resetTimer(int time) {
-    if (m_fields->reset(this, time)) {
-        m_fields->remainingTime = time; // remaining time resets on force reset as a resault
-        log::debug("timer was reset!");
+    auto field = m_fields.self();
+    if (field->reset(this, time)) {
+        field->remainingTime = time; // remaining time resets on force reset as a resault
+        #ifdef extraPrints
+            log::debug("timer was reset!");
+        #endif
     }
 }
 
 // cancels the timer before reseting
 void EditorUITimer::forceReset(int time) {
-    m_fields->remainingTime = time; // remaining time resets on force reset as a resault
-    log::debug("{}", m_fields->remainingTime);
+    auto field = m_fields.self();
+    field->remainingTime = time; // remaining time resets on force reset as a resault
+    log::debug("{}", field->remainingTime);
 
-    if (!m_fields->paused) {
-        m_fields->timer.getFilter().cancel();
-        m_fields->timer.bind(this, &EditorUITimer::onEvent);
-        m_fields->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
+    if (!field->paused) {
+        field->timer.getFilter().cancel();
+        field->timer.bind(this, &EditorUITimer::onEvent);
+        field->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
     }
 }
 
@@ -41,8 +45,6 @@ void EditorUITimer::forceReset(int time) {
             log::debug("{}", m_fields->remainingTime);
 			return;
 		}
-		// validates if event shouldnt run due to condition
-		
 	}
 
     bool EditorUITimer::checkEndPlaytest() {
@@ -67,10 +69,10 @@ void EditorUITimer::pauseTimer(bool isPaused) {
     if (isPaused) {
             m_fields->timer.getFilter().cancel();
 
-        // } else {
-        //     log::debug("{}", m_fields->remainingTime);
-        //     resetTimer(m_fields->remainingTime);
-        }
+    // } else {
+    //     log::debug("{}", m_fields->remainingTime);
+    //     resetTimer(m_fields->remainingTime);
+    }
 }
 
 bool EditorUITimer::isPaused() {

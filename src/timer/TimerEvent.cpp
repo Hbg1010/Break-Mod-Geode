@@ -25,8 +25,6 @@ CCNode* TimerEvent::getCurrentLayer() {
 }
 
 ListenerResult TimerFilter::handle(std::function<Callback> fn, TimerEvent* ev) {
-
     fn();
-
     return ListenerResult::Stop;
 };

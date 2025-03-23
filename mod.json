@@ -3,21 +3,25 @@
 
 	"gd": {
 		"win": "2.2074",
-		"android": "2.2074"
+		"android": "2.2074",
+		"mac": "2.2074"
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.1.1",
+	"version": "v1.1.4",
 	"developer": "Hbg1010",
-	"description": "This mod reminds players to take breaks",
-	"repository": "https://github.com/Hbg1010/Break-Mod-Geode",
-	"dependencies": [
-        {
-            "id": "geode.node-ids",
-            "version": "v1.17.0",
-            "importance": "required"
-        }
-    ],
+	"description": "Break reminders without interuptions",
+	"links": {
+		"source": "https://github.com/Hbg1010/Break-Mod-Geode"
+	},
+	"issues": {
+		"url": "https://github.com/Hbg1010/Break-Mod-Geode/issues",
+		"info": "If you find any bugs, or have any feature requests, please post them on the github!"
+	},
+	"dependencies": {
+  "geode.node-ids": ">=v1.17.0"
+ },
+	
 	"resources": {
 		"sprites": [
 			"resources/*.png",
@@ -88,6 +92,7 @@
 	},
 	"tags":[
 		"offline",
-		"universal"
+		"universal",
+		"interface"
 	]
 }

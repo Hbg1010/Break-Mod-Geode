@@ -17,23 +17,26 @@ $execute{
 	new EventListener<EventFilter<TimerEvent>>(+[](TimerEvent* ev) {
 		if (ev->isActive()) {
 
-			std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
+			// std::string timerAlert = fmt::format("Time to take a {} second break!", Mod::get()->getSettingValue<int64_t>("breakTime"));
 			CCNode* parent = ev->getCurrentLayer(); 
 
 			while(parent->getParent() != nullptr) {
 				parent = parent->getParent();
 			}
 
-			// should stop c
+			// should stop copies being created
 			if (parent->getChildByID("TimerAlert"_spr) != nullptr && parent->getChildByID("Timer-pop-up"_spr) != nullptr) {
 				log::debug("layer exists");
 				return ListenerResult::Stop;
 			}
 
 			// creates popup before the timer
-			auto x = geode::createQuickPopup("Timer", timerAlert, "Start", "Skip", [ev](auto, bool btn2) {
-				
-					// yeah I hate that not, but the constructor doesnt allow me to flip the things otherwise!
+			auto x = geode::createQuickPopup("Timer",
+				 fmt::format("Time to take a {} second break!", 
+					Mod::get()->getSettingValue<int64_t>("breakTime")), 
+					"Start", "Skip", 
+					[ev](auto, bool btn2) {
+					// yeah I hate that !btn2, but the constructor doesnt allow me to flip the things otherwise!
 					if (!btn2) {
 						// adds a new node to the layer parent
 						CCNode* x = CCNode::create(); 
@@ -55,7 +58,6 @@ $execute{
 		// also set to -2 so that it has a higher priority than the timer pause, solving conflicts!
 		auto editorPauseLayer = ev->getCurrentLayer()->getParent()->getChildByID("EditorPauseLayer");
 		if (editorPauseLayer != nullptr) x->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 2);
-
 			return ListenerResult::Stop;
 		}
 

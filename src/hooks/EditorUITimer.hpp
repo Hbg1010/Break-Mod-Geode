@@ -8,6 +8,13 @@
 #include <Geode/modify/EditorUI.hpp>
 #include "../timer/EditorTimer.hpp"
 #include "../timer/TimerEvent.hpp"
+#include "../utils/devMode.hpp"
+
+#ifndef SHORTEN_TIMER_TIME
+	#define timeMult 60
+#else
+	#define timeMult 6
+#endif
 
 using namespace geode::prelude;
 
@@ -25,11 +32,12 @@ class $modify(EditorUITimer, EditorUI) {
 		// resets timer when it is finished
 		bool reset(EditorUITimer* sender, int time) {
 			if (this->timer.getFilter().isFinished() || this->timer.getFilter().isCancelled()) {
-				log::debug("{}", time);
+				#ifdef extraPrints
+					log::debug("{}", time);
+				#endif
 				this->timer.disable();
 				this->timer.setFilter(startEditorTimer(time)); //TODO ADD 0!!
 				this->timer.enable();
-				// log::debug("time {}", time);
 				return true;
 			}
 			
@@ -38,8 +46,8 @@ class $modify(EditorUITimer, EditorUI) {
 	};
 
 	// EditorUITimer
-	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * 60);
-	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * 60);
+	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * timeMult);
+	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * timeMult);
 	void onEvent(EditorTimerTask::Event* ev);
 	bool checkEndPlaytest();
 	void onUnpause();

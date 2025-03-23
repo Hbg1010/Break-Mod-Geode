@@ -2,8 +2,6 @@
 #include "TimerSettingsLayer.hpp"
 using namespace geode::prelude;
 
-
-
 class TimerSettingsButton final {
 private:
     static CCNode* PARENT;

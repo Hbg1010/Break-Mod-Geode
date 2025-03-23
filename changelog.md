@@ -1,3 +1,23 @@
+# 1.1.4
+- Improved code again. 
+    - Added some dev stuff
+    - optimized the code
+
+# 1.1.3
+- Mac Support 
+- Updated readmes
+- optimized and improved code.
+
+# 1.1.2
+- Made assets work better with texture packs
+- Improved code, removed some useless stuff
+- Updated Mod.json with new 4.2.0 changes, new tag, new description, and fixed github link
+
+# 1.1.1
+- Android support! Yay
+- added repo to mod.json. oops
+- improved code
+
 # 1.1.0
 - Added timer modifications layer to each pause menu
     - Reset Timer 

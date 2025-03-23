@@ -50,13 +50,13 @@ void TimerPlayLayer::resetLevel() {
 	
 	if (difference.count() <= 0) {
 		PlayLayer::pauseGame(true);
-
-		log::debug("{}", this->getID());
-
+		
+		#ifdef extraPrints
+			log::debug("{}", this->getID());
+		#endif
 		// this posts the details of current events
 		TimerEvent(true, this).post();
 		m_fields->resetTimer();
-		
 	} 
 }
 

@@ -1,10 +1,11 @@
 #pragma once
 
-#include <Geode/Geode.hpp>
+// #include <Geode/Geode.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/ui/Popup.hpp>
 #include "../../hooks/EditorUITimer.hpp"
 #include "../../hooks/TimerPlayLayer.hpp"
+#include "../../utils/devMode.hpp"
 
 using namespace geode::prelude;
 
@@ -20,6 +21,11 @@ public:
 protected:
 
     CCNode* m_menuID; // ptr to buttons attatched to this layer
+    enum LayerEnum {
+        OTHER, PLAYLAYER, EDITOR
+    };
+
+    LayerEnum layerType;
     EventListener<SettingChangedFilter>* m_listener;
     bool paused;
     CCMenu* menuPointer;

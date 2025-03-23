@@ -1,11 +1,5 @@
 #include "TimerSettingsLayer.hpp"
-#include <memory>
-
-// EventListener<SettingChangedFilterV3> m_listener = {this, upd};
-
-// geode::EventListener<Popup::CloseEventFilter> m_listener = {
-//     this, &TimerSettingsLayer::updateButtons(), CloseEventFilter(this, )
-// }
+// #include <memory>
 
 TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     auto temp = new TimerSettingsLayer();
@@ -16,8 +10,7 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
         return temp;
 
     } else {
-        // CC_SAFE_DELETE(temp);
-
+        CC_SAFE_DELETE(temp);
         return nullptr;
     }
 }
@@ -25,8 +18,6 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
 // sets up the layer!
 bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
-
-    // TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", &TimerSettingsLayer::updateButtons);
     TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
         this->updateButtons();
         if (resault) {
@@ -35,20 +26,37 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     });
 
     TimerSettingsLayer::m_menuID = menuID;
-    CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
-    // log::debug("{}", menuID);
 
-    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
-        TimerSettingsLayer::paused = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->m_fields->paused;
+    #ifdef extraPrints
+        log::debug("{}", TimerSettingsLayer::m_menuID->getID());
+    #endif
+
+    if (auto pl = static_cast<TimerPlayLayer*>(TimerPlayLayer::get())) {
+        #ifdef extraPrints 
+            log::debug("Play Layer");
+        #endif
+        TimerSettingsLayer::paused = pl->m_fields->paused;
+        layerType = PLAYLAYER;
+
+    } else if (auto eui = static_cast<EditorUITimer*>(EditorUITimer::get())){
+        #ifdef extraPrints 
+            log::debug("Editor Layer");
+        #endif
+        TimerSettingsLayer::paused = eui->isPaused();
+        layerType = EDITOR;
+
     } else {
-        TimerSettingsLayer::paused = static_cast<EditorUITimer*>(EditorUITimer::get())->m_fields->paused;
+        #ifdef extraPrints 
+            log::debug("random layer");
+        #endif
+        layerType = OTHER;
     }
 
     this->setTitle("Timer Settings!");
 
     CCMenu* menu = CCMenu::create();
-    menu->setPosition({m_mainLayer->getContentWidth()/2, m_mainLayer->getPositionY()/2.f});
-    menu->setContentWidth(300);
+    menu->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getPositionY()/2.f);
+    menu->setContentWidth(300.f);
     menu->setLayout(
         RowLayout::create()
         ->setAxisAlignment(AxisAlignment::Even)
@@ -60,8 +68,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->setID("timer-settings-menu"_spr);
 
     // reset button
-    auto resetSpr = cocos2d::CCSprite::create("TM_replayBtn.png"_spr);//"GJ_updateBtn_001.png" 
-    resetSpr->setScale(.75f);
+    auto resetSpr = CircleButtonSprite::createWithSprite("gold_reset.png"_spr, 1.5f);
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
@@ -81,7 +88,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // creates the menu where the info button is placed
     auto extraMenu = CCMenu::create();
-    extraMenu->setPosition({m_mainLayer->getContentWidth(), m_mainLayer->getContentHeight()});
+    extraMenu->setPosition(m_mainLayer->getContentWidth(), m_mainLayer->getContentHeight());
     m_mainLayer->addChild(extraMenu);
     extraMenu->setID("info-menu"_spr);
 
@@ -101,14 +108,16 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 // this callback occurs when the button is clicked
 void TimerSettingsLayer::resetTimer(CCObject* sender) {
     // log::debug("{}", TimerSettingsLayer::m_menuID->getID());
-    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
+    if (layerType == PLAYLAYER) {
         auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
         layer->resetTimer();
 
-    } else {
+    } else if (layerType == EDITOR){
         //reseting here is very easy. 
         auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
 		layer->forceReset();
+    } else {
+        log::error("TimerSettingsLayer not connected to any layer!");
     }
 }
 
@@ -118,10 +127,12 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
     TimerSettingsLayer::paused = !TimerSettingsLayer::paused;
     log::debug("this is {}", paused);
 
-    if (TimerSettingsLayer::m_menuID->getID() == "PauseLayer") {
+    if (layerType == PLAYLAYER) {
         static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->pauseTimer(TimerSettingsLayer::paused);
-    } else {
+    } else if (layerType == EDITOR) {
         static_cast<EditorUITimer*>(EditorUITimer::get())->pauseTimer(TimerSettingsLayer::paused);
+    } else {
+        log::error("TimerSettingsLayer not connected to any layer!");
     }
 
     updateButtons();
@@ -130,7 +141,6 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
 // opens geode settings page
 void TimerSettingsLayer::changeSettings(CCObject* sender) {
    auto settingsPopup = geode::openSettingsPopup(Mod::get(), true);
-    
 }
 
 // this will update the visuals shown by the ui

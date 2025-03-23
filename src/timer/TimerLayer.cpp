@@ -59,11 +59,9 @@ TimerLayer* TimerLayer::create(std::string const& waitTime) {
  * Initiates the popup
  */
 bool TimerLayer::setup(std::string const& waitTime) {
-    CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
     currentCount = std::stoi(waitTime);
     this->setTitle("Break Time!");
     m_closeBtn->setScale(0.5f);
-    // m_closeBtn->setPosition(screenSize.width*2, screenSize.height * 3 / 4);
 
     // this is the extra text
     timerText = CCLabelBMFont::create(fmt::format("{} seconds", waitTime).c_str(), "bigFont.fnt");
@@ -87,11 +85,11 @@ bool TimerLayer::setup(std::string const& waitTime) {
 /**
  * This runs events based around the timer event!
  * 
- * Progress counts down on screen, and the resault will be 
+ * Progress counts down on screen, and the result will be 
  */
 void TimerLayer::countDown(countTask::Event* event) {
     
-    if (bool* resault = event->getValue()) {
+    if (bool* result = event->getValue()) {
         CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
 
         // creates the finish button on screen
@@ -130,7 +128,6 @@ void TimerLayer::countDown(countTask::Event* event) {
 
 }
 void TimerLayer::onClick(CCObject* sender){
-    // log::debug("clicked!");
     auto btn = static_cast<CCMenuItemSpriteExtra*>(sender);
     onClose(sender);   
 }
