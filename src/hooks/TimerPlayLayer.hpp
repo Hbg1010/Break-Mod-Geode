@@ -15,13 +15,15 @@ class $modify(TimerPlayLayer, PlayLayer) {
 		std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period> difference;
 		
 		// resets the timer on call;
-		void resetTimer() {
-			endtime = std::chrono::system_clock::now() + std::chrono::minutes{Mod::get()->getSettingValue<int64_t>("interval")}; // TODO: Replace with setting
+		void resetTimer(float time = (float) Mod::get()->getSettingValue<int64_t>("interval")) {
+			endtime = std::chrono::system_clock::now() + std::chrono::minutes{time}; // TODO: Replace with setting
 		}
 	};
+
+	void resetTimer(float time = (float) Mod::get()->getSettingValue<int64_t>("interval"));
 
 	bool init(GJGameLevel* p0, bool p1, bool p2);
 	void resetLevel();
 	void pauseTimer(bool pauseState);
-	void resetTimer();
+	void onExit();
 };

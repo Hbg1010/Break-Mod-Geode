@@ -133,9 +133,16 @@ void EditorUITimer::showUI(bool p0){
             stopButton->setEnabled(false);
         } 
 
-
         // if (stopButton->getChildByID("stop-playtest-button") != nullptr) {
         //     stopButton->removeChildByID("stop-playtest-button");
         // }
     }
 }
+
+// void EditorUITimer::destructor() {
+//     if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
+//         if ()
+//         Mod::get()->setSettingValue<float>("savedTime", (float) m_fields->remainingTime);
+// 	}
+//     EditorUI::~CCDestructor();
+// }

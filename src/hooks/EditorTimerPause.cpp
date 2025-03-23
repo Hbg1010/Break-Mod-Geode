@@ -38,6 +38,15 @@ void EditorTimerPause::onResume(CCObject* sender) {
     if (Mod::get()->getSettingValue<bool>("editorLayer") && !layer->isPaused()) {
         layer->resetTimer();
     }
-    
+}
 
+void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
+    if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
+        if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
+            float time = (float) leui->m_fields->remainingTime;
+            if (time > 0) Mod::get()->setSettingValue<float>("savedTime", time);
+        }
+	}
+
+    EditorPauseLayer::onExitEditor(sender);
 }
