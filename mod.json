@@ -1,5 +1,5 @@
 {
-	"geode": "4.1.2",
+	"geode": "4.3.1",
 
 	"gd": {
 		"win": "2.2074",
@@ -20,7 +20,8 @@
     ],
 	"resources": {
 		"sprites": [
-			"resources/*.png"
+			"resources/*.png",
+			"resources/gold_reset.png"
 		]
 		
 	},
@@ -54,6 +55,12 @@
 			"input": true
 			}
 		},
+	"useSaving": {
+		"type": "bool",
+		"name": "Save Between Levels",
+		"default": true,
+		"description": "Timer continues between levels via save data!"
+	},
 	"audioAlert": {
 		"type": "bool",
 		"name": "Use audio alerts",
