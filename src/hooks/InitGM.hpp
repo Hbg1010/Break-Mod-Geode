@@ -2,8 +2,8 @@
 #include <Geode/modify/GameManager.hpp>
 #include <Geode/loader/Mod.hpp>
 
-using namespace geode::prelude
+using namespace geode::prelude;
 
 class $modify(InitGM, GameManager) {
     void firstLoad();
-}
+};
