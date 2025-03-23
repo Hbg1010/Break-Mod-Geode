@@ -1,14 +1,13 @@
 #include "TimerSettingsButton.hpp"
 
-static CCNode* PARENT;
+CCNode* TimerSettingsButton::PARENT = nullptr;
 
 CCMenuItemSpriteExtra* TimerSettingsButton::create(CCNode* target) {
-
     PARENT = target;
     auto spr = CCSprite::create("TimerSettings.png"_spr);
 	spr->setScale(.65f);
 	CCMenuItemSpriteExtra* TimersettingsBtn = CCMenuItemSpriteExtra::create(spr, target, menu_selector(TimerSettingsButton::onTimerSettings));
-
+    
     return TimersettingsBtn;
 }
 
