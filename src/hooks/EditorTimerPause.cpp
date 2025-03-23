@@ -1,14 +1,5 @@
 #include "EditorTimerPause.hpp"
 
-void EditorTimerPause::onResume(CCObject* sender) {
-    EditorPauseLayer::onResume(sender);
-    auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
-
-    if (Mod::get()->getSettingValue<bool>("editorLayer") && !layer->isPaused()) {
-        layer->resetTimer();
-    }
-}
-
 /* hooks
 ========== */
 
