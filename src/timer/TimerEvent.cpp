@@ -1,4 +1,3 @@
-// #include "TimerNode.cpp"
 #include "TimerEvent.hpp"
 
 bool m_active;
@@ -16,7 +15,6 @@ bool TimerEvent::isActive(){
 };
 
 CCNode* TimerEvent::getCurrentLayer() {
-
     if (m_current == nullptr) {
         log::error("Nullptr called from getCurrentLayer()");
     }

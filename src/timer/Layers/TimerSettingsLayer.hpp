@@ -11,8 +11,6 @@ using namespace geode::prelude;
 
 class TimerSettingsLayer : public Popup<CCNode* const&> {
 
-// friend class modSettingsEvent;
-
 public:
     static TimerSettingsLayer* create(CCNode* const& menuID);
     static void disableButton(CCNode* node, bool enable);

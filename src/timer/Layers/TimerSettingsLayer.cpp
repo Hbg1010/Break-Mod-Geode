@@ -1,5 +1,4 @@
 #include "TimerSettingsLayer.hpp"
-// #include <memory>
 
 TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
     auto temp = new TimerSettingsLayer();
