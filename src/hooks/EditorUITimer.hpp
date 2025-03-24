@@ -54,7 +54,7 @@ class $modify(EditorUITimer, EditorUI) {
 	int getRemainder();
 	void pauseTimer(bool isPaused);
 	bool isPaused();
-
+	
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);
 	void onPlaytest(CCObject* sender);

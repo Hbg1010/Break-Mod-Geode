@@ -1,6 +1,6 @@
 #include "EditorTimer.hpp"
 
-//This is set up to check for each second, as an early canel would mean this event could just continue existing in memory
+//This is set up to check for each second
 EditorTimerTask startEditorTimer(int time) {
     return EditorTimerTask::run([time](auto progress, auto hasBeenCancelled) -> EditorTimerTask::Result {
 		log::debug("Starting editor timer!");
