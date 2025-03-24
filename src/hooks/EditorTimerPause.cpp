@@ -39,8 +39,8 @@ void EditorTimerPause::onResume(CCObject* sender) {
 }
 
 void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
-    if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
-        if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
+    if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
+        if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
             float time = (float) leui->m_fields->remainingTime;
             if (time > 0) Mod::get()->setSavedValue<float>("savedTime", time);
             #ifdef extraPrints
@@ -48,7 +48,9 @@ void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
             log::debug("{}", temp);
             #endif
         }
-	}
+
+        leui->cancelTimer(); // this may help memory?
+    }
 
     EditorPauseLayer::onExitEditor(sender);
 }
