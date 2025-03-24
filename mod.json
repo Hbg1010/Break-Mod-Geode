@@ -8,7 +8,7 @@
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.1.4",
+	"version": "v1.2.0",
 	"developer": "Hbg1010",
 	"description": "Break reminders without interuptions",
 	"links": {
@@ -19,9 +19,8 @@
 		"info": "If you find any bugs, or have any feature requests, please post them on the github!"
 	},
 	"dependencies": {
-  "geode.node-ids": ">=v1.17.0"
- },
-	
+  		"geode.node-ids": ">=v1.17.0"
+ 	},
 	"resources": {
 		"sprites": [
 			"resources/*.png",
@@ -45,50 +44,76 @@
 				"input": true
 			}
 		},
-	"breakTime": {
-		"type": "int",
-		"name": "Break Time",
-		"min": 1,
-		"max": 300,
-		"default": 20,
-		"description": "This measures the amount of seconds your counter will start counting down from when you take a break!",
-		"controls": {
-			"arrows": true,
-			"arrow-step": 1,
-			"big-arrows": false,
-			"input": true
+		"breakTime": {
+			"type": "int",
+			"name": "Break Time",
+			"min": 1,
+			"max": 300,
+			"default": 20,
+			"description": "This measures the amount of seconds your counter will start counting down from when you take a break!",
+			"controls": {
+				"arrows": true,
+				"arrow-step": 1,
+				"big-arrows": false,
+				"input": true
 			}
 		},
-	"useSaving": {
-		"type": "bool",
-		"name": "Save Between Levels",
-		"default": true,
-		"description": "Timer continues between levels via save data!"
-	},
-	"audioAlert": {
-		"type": "bool",
-		"name": "Use audio alerts",
-		"default": true,
-		"description": "Enables sound effects to notify you when your timer is up!"
-	},
-	"useQuickSettings": {
-		"type": "bool",
-		"name": "Enable Quick settings Menu",
-		"default": true,
-		"description": "Disables the button to open timer modificaitons and settings from pause menus."
-	},
-	"playLayer": {
-		"type": "bool",
-		"name": "Play Layer",
-		"default": true,
-		"description": "This setting enables or disables whether or not the timer is used while playing levels!"
-	},
-	"editorLayer": {
-		"type": "bool",
-		"name": "Editor",
-		"default": true,
-		"description": "This setting enables or disables whether or not the timer is active in the editor!"
-	}
+		"Layers": {
+			"type": "title",
+			"name": "Layers",
+			"description": "You can enable / disable which layers the timer is active on with the settings in this list!"
+		},
+		"playLayer": {
+			"type": "bool",
+			"name": "Play Layer",
+			"default": true,
+			"description": "This setting enables or disables whether or not the timer is used while playing levels!"
+		},
+		"editorLayer": {
+			"type": "bool",
+			"name": "Editor",
+			"default": true,
+			"description": "This setting enables or disables whether or not the timer is active in the editor!"
+		},
+		"saving": {
+			"type": "title",
+			"name": "Save data",
+			"description": "These settings allow you to enable / disable saving data across levels / instances of gd!"
+		},
+		"useSaving": {
+			"type": "bool",
+			"name": "Save Timer Between Levels",
+			"default": true,
+			"description": "Timer continues between levels via save data!"
+		},
+		"pauseAcrossLevels": {
+			"type": "bool",
+			"name": "Pause Across Levels",
+			"default": true,
+			"description": "When pausing the timer via quick settings, this setting will decide if pausing should persist across levels"
+		},
+		"resetPause": {
+			"type": "bool",
+			"name": "Unpause on init",
+			"default": false,
+			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to disable this setting, so you don't forget to pause the timer!"
+		},
+		"misc": {
+			"type": "title",
+			"name": "Miscellanious"
+		},
+		"audioAlert": {
+			"type": "bool",
+			"name": "Use audio alerts",
+			"default": true,
+			"description": "Enables sound effects to notify you when your timer is up!"
+		},
+		"useQuickSettings": {
+			"type": "bool",
+			"name": "Enable Quick settings Menu",
+			"default": true,
+			"description": "Disables the button to open timer modificaitons and settings from pause menus."
+		}
 	},
 	"tags":[
 		"offline",
