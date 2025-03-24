@@ -17,7 +17,7 @@ using namespace geode::prelude;
 #endif
 
 $on_mod(Loaded) {
-	Mod::get()->setSavedValue<float>("savedTime", Mod::get()->getSettingValue<int>("interval") * TMULT);
+	Mod::get()->setSavedValue<float>("savedTime", -1); // idk how to delete this setting / make it useless on init
     if (Mod::get()->getSettingValue<bool>("resetPause")) Mod::get()->setSavedValue<bool>("timerPaused", false);
 
     #ifdef extraPrints
