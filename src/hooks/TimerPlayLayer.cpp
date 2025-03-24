@@ -2,17 +2,16 @@
 
 // changes the bool to true / false
 void TimerPlayLayer::pauseTimer(bool pauseState) {
-	// log::debug("paused");
+	auto fieldsPtr = m_fields.self();
+	fieldsPtr->paused = pauseState;
 
-	m_fields->paused = pauseState;
-
-	if (m_fields->paused) {
-		m_fields->difference = m_fields->endtime - std::chrono::system_clock::now();
+	if (fieldsPtr->paused) {
+		fieldsPtr->difference = fieldsPtr->endtime - system_clock::now();
 		#ifdef extraPrints
-		log::debug("{}", m_fields->difference.count());
+		log::debug("{}", fieldsPtr->difference.count());
 		#endif
 	} else {
-		m_fields->endtime = std::chrono::system_clock::now() + m_fields->difference;
+		fieldsPtr->endtime = system_clock::now() + fieldsPtr->difference;
 	}
 }
 
@@ -24,23 +23,50 @@ float TimerPlayLayer::getDefaultTimer() const {
 	return Mod::get()->getSettingValue<int64_t>("interval") * 60;
 }
 
+// gets the remaining seconds that will be saved
+double TimerPlayLayer::remainingSeconds() {
+	auto nowInSeconds = time_point_cast<seconds>(system_clock::now());
+	return duration_cast<seconds>(!m_fields->paused
+		? m_fields->endtime - nowInSeconds
+		: m_fields->difference
+	).count();
+}
+
 /* hooks
 ========== */
 
 bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 	if (!PlayLayer::init(p0,p1,p2)) return false;
-		m_fields->paused = false;
-		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
+	Mod* modPtr = Mod::get();	// mod is used so much here i may as well just use the pointer
+	auto fieldsPtr = m_fields.self();
+	fieldsPtr->paused = modPtr->getSettingValue<bool>("pauseAcrossLevels")
+		? modPtr->getSavedValue<bool>("timerPaused", false)
+		: false;
 
-		#ifdef extraPrints
-		log::debug("{}", Mod::get()->getSavedValue("savedTime", getDefaultTimer()));
-		#endif
+	fieldsPtr->useTimer = modPtr->getSettingValue<bool>("playLayer");
 
-		// resets the timer
-		resetTimer(Mod::get()->getSettingValue<bool>("useSaving") ? 
-			Mod::get()->getSavedValue("savedTime", getDefaultTimer()) :
-			getDefaultTimer()
-		);
+	#ifdef extraPrints
+		log::debug("{}", modPtr->getSavedValue("savedTime", getDefaultTimer()));
+	#endif
+
+	// starts the timer
+
+	float startingNum;
+	if (modPtr->getSettingValue<bool>("useSaving")) {
+		startingNum = modPtr->getSavedValue("savedTime", getDefaultTimer());
+
+		// if timer isn't initiated yet, then this will update the timer based off the current interval
+		if (startingNum == -1) {
+			startingNum = getDefaultTimer();
+			modPtr->setSavedValue<float>("savedTime", getDefaultTimer());
+		}
+
+	} else {
+		startingNum = getDefaultTimer();
+	}
+
+	resetTimer(startingNum);
+	fieldsPtr->difference = fieldsPtr->endtime - system_clock::now();
 
 	return true;
 }
@@ -48,19 +74,21 @@ bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 void TimerPlayLayer::resetLevel() {
 	PlayLayer::resetLevel();
 
-	//TODO DELTE THIS EW
-	if (!Mod::get()->getSettingValue<bool>("playLayer") || m_fields->paused) {
-		m_fields->useTimer = false;
+	auto fieldsPtr = m_fields.self();
+
+	if (!Mod::get()->getSettingValue<bool>("playLayer") || fieldsPtr->paused) {
+		fieldsPtr->useTimer = false;
 		return;
 
-	// actually what the fuck was i doing?
-	} else if (!m_fields->useTimer) {
-		m_fields->resetTimer();
-		m_fields->useTimer = true;
+	// actually what the fuck was i doing? somehow this makes shit work i guess
+	} else if (!fieldsPtr->useTimer) {
+		fieldsPtr->difference = fieldsPtr->endtime - system_clock::now();
+		fieldsPtr->resetTimer(duration_cast<seconds>(fieldsPtr->difference).count());
+		fieldsPtr->useTimer = true;
 		return;
 	}
 
-	auto difference = m_fields->endtime - std::chrono::system_clock::now();
+	auto difference = fieldsPtr->endtime - system_clock::now();
 	
 	if (difference.count() <= 0) {
 		PlayLayer::pauseGame(true);
@@ -70,19 +98,22 @@ void TimerPlayLayer::resetLevel() {
 		#endif
 		// this posts the details of current events
 		TimerEvent(true, this).post();
-		m_fields->resetTimer();
+		fieldsPtr->resetTimer();
 	} 
 }
 
 // saves value on exit
 void TimerPlayLayer::onExit() {
 	if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("playLayer")) {
-		auto nowInSeconds = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now());
-		double difference = std::chrono::duration_cast<std::chrono::seconds>(m_fields->endtime - nowInSeconds).count();
+		double toSave = remainingSeconds();
 
-		if (difference > 0) Mod::get()->setSavedValue<float>("savedTime", difference);
+		#ifdef extraPrints
+			log::debug("{}", toSave);
+		#endif
 
-		log::debug("{}", Mod::get()->getSavedValue<float>("savedTime"));
+		if (toSave > 0) {
+			Mod::get()->setSavedValue<float>("savedTime", toSave);
+		} else Mod::get()->setSavedValue<float>("savedTime", 5); // this is just so the editor (hopefully) wont freak out :)
 	}
 
 	PlayLayer::onExit();

@@ -16,14 +16,6 @@ TimerSettingsLayer* TimerSettingsLayer::create(CCNode* const& menuID) {
 
 // sets up the layer!
 bool TimerSettingsLayer::setup(CCNode* const& menuID) {
-
-    TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
-        this->updateButtons();
-        if (resault) {
-            resetTimer(this);
-        }
-    });
-
     TimerSettingsLayer::m_menuID = menuID;
 
     #ifdef extraPrints
@@ -101,6 +93,35 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     menu->updateLayout();
     updateButtons(); // runs the update fn
 
+    // This constructs a listener for editor stuff
+    TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
+        this->updateButtons();
+
+        // handles the timers 
+        if (resault) {
+            resetTimer(this);
+        } else {
+            if (Mod::get()->getSettingValue<bool>("useSaving")) {
+                double toSave;
+                if (layerType == PLAYLAYER) {
+                    auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
+                    toSave = layer->remainingSeconds();
+            
+                } else if (layerType == EDITOR) {
+                    auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
+                    toSave = layer->getRemainder();
+                } else {
+                    return ListenerResult::Propagate;
+                }
+
+                if (toSave > 0) {
+                    Mod::get()->setSavedValue<float>("savedTime", toSave);
+                } else Mod::get()->setSavedValue<float>("savedTime", 5); // this is just so the editor (hopefully) wont freak out :)
+            }
+        }
+        return ListenerResult::Propagate;
+    });
+
     return true;
 }
 
@@ -121,9 +142,14 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
 
 // pauses the timer manager on either layer
 void TimerSettingsLayer::pauseTime(CCObject* sender) {
-    // sets it to the opposite val on click
-    TimerSettingsLayer::paused = !TimerSettingsLayer::paused;
-    log::debug("this is {}", paused);
+    TimerSettingsLayer::paused = !TimerSettingsLayer::paused; // sets it to the opposite val on click
+
+    // saves when setting is enabled
+    if (Mod::get()->getSettingValue<bool>("pauseAcrossLevels")) Mod::get()->setSavedValue<bool>("timerPaused", TimerSettingsLayer::paused);
+
+    #ifdef extraPrints
+        log::debug("this is {}", paused);
+    #endif
 
     if (layerType == PLAYLAYER) {
         static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->pauseTimer(TimerSettingsLayer::paused);
@@ -159,11 +185,11 @@ void TimerSettingsLayer::updateButtons() {
     btnPointer->setSprite(sprite);
 
     // checks if the pause and play should be enabled
-    bool enabled = (m_menuID->getID() == "PauseLayer" && Mod::get()->getSettingValue<bool>("playLayer")) || (m_menuID->getID() == "EditorPauseLayer" && Mod::get()->getSettingValue<bool>("editorLayer"));
+    bool currentLayerEnabled = (m_menuID->getID() == "PauseLayer" && Mod::get()->getSettingValue<bool>("playLayer")) || (m_menuID->getID() == "EditorPauseLayer" && Mod::get()->getSettingValue<bool>("editorLayer"));
 
     for (CCNode* node : CCArrayExt<CCNode*>(menuPointer->getChildren())) {
         if (node->getID() != "settings-button"_spr) {
-            TimerSettingsLayer::disableButton(node, enabled);
+            TimerSettingsLayer::disableButton(node, currentLayerEnabled);
         }
     }
 }

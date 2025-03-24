@@ -81,19 +81,32 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
     auto fields = m_fields.self();
     fields->pauseAfterPlaytest = false;
     fields->isPlaytesting = false;
-    fields->paused = false;
+    
+    // sets remaining time from settings
+    fields->remainingTime = Mod::get()->getSettingValue<bool>("useSaving")
+        ? Mod::get()->getSavedValue<float>("savedTime", Mod::get()->getSettingValue<int64_t>("interval") * timeMult)
+        : Mod::get()->getSettingValue<int64_t>("interval") * timeMult;
+
+    // this will be -1 when the game inits
+    if (fields->remainingTime == -1) {
+        int temp = Mod::get()->getSettingValue<int64_t>("interval") * timeMult;
+        Mod::get()->getSavedValue<float>("savedTime", temp);
+        fields->remainingTime = temp;
+    }
+    // sets pauses as default before doing anything
+    fields->paused = Mod::get()->getSettingValue<bool>("pauseAcrossLevels")
+        ? Mod::get()->getSavedValue<bool>("timerPaused", false)
+        : false;
 
     fields->timer.bind(this, &EditorUITimer::onEvent);
 
-    // sorry this SUCKS. idk how to format ternary like this :(
     if (Mod::get()->getSettingValue<bool>("editorLayer")) {
         fields->timer.setFilter(
-            startEditorTimer(
-                Mod::get()->getSettingValue<bool>("useSaving") ? 
-                Mod::get()->getSavedValue<float>("savedTime", Mod::get()->getSettingValue<int64_t>("interval") * timeMult) :
-                Mod::get()->getSettingValue<int64_t>("interval")
-            )
+            startEditorTimer(fields->remainingTime)
         );
+
+        // lazy fix ;/
+        if (fields->paused) fields->timer.getFilter().cancel();
     }
     
     return true;

@@ -7,7 +7,7 @@
 #include "../utils/devMode.hpp"
 
 using namespace geode::prelude;
-
+using namespace std::chrono;
 // Controls pausing in game.
 class $modify(TimerPlayLayer, PlayLayer) {
 
@@ -22,19 +22,19 @@ class $modify(TimerPlayLayer, PlayLayer) {
 			#ifndef SHORTEN_TIMER_TIME
 				endtime = std::chrono::system_clock::now() + std::chrono::seconds{(int) time};
 			#else
-				endtime = std::chrono::system_clock::now() + std::chrono::seconds{(int) time/ 60};
+				endtime = std::chrono::system_clock::now() + std::chrono::seconds{(int) time / 60};
 			#endif
 		}
 	};
 
+	void pauseTimer(bool pauseState);
 	void resetTimer(float time = (float) Mod::get()->getSettingValue<int64_t>("interval") * 60);
 	float getDefaultTimer() const;
-
+	double remainingSeconds();
+	
 	//hooked fns
-
 	bool init(GJGameLevel* p0, bool p1, bool p2);
 	void resetLevel();
-	void pauseTimer(bool pauseState);
 	void onExit();
 
 };
