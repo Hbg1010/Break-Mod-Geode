@@ -1,7 +1,8 @@
-# 1.1.4
-- Improved code again. 
-    - Added some dev stuff
-    - optimized the code
+# 1.2.0
+- Saving data across sessions! Shoulda been a feature from the start
+- Pausing the timer across level / editor instances
+- A few bugs are gone
+- Cleaned and improved more code
 
 # 1.1.3
 - Mac Support 
