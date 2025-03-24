@@ -7,7 +7,7 @@ TimerEvent::TimerEvent(bool active, CCNode* currentLayer) {
     m_active = active;
     m_current = currentLayer;
 
-    log::debug("{}",m_current->getID());
+    // log::debug("{}",m_current->getID());
 };
 
 bool TimerEvent::isActive(){

@@ -15,7 +15,7 @@ void EditorUITimer::resetTimer(int time) {
 void EditorUITimer::forceReset(int time) {
     auto field = m_fields.self();
     field->remainingTime = time; // remaining time resets on force reset as a resault
-    log::debug("{}", field->remainingTime);
+    // log::debug("{}", field->remainingTime);
 
     if (!field->paused) {
         field->timer.getFilter().cancel();
@@ -70,6 +70,10 @@ void EditorUITimer::pauseTimer(bool isPaused) {
 
 bool EditorUITimer::isPaused() {
     return m_fields->paused;
+}
+
+void EditorUITimer::cancelTimer() {
+    m_fields->timer.getFilter().cancel(); 
 }
 
 /* hooks

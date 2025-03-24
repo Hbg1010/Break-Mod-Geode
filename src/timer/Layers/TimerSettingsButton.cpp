@@ -13,12 +13,10 @@ CCMenuItemSpriteExtra* TimerSettingsButton::create(CCNode* target) {
 
 // this is the buttons callback
 void TimerSettingsButton::onTimerSettings(CCObject* sender) {
-    log::debug("Settings menu was pressed");
     TimerSettingsLayer* layer = TimerSettingsLayer::create(PARENT);
     layer->m_scene = PARENT;
 
     if (PARENT->getID() == "EditorPauseLayer") {
-        // log::debug("a");
         layer->setTouchPriority(static_cast<CCLayer*>(PARENT)->getTouchPriority() - 1);
     }
 
