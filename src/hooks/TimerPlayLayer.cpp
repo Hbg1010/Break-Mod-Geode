@@ -8,8 +8,9 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 
 	if (m_fields->paused) {
 		m_fields->difference = m_fields->endtime - std::chrono::system_clock::now();
+		#ifdef extraPrints
 		log::debug("{}", m_fields->difference.count());
-		
+		#endif
 	} else {
 		m_fields->endtime = std::chrono::system_clock::now() + m_fields->difference;
 	}
@@ -17,6 +18,10 @@ void TimerPlayLayer::pauseTimer(bool pauseState) {
 
 void TimerPlayLayer::resetTimer(float time) {
 	m_fields->resetTimer(time);
+}
+
+float TimerPlayLayer::getDefaultTimer() const {
+	return Mod::get()->getSettingValue<int64_t>("interval") * 60;
 }
 
 /* hooks
@@ -27,9 +32,14 @@ bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 		m_fields->paused = false;
 		m_fields->useTimer = Mod::get()->getSettingValue<bool>("playLayer");
 
+		#ifdef extraPrints
+		log::debug("{}", Mod::get()->getSavedValue("savedTime", getDefaultTimer()));
+		#endif
+
+		// resets the timer
 		resetTimer(Mod::get()->getSettingValue<bool>("useSaving") ? 
-			Mod::get()->getSavedValue("savedTime", (float) Mod::get()->getSettingValue<int64_t>("interval")) :
-			(float) Mod::get()->getSettingValue<int64_t>("interval")
+			Mod::get()->getSavedValue("savedTime", getDefaultTimer()) :
+			getDefaultTimer()
 		);
 
 	return true;
@@ -44,13 +54,13 @@ void TimerPlayLayer::resetLevel() {
 		return;
 
 	// actually what the fuck was i doing?
-	} //else if (!m_fields->useTimer) {
-		// m_fields->resetTimer(); seems wrong
-		// m_fields->useTimer = true;
-	//}
+	} else if (!m_fields->useTimer) {
+		m_fields->resetTimer();
+		m_fields->useTimer = true;
+		return;
+	}
 
 	auto difference = m_fields->endtime - std::chrono::system_clock::now();
-	// log::debug("{}", difference.count());
 	
 	if (difference.count() <= 0) {
 		PlayLayer::pauseGame(true);
@@ -67,12 +77,12 @@ void TimerPlayLayer::resetLevel() {
 // saves value on exit
 void TimerPlayLayer::onExit() {
 	if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("playLayer")) {
-		auto nowInMin = std::chrono::time_point_cast<std::chrono::minutes>(std::chrono::system_clock::now());
-		double difference = std::chrono::duration_cast<std::chrono::minutes>(m_fields->endtime - nowInMin).count();
+		auto nowInSeconds = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now());
+		double difference = std::chrono::duration_cast<std::chrono::seconds>(m_fields->endtime - nowInSeconds).count();
 
 		if (difference > 0) Mod::get()->setSavedValue<float>("savedTime", difference);
 
-		// delete &nowInMin; // this may be bad?
+		log::debug("{}", Mod::get()->getSavedValue<float>("savedTime"));
 	}
 
 	PlayLayer::onExit();

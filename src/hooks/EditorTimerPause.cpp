@@ -43,7 +43,11 @@ void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
     if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
         if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
             float time = (float) leui->m_fields->remainingTime;
-            if (time > 0) Mod::get()->setSettingValue<float>("savedTime", time);
+            if (time > 0) Mod::get()->setSavedValue<float>("savedTime", time);
+            #ifdef extraPrints
+            float temp = Mod::get()->getSavedValue<float>("savedTime", time);
+            log::debug("{}", temp);
+            #endif
         }
 	}
 
