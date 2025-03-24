@@ -94,9 +94,9 @@
 		},
 		"resetPause": {
 			"type": "bool",
-			"name": "Unpause on init",
-			"default": false,
-			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to disable this setting, so you don't forget to pause the timer!"
+			"name": "Unpause timer on open",
+			"default": true,
+			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to enable this setting, so you don't forget to pause the timer!"
 		},
 		"misc": {
 			"type": "title",
