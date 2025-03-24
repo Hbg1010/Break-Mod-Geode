@@ -106,7 +106,6 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
 // this callback occurs when the button is clicked
 void TimerSettingsLayer::resetTimer(CCObject* sender) {
-    // log::debug("{}", TimerSettingsLayer::m_menuID->getID());
     if (layerType == PLAYLAYER) {
         auto layer = static_cast<TimerPlayLayer*>(TimerPlayLayer::get());
         layer->resetTimer();
@@ -151,7 +150,6 @@ void TimerSettingsLayer::updateButtons() {
 
     auto sprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
 
-    // TODO: ADJUST SIZES SLIGHTLY
     if (TimerSettingsLayer::paused) {
         sprite->setScale(.65f);
     } else {
@@ -161,7 +159,7 @@ void TimerSettingsLayer::updateButtons() {
     btnPointer->setSprite(sprite);
 
     // checks if the pause and play should be enabled
-    bool enabled = (Mod::get()->getSettingValue<bool>("playLayer") && m_menuID->getID() == "PauseLayer") || (Mod::get()->getSettingValue<bool>("editorLayer") && m_menuID->getID() == "EditorPauseLayer");
+    bool enabled = (m_menuID->getID() == "PauseLayer" && Mod::get()->getSettingValue<bool>("playLayer")) || (m_menuID->getID() == "EditorPauseLayer" && Mod::get()->getSettingValue<bool>("editorLayer"));
 
     for (CCNode* node : CCArrayExt<CCNode*>(menuPointer->getChildren())) {
         if (node->getID() != "settings-button"_spr) {
