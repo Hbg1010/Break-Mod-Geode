@@ -30,13 +30,17 @@
 	},
 
 	"settings": {
+		"times": {
+			"type": "title",
+			"name": "Times"
+		},
 		"interval": {
 			"type": "int",
 			"name": "Interval",
 			"min": 1,
 			"max": 120,
 			"default": 20,
-			"description": "This measures the amount of minutes between popups! **Time does not save between sessions**, so it is recommended you use 10 - 20 minutes!",
+			"description": "This measures the amount of minutes between popups! It is recommended you use 10 - 20 minutes if you disable saving between sessions!",
 			"controls": {
 				"arrows": true,
 				"arrow-step": 1,
