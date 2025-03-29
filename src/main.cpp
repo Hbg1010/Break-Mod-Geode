@@ -5,9 +5,6 @@
 #include "timer/TimerEvent.hpp"
 #include "timer/TimerLayer.hpp"
 
-/**
- * Brings cocos2d and all Geode namespaces to the current scope.
- */
 using namespace geode::prelude;
 
 #ifdef SHORTEN_TIMER_TIME 
@@ -46,7 +43,7 @@ $execute{
 			}
 
 			// creates popup before the timer
-			auto x = geode::createQuickPopup("Timer",
+			auto TimerAlert = geode::createQuickPopup("Timer",
 				fmt::format("Time to take a {} second break!", 
 				Mod::get()->getSettingValue<int64_t>("breakTime")), 
 				"Start", "Skip", 
@@ -61,10 +58,10 @@ $execute{
 					} 
 				}, false);		
 
-			// displays x
-			x->m_noElasticity = CCDirector::get()->getFastMenu(); // stops intro animation when fast reset is used
-			x->show();
-			x->setID("TimerAlert"_spr);
+			// displays TimerAlert layer
+			TimerAlert->m_noElasticity = CCDirector::get()->getFastMenu(); // stops intro animation when fast reset is used
+			TimerAlert->show();
+			TimerAlert->setID("TimerAlert"_spr);
 
 			/*
 			if in editor, this will set the touch priority above the EditorPauseLayer
@@ -72,12 +69,12 @@ $execute{
 			also set to -2 so that it has a higher priority than the timer pause, solving conflicts!
 			*/
 			auto editorPauseLayer = ev->getCurrentLayer()->getParent()->getChildByID("EditorPauseLayer");
-			if (editorPauseLayer != nullptr) x->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 2);
+			if (editorPauseLayer != nullptr) TimerAlert->setTouchPriority(static_cast<EditorPauseLayer*>(editorPauseLayer)->getTouchPriority() - 2);
 
 			// returns that the event ended!
 			return ListenerResult::Stop;
 		}
-
-			return ListenerResult::Propagate;
+		
+		return ListenerResult::Propagate;
 	});
 };
