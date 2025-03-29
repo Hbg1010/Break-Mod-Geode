@@ -38,11 +38,13 @@ void EditorTimerPause::onResume(CCObject* sender) {
     }
 }
 
+// when exiting the editor, this should save the timer between sessions
 void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
     if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
         if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
             float time = (float) leui->m_fields->remainingTime;
             if (time > 0) Mod::get()->setSavedValue<float>("savedTime", time);
+
             #ifdef extraPrints
             float temp = Mod::get()->getSavedValue<float>("savedTime", time);
             log::debug("{}", temp);

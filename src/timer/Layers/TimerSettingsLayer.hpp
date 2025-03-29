@@ -24,7 +24,8 @@ protected:
     };
 
     LayerEnum layerType;
-    EventListener<SettingChangedFilter>* m_listener;
+    EventListener<SettingChangedFilter>* m_mode_listener;
+    EventListener<SettingChangedFilter>* m_interval_listener;
     bool paused;
     CCMenu* menuPointer;
   

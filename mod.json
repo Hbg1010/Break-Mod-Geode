@@ -8,7 +8,7 @@
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.2.0",
+	"version": "v1.2.1",
 	"developer": "Hbg1010",
 	"description": "Break reminders without interuptions",
 	"links": {
@@ -95,13 +95,32 @@
 			"type": "bool",
 			"name": "Pause Across Levels",
 			"default": true,
-			"description": "When pausing the timer via quick settings, this setting will decide if pausing should persist across levels"
+			"description": "When pausing the timer via quick settings, this setting will decide if pausing should persist across levels",
+			"enable-if": "useQuickSettings"
 		},
 		"resetPause": {
 			"type": "bool",
 			"name": "Unpause timer on open",
 			"default": true,
-			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to enable this setting, so you don't forget to pause the timer!"
+			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to enable this setting, so you don't forget to pause the timer!",
+			"enable-if": "useQuickSettings"
+		},
+		"settingsPopup": {
+			"type": "title",
+			"name": "Timer Settings Menu"
+		},
+		"useQuickSettings": {
+			"type": "bool",
+			"name": "Enable Quick settings Menu",
+			"default": true,
+			"description": "Disables the button to open timer modificaitons and settings from pause menus."
+		},
+		"resetOnInterval": {
+			"type": "bool",
+			"name": "Reset timer on new interval",
+			"default": true,
+			"description": "Resets your current timer whenever you change the <cy>interval</c> setting",
+			"enable-if": "useQuickSettings"
 		},
 		"misc": {
 			"type": "title",
@@ -112,12 +131,6 @@
 			"name": "Use audio alerts",
 			"default": true,
 			"description": "Enables sound effects to notify you when your timer is up!"
-		},
-		"useQuickSettings": {
-			"type": "bool",
-			"name": "Enable Quick settings Menu",
-			"default": true,
-			"description": "Disables the button to open timer modificaitons and settings from pause menus."
 		}
 	},
 	"tags":[

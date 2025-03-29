@@ -2,8 +2,9 @@
 
 void TimerPauseLayer::customSetup() {
 	PauseLayer::customSetup();
-
-    if (!Mod::get()->getSettingValue<bool>("useQuickSettings")) return; // early return if the timer button is disabled
+	
+	// early return if the timer button is disabled
+    if (!Mod::get()->getSettingValue<bool>("useQuickSettings")) return; 
 
 	CCMenuItemSpriteExtra* TimersettingsBtn = TimerSettingsButton::create(this);
 

@@ -94,7 +94,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     updateButtons(); // runs the update fn
 
     // This constructs a listener for editor stuff
-    TimerSettingsLayer::m_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
+    TimerSettingsLayer::m_mode_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
         this->updateButtons();
 
         // handles the timers 
@@ -122,6 +122,12 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
         return ListenerResult::Propagate;
     });
 
+    // listener for resetting the timer when interval is changed in level
+    m_interval_listener = listenForSettingChanges<int64_t>("interval", [this](int changed) {
+        if (Mod::get()->getSettingValue<bool>("resetOnInterval")) resetTimer(this);
+        return ListenerResult::Propagate;
+    });
+
     return true;
 }
 
@@ -132,7 +138,6 @@ void TimerSettingsLayer::resetTimer(CCObject* sender) {
         layer->resetTimer();
 
     } else if (layerType == EDITOR){
-        //reseting here is very easy. 
         auto layer = static_cast<EditorUITimer*>(EditorUITimer::get());
 		layer->forceReset();
     } else {
@@ -219,8 +224,10 @@ void TimerSettingsLayer::createInfoPopup(CCObject* sender) {
     x->setID("timer-info-popup"_spr);
 }
 
-// dtor to drop this global listener.
+// dtor to drop the global listeners.
 TimerSettingsLayer::~TimerSettingsLayer() {
-    m_listener->disable();
-    CC_SAFE_DELETE(m_listener);
+    m_mode_listener->disable();
+    CC_SAFE_DELETE(m_mode_listener);
+    m_interval_listener->disable();
+    CC_SAFE_DELETE(m_interval_listener);
 }
