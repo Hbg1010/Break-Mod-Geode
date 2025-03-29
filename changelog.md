@@ -1,3 +1,8 @@
+# 1.2.1
+- Added more settings
+    - Resetting timer when you change your interval
+    - Added ability to toggle if timer should restart on init
+
 # 1.2.0
 - Saving data across sessions! Shoulda been a feature from the start
 - Pausing the timer across level / editor instances

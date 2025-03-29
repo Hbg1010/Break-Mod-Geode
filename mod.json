@@ -91,6 +91,13 @@
 			"default": true,
 			"description": "Timer continues between levels via save data!"
 		},
+		"resetTimeOnOpen": {
+			"type": "bool",
+			"name": "Reset timer on open",
+			"default": true,
+			"description": "resets the timer whenever you open the game",
+			"enable-if": "useSaving"
+		},
 		"pauseAcrossLevels": {
 			"type": "bool",
 			"name": "Pause Across Levels",
@@ -103,7 +110,7 @@
 			"name": "Unpause timer on open",
 			"default": true,
 			"description": "Controls if the timer should be unpause whenever the game is opened. It's recommended to enable this setting, so you don't forget to pause the timer!",
-			"enable-if": "useQuickSettings"
+			"enable-if": "useQuickSettings && pauseAcrossLevels"
 		},
 		"settingsPopup": {
 			"type": "title",
