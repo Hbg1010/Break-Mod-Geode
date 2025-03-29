@@ -14,7 +14,7 @@ It is recommended to use 20 minute intervals and 20 seconds for the amont of tim
 
 ## Support
 
-If you find any issues with this mod, I highly recommend creating an issue on the Github, or dm me @Hbg1010 on discord!
+If you find any issues with this mod, or want any features / QOL, I highly recommend creating an issue on the Github, or report it on my discord server!
 
 ## Credits
 
