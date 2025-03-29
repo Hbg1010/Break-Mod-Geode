@@ -91,8 +91,8 @@ bool EditorUITimer::init(LevelEditorLayer* editorLayer) {
         ? Mod::get()->getSavedValue<float>("savedTime", Mod::get()->getSettingValue<int64_t>("interval") * timeMult)
         : Mod::get()->getSettingValue<int64_t>("interval") * timeMult;
 
-    // this will be -1 when the game inits
-    if (fields->remainingTime == -1) {
+    // makes sure negatives arent passed, bc like why
+    if (fields->remainingTime < 0) {
         int temp = Mod::get()->getSettingValue<int64_t>("interval") * timeMult;
         Mod::get()->getSavedValue<float>("savedTime", temp);
         fields->remainingTime = temp;
