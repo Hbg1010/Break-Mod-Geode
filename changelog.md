@@ -2,6 +2,7 @@
 - Added more settings
     - Resetting timer when you change your interval
     - Added ability to toggle if timer should restart on init
+- Made a discord server i guess
 
 # 1.2.0
 - Saving data across sessions! Shoulda been a feature from the start
