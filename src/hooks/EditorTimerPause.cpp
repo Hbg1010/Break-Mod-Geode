@@ -34,7 +34,11 @@ void EditorTimerPause::onResume(CCObject* sender) {
     auto leui = static_cast<EditorUITimer*>(EditorUITimer::get());
 
     if (leui != nullptr && Mod::get()->getSettingValue<bool>("editorLayer") && !leui->isPaused()) {
-        leui->resetTimer(leui->getRemainder());
+        int remainder = leui->getRemainder();
+        log::debug("{}", remainder);
+        leui->resetTimer(remainder > 0 
+            ? remainder 
+            : Mod::get()->getSettingValue<int64_t>("interval") * 60);
     }
 }
 

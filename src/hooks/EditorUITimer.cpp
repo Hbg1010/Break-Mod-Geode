@@ -32,9 +32,9 @@ void EditorUITimer::onEvent(EditorTimerTask::Event* ev) {
         m_fields->pauseAfterPlaytest = true;
         return;
         }   
-
-    EditorUITimer::onPause(this);
-    TimerEvent(true, this).post();
+        m_fields->remainingTime = 0;
+        EditorUITimer::onPause(this);
+        TimerEvent(true, this).post();
 
     } else if (int* progress = ev->getProgress()) {
         m_fields->remainingTime = *progress;
@@ -50,6 +50,7 @@ bool EditorUITimer::checkEndPlaytest() {
     if (m_fields->pauseAfterPlaytest) {
         m_fields->pauseAfterPlaytest = false;
         EditorUI::onPause(this);   
+        m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval") * timeMult; // this hopefully will fix the problem
         TimerEvent(true, this).post();
         return true;
 
@@ -154,4 +155,9 @@ void EditorUITimer::showUI(bool p0){
         //     stopButton->removeChildByID("stop-playtest-button");
         // }
     }
+}
+
+void EditorUITimer::updatePlaybackBtn() {
+    log::debug("updated");
+    EditorUI::updatePlaybackBtn();
 }

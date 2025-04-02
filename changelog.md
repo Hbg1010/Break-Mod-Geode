@@ -1,5 +1,6 @@
 # 1.2.2
 - iOS Support :)
+- fixed major editor bug, sorry about that!!
 
 # 1.2.1
 - Added more settings
