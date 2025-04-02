@@ -46,7 +46,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     this->setTitle("Timer Settings!");
 
     CCMenu* menu = CCMenu::create();
-    menu->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getPositionY()/2.f);
+    menu->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight()/2.f);
     menu->setContentWidth(300.f);
     menu->setLayout(
         RowLayout::create()
@@ -60,6 +60,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // reset button
     auto resetSpr = CircleButtonSprite::createWithSprite("gold_reset.png"_spr, 1.5f);
+    resetSpr->setScale(1.25f);
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
     menu->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
@@ -73,6 +74,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     // settings button
     auto settingsSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");//"GJ_optionsBtn_001.png"
+    settingsSpr->setScale(1.25f);
     CCMenuItemSpriteExtra* settingsButton = CCMenuItemSpriteExtra::create(settingsSpr, this, menu_selector(TimerSettingsLayer::changeSettings));
     menu->addChild(settingsButton);
     settingsButton->setID("settings-button"_spr);
@@ -182,9 +184,9 @@ void TimerSettingsLayer::updateButtons() {
     auto sprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
 
     if (TimerSettingsLayer::paused) {
-        sprite->setScale(.65f);
+        sprite->setScale(.8125f);
     } else {
-        sprite->setScale(1.275f);
+        sprite->setScale(1.59375f);
     }
 
     btnPointer->setSprite(sprite);
