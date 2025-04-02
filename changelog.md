@@ -1,3 +1,6 @@
+# 1.2.2
+- iOS Support :)
+
 # 1.2.1
 - Added more settings
     - Resetting timer when you change your interval
