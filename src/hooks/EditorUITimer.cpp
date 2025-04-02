@@ -157,7 +157,7 @@ void EditorUITimer::showUI(bool p0){
     }
 }
 
-void EditorUITimer::updatePlaybackBtn() {
-    log::debug("updated");
-    EditorUI::updatePlaybackBtn();
-}
+// // void EditorUITimer::updatePlaybackBtn() {
+//     log::debug("updated");
+//     EditorUI::updatePlaybackBtn();
+// }

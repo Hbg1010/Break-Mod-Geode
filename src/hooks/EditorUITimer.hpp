@@ -63,5 +63,5 @@ class $modify(EditorUITimer, EditorUI) {
 	void onStopPlaytest(CCObject* sender);
 	void onPause(CCObject* sender);
 	void showUI(bool p0);
-	void updatePlaybackBtn();
+	// void updatePlaybackBtn();
 };
