@@ -45,38 +45,35 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
 
     this->setTitle("Timer Settings!");
 
-    CCMenu* menu = CCMenu::create();
-    menu->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight()/2.f);
-    menu->setContentWidth(300.f);
-    menu->setLayout(
+    menuPointer = CCMenu::create();
+    menuPointer->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight()/2.f);
+    menuPointer->setContentWidth(300.f);
+    menuPointer->setLayout(
         RowLayout::create()
         ->setAxisAlignment(AxisAlignment::Even)
     );
 
-    TimerSettingsLayer::menuPointer = menu; // stores pointer
-
-    m_mainLayer->addChild(menu);
-    menu->setID("timer-settings-menu"_spr);
+    m_mainLayer->addChild(menuPointer);
+    menuPointer->setID("timer-settings-menu"_spr);
 
     // reset button
     auto resetSpr = CircleButtonSprite::createWithSprite("gold_reset.png"_spr, 1.5f);
     resetSpr->setScale(1.25f);
     CCMenuItemSpriteExtra* resetButton = CCMenuItemSpriteExtra::create(resetSpr, this, menu_selector(TimerSettingsLayer::resetTimer)); //menu_selector(TimerSettingsLayer::resetTimer)
-    menu->addChild(resetButton);
+    menuPointer->addChild(resetButton);
     resetButton->setID("reset-button"_spr);
     
-
     // add button
     auto pauseSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_plusBtn_001.png");//"GJ_plusBtn_001.png"
     CCMenuItemSpriteExtra* pauseButton = CCMenuItemSpriteExtra::create(pauseSpr, this, menu_selector(TimerSettingsLayer::pauseTime));
-    menu->addChild(pauseButton);
+    menuPointer->addChild(pauseButton);
     pauseButton->setID("pause-button"_spr);
 
     // settings button
     auto settingsSpr = cocos2d::CCSprite::createWithSpriteFrameName("GJ_optionsBtn_001.png");//"GJ_optionsBtn_001.png"
     settingsSpr->setScale(1.25f);
     CCMenuItemSpriteExtra* settingsButton = CCMenuItemSpriteExtra::create(settingsSpr, this, menu_selector(TimerSettingsLayer::changeSettings));
-    menu->addChild(settingsButton);
+    menuPointer->addChild(settingsButton);
     settingsButton->setID("settings-button"_spr);
 
     // creates the menu where the info button is placed
@@ -92,7 +89,7 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     infoButton->setID("info-btn"_spr);
 
     // updates the layout 
-    menu->updateLayout();
+    menuPointer->updateLayout();
     updateButtons(); // runs the update fn
 
     // This constructs a listener for editor stuff
