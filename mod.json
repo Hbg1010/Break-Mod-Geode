@@ -9,7 +9,7 @@
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.2.2",
+	"version": "v1.2.3",
 	"developer": "Hbg1010",
 	"description": "Break reminders without interuptions",
 	"links": {
@@ -139,25 +139,6 @@
 			"name": "Use audio alerts",
 			"default": true,
 			"description": "Enables sound effects to notify you when your timer is up!"
-		},
-		"enableWidget": {
-			"type": "bool",
-			"name": "Timer Widget",
-			"default": false,
-			"description": "Displays a timer widget in the corner of the screen, representing the amount of time you have left until the timer goes off. Currently Play layer only"
-		},
-		"widgetPosition" : {
-			"type": "int",
-			"name": "Widget Position",
-			"default": 1,
-			"min": 1,
-			"max": 4,
-			"description": "Chooses the corner at which the widget is placed at. 1 is top left corner, 2 is top right, 3 is bottom left, 4 is bottom right",
-			"control": {
-				"arrows": true,
-				"arrow-step": 1,
-				"slider": true
-			}
 		}
 	},
 	"tags":[

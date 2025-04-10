@@ -1,3 +1,8 @@
+# 1.2.3
+- Improved UI
+- Code improvements
+- fixed editor softlock
+
 # 1.2.2
 - iOS Support :)
 - fixed major editor bug, sorry about that!!
