@@ -31,11 +31,9 @@ void EditorUITimer::onEvent(EditorTimerTask::Event* ev) {
         if (m_fields->isPlaytesting) {
         m_fields->pauseAfterPlaytest = true;
         return;
-        }   
-        m_fields->remainingTime = 0;
-        EditorUITimer::onPause(this);
-        TimerEvent(true, this).post();
-
+        } else {
+            timerCall();
+        }  
     } else if (int* progress = ev->getProgress()) {
         m_fields->remainingTime = *progress;
     } else if (ev->isCancelled()) {
@@ -49,14 +47,32 @@ void EditorUITimer::onEvent(EditorTimerTask::Event* ev) {
 bool EditorUITimer::checkEndPlaytest() {
     if (m_fields->pauseAfterPlaytest) {
         m_fields->pauseAfterPlaytest = false;
-        EditorUI::onPause(this);   
-        m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval") * timeMult; // this hopefully will fix the problem
-        TimerEvent(true, this).post();
+        timerCall();
         return true;
 
     } else {
         return false;
     }
+}
+
+void EditorUITimer::timerCall() {
+    auto parent = this->getParent()->getParent();
+
+    int childrenNum = parent != nullptr 
+    ? parent->getChildrenCount() 
+    : 0;
+    if (childrenNum > 1) {
+        auto children = parent->getChildren();
+
+        for (int i = childrenNum - 1; i >= 0; i--) {
+            CCObject* child = children->objectAtIndex(i);
+            log::debug("{}", i);
+            if (typeinfo_cast<LevelEditorLayer*, CCObject*>(child) == nullptr) children->removeObjectAtIndex(i);
+        }
+    }
+    EditorUI::onPause(this);
+    m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval") * timeMult; // this hopefully will fix the problem
+    TimerEvent(true, this).post();
 }
 
 int EditorUITimer::getRemainder() {

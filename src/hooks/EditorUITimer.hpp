@@ -49,13 +49,14 @@ class $modify(EditorUITimer, EditorUI) {
 	void resetTimer(int time = Mod::get()->getSettingValue<int64_t>("interval") * timeMult);
 	void forceReset(int time = Mod::get()->getSettingValue<int64_t>("interval") * timeMult);
 	void onEvent(EditorTimerTask::Event* ev);
+	void timerCall();
 	bool checkEndPlaytest();
 	void onUnpause();
 	int getRemainder();
 	void pauseTimer(bool isPaused);
 	bool isPaused();
 	void cancelTimer();
-	
+
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);
 	void onPlaytest(CCObject* sender);
