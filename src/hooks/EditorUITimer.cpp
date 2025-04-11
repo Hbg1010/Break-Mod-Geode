@@ -64,12 +64,19 @@ void EditorUITimer::timerCall() {
     if (childrenNum > 1) {
         auto children = parent->getChildren();
 
+        // kills FA alert layers, and other 
         for (int i = childrenNum - 1; i >= 0; i--) {
             CCObject* child = children->objectAtIndex(i);
-            log::debug("{}", i);
-            if (typeinfo_cast<LevelEditorLayer*, CCObject*>(child) == nullptr) children->removeObjectAtIndex(i);
+            if (auto x = typeinfo_cast<FLAlertLayer*, CCObject*>(child)) {
+                x->keyBackClicked();
+            } 
+            
+            // else if () {
+            //     children->removeObjectAtIndex(i);
+            // }
         }
     }
+
     EditorUI::onPause(this);
     m_fields->remainingTime = Mod::get()->getSettingValue<int64_t>("interval") * timeMult; // this hopefully will fix the problem
     TimerEvent(true, this).post();
@@ -93,6 +100,10 @@ void EditorUITimer::cancelTimer() {
     m_fields->timer.getFilter().cancel(); 
 }
 
+// sets the isPlaytesting flag to delay the timer popup
+void EditorUITimer::setDelayedFlag(bool val) {
+    m_fields->isPlaytesting = val;
+} 
 /* hooks
 ========== */
 

@@ -56,6 +56,7 @@ class $modify(EditorUITimer, EditorUI) {
 	void pauseTimer(bool isPaused);
 	bool isPaused();
 	void cancelTimer();
+	void setDelayedFlag(bool val);
 
 	//hooked fns
 	bool init(LevelEditorLayer* editorLayer);
