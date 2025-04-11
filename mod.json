@@ -24,11 +24,11 @@
   		"geode.node-ids": ">=v1.17.0"
  	},
 	"resources": {
-		"sprites": [
-			"resources/*.png",
-			"resources/gold_reset.png"
-		]
-		
+		"spritesheets": {
+			"timeBtnSheet" : [
+				"resources/*.png"
+			]
+		}
 	},
 
 	"settings": {
