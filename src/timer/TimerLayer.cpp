@@ -76,6 +76,8 @@ bool TimerLayer::setup(std::string const& waitTime) {
     m_mainLayer->addChild(extraText);
     extraText->setID("extraText"_spr);
 
+    countDownOver = false;
+
     // starts the count down here
     m_countTaskListener.bind(this, &TimerLayer::countDown);
     m_countTaskListener.setFilter(beginTimer());
@@ -91,14 +93,13 @@ void TimerLayer::countDown(countTask::Event* event) {
     
     if (bool* result = event->getValue()) {
         CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
-
+        countDownOver = true;
         // creates the finish button on screen
         auto parent = (m_closeBtn->getParent());
         
         auto spr = ButtonSprite::create("Finish");
         auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
       
-        // btn->setAnchorPoint({.5f,.5f});
         btn->setPosition(parent->getPositionX(), screenSize.height/8);
 
         // places the new finish button onto the same menu layer as the extra button
@@ -131,4 +132,9 @@ void TimerLayer::onClick(CCObject* sender){
 void TimerLayer::onClose(cocos2d::CCObject*) {
     Popup::onClose(this);
     m_countTaskListener.getFilter().cancel();
+}
+
+// cancels an escape input when countdown is over
+void TimerLayer::keyBackClicked() {
+    if (countDownOver) Popup::keyBackClicked();
 }
