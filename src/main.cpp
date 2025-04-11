@@ -56,8 +56,7 @@ $execute{
 				[ev](auto, bool btn2) {
 					// yeah I hate that !btn2, but the constructor doesnt allow me to flip the things otherwise!
 					if (!btn2) {
-						TimerLayer* timePopUp = TimerLayer::create(
-							fmt::format("{}", Mod::get()->getSettingValue<int64_t>("breakTime")));
+						TimerLayer* timePopUp = TimerLayer::create(Mod::get()->getSettingValue<int64_t>("breakTime"));
 						timePopUp->m_noElasticity = CCDirector::get()->getFastMenu();
 						timePopUp->show();
 						timePopUp->setID("Timer-pop-up"_spr);

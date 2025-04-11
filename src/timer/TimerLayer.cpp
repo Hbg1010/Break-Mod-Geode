@@ -8,10 +8,6 @@
 
 #include "TimerLayer.hpp"
 
-int currentCount; // timer length
-CCLabelBMFont* timerText; // this is the timer element found on screen. it is updated to represent the timer!
-EventListener<countTask> m_countTaskListener; // this holds the event listener
-
 // This tasks controls the countdown and messages using a seperate thread.
 countTask beginTimer() {
     return countTask::run([](auto progress, auto hasBeenCancelled) -> countTask::Result {
@@ -40,7 +36,7 @@ countTask beginTimer() {
     }, "counts down using seperate thread to sleep on thread and return propper values");
 }
 // creates the function
-TimerLayer* TimerLayer::create(std::string const& waitTime) {
+TimerLayer* TimerLayer::create(int const& waitTime) {
     auto temp = new TimerLayer();
 
     // trys to make node
@@ -58,13 +54,13 @@ TimerLayer* TimerLayer::create(std::string const& waitTime) {
 /**
  * Initiates the popup
  */
-bool TimerLayer::setup(std::string const& waitTime) {
-    currentCount = std::stoi(waitTime);
+bool TimerLayer::setup(int const& waitTime) {
+    currentCount = waitTime;
     this->setTitle("Break Time!");
-    m_closeBtn->setScale(0.5f);
+    m_closeBtn->setScale(0.75f);
 
     // this is the extra text
-    timerText = CCLabelBMFont::create(fmt::format("{} seconds", waitTime).c_str(), "bigFont.fnt");
+    timerText = CCLabelBMFont::create(fmt::format("{}:{} minutes", waitTime/60, waitTime % 60).c_str(), "bigFont.fnt");
     timerText->setPosition({m_mainLayer->getContentWidth()/2,m_mainLayer->getContentHeight()/2});
     m_mainLayer->addChild(timerText);
     timerText->setID("Timer-Text"_spr);
@@ -94,17 +90,17 @@ void TimerLayer::countDown(countTask::Event* event) {
     if (bool* result = event->getValue()) {
         CCSize screenSize = CCDirector::sharedDirector()->getWinSize();
         countDownOver = true;
-        // creates the finish button on screen
-        auto parent = (m_closeBtn->getParent());
+        auto parent = m_closeBtn->getParent(); // creates the finish button on screen
+
         
         auto spr = ButtonSprite::create("Finish");
-        auto btn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
+        auto finishBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
       
-        btn->setPosition(parent->getPositionX(), screenSize.height/8);
+        finishBtn->setPosition(parent->getPositionX(), screenSize.height/8);
 
         // places the new finish button onto the same menu layer as the extra button
-        parent->addChild(btn);
-        btn->setID("finishBtn"_spr);
+        parent->addChild(finishBtn);
+        finishBtn->setID("finishBtn"_spr);
 
         // plays audio when called
         if (Mod::get()->getSettingValue<bool>("audioAlert")) {
@@ -115,7 +111,7 @@ void TimerLayer::countDown(countTask::Event* event) {
 
     // displays time remaining from the task
     } else if (int* progress = event->getProgress()) {
-        timerText->setString(fmt::format("{} seconds", *progress).c_str());
+        timerText = CCLabelBMFont::create(fmt::format("{}:{} minutes", *progress / 60, *progress % 60).c_str(), "bigFont.fnt");
     
     // checks if event is cancelled
     } else if (event->isCancelled()) {
