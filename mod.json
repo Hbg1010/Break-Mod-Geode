@@ -9,7 +9,7 @@
 	},
 	"id": "hbg1010.break_mod",
 	"name": "Break Mod",
-	"version": "v1.2.3",
+	"version": "v1.2.4",
 	"developer": "Hbg1010",
 	"description": "Break reminders without interuptions",
 	"links": {
@@ -139,6 +139,12 @@
 			"name": "Use audio alerts",
 			"default": true,
 			"description": "Enables sound effects to notify you when your timer is up!"
+		},
+		"interuptTriggers": {
+			"type": "bool",
+			"name": "Interupt triggers",
+			"default": false,
+			"description": "This setting decides if the editor should interupt the player while editing triggers. Enabling this setting can lead to unsaved changes in triggers being lost"
 		}
 	},
 	"tags":[

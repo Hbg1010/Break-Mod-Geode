@@ -1,7 +1,8 @@
-# 1.2.3
+# 1.2.3 and 1.2.4 (hotfix)
 - Improved UI
 - Code improvements
 - fixed editor softlock
+    - added setting that delays the timer notification until after editing a trigger
 
 # 1.2.2
 - iOS Support :)
