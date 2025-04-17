@@ -34,7 +34,7 @@ $execute{
 		if (ev->isActive()) {
 			// resets timer sav val if needed on event
 			if (Mod::get()->getSettingValue<bool>("useSaving")) 
-				Mod::get()->setSavedValue<float>("savedTime", Mod::get()->getSettingValue<int>("interval") * TMULT);
+				Mod::get()->setSavedValue<float>("savedTime", Mod::get()->getSettingValue<int64_t>("interval") * TMULT);
 			
 			CCNode* parent = ev->getCurrentLayer(); 
 

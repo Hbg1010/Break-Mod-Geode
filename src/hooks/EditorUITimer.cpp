@@ -29,8 +29,7 @@ void EditorUITimer::onEvent(EditorTimerTask::Event* ev) {
 
     if (bool* result = ev->getValue()) {
         if (m_fields->isPlaytesting) {
-        m_fields->pauseAfterPlaytest = true;
-        return;
+            m_fields->pauseAfterPlaytest = true;
         } else {
             timerCall();
         }  
@@ -49,10 +48,8 @@ bool EditorUITimer::checkEndPlaytest() {
         m_fields->pauseAfterPlaytest = false;
         timerCall();
         return true;
-
-    } else {
-        return false;
     }
+    return false;
 }
 
 void EditorUITimer::timerCall() {
@@ -66,14 +63,9 @@ void EditorUITimer::timerCall() {
 
         // kills FA alert layers, and other 
         for (int i = childrenNum - 1; i >= 0; i--) {
-            CCObject* child = children->objectAtIndex(i);
-            if (auto x = typeinfo_cast<FLAlertLayer*, CCObject*>(child)) {
+            if (auto x = typeinfo_cast<FLAlertLayer*, CCObject*>(children->objectAtIndex(i))) {
                 x->keyBackClicked();
             } 
-            
-            // else if () {
-            //     children->removeObjectAtIndex(i);
-            // }
         }
     }
 

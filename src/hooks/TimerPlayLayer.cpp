@@ -60,7 +60,6 @@ bool TimerPlayLayer::init(GJGameLevel* p0, bool p1, bool p2){
 			startingNum = getDefaultTimer();
 			modPtr->setSavedValue<float>("savedTime", getDefaultTimer());
 		}
-
 	} else {
 		startingNum = getDefaultTimer();
 	}
