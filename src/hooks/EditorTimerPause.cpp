@@ -31,16 +31,19 @@ bool EditorTimerPause::init(LevelEditorLayer* lvl) {
 
 void EditorTimerPause::onResume(CCObject* sender) {
     EditorPauseLayer::onResume(sender);
-    auto leui = static_cast<EditorUITimer*>(EditorUITimer::get());
 
-    if (leui != nullptr && Mod::get()->getSettingValue<bool>("editorLayer") && !leui->isPaused()) {
-        int remainder = leui->getRemainder();
-        #ifdef extraPrints
-        log::debug("{}", remainder);
-        #endif
-        leui->resetTimer(remainder > 0 
-            ? remainder 
-            : Mod::get()->getSettingValue<int64_t>("interval") * 60);
+    if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
+        if (Mod::get()->getSettingValue<bool>("editorLayer") && !leui->isPaused()) {
+            int remainder = leui->getRemainder();
+
+            #ifdef extraPrints
+            log::debug("{}", remainder);
+            #endif
+            
+            leui->resetTimer(remainder > 0 
+                ? remainder 
+                : Mod::get()->getSettingValue<int64_t>("interval") * 60);
+        }
     }
 }
 
@@ -48,7 +51,8 @@ void EditorTimerPause::onResume(CCObject* sender) {
 void EditorTimerPause::onExitEditor(cocos2d::CCObject* sender) {
     if (auto leui = static_cast<EditorUITimer*>(EditorUITimer::get())) {
         if (Mod::get()->getSettingValue<bool>("useSaving") && Mod::get()->getSettingValue<bool>("editorLayer")) {
-            float time = (float) leui->m_fields->remainingTime;
+            float time = static_cast<float>(leui->m_fields->remainingTime);
+            
             if (time > 0) Mod::get()->setSavedValue<float>("savedTime", time);
 
             #ifdef extraPrints
