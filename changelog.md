@@ -1,3 +1,6 @@
+# 1.2.5 
+- jitless iOS
+
 # 1.2.3 and 1.2.4 (hotfix)
 - Improved UI
 - Code improvements
