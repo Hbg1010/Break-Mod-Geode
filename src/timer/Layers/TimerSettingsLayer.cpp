@@ -93,11 +93,11 @@ bool TimerSettingsLayer::setup(CCNode* const& menuID) {
     updateButtons(); // runs the update fn
 
     // This constructs a listener for editor stuff
-    TimerSettingsLayer::m_mode_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool resault) {
+    TimerSettingsLayer::m_mode_listener = listenForSettingChanges<bool>(menuID->getID() == "PauseLayer" ? "playLayer" : "editorLayer", [this](bool result) {
         this->updateButtons();
 
         // handles the timers 
-        if (resault) {
+        if (result) {
             resetTimer(this);
         } else {
             if (Mod::get()->getSettingValue<bool>("useSaving")) {
@@ -155,12 +155,16 @@ void TimerSettingsLayer::pauseTime(CCObject* sender) {
         log::debug("this is {}", paused);
     #endif
 
-    if (layerType == PLAYLAYER) {
-        static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->pauseTimer(TimerSettingsLayer::paused);
-    } else if (layerType == EDITOR) {
-        static_cast<EditorUITimer*>(EditorUITimer::get())->pauseTimer(TimerSettingsLayer::paused);
-    } else {
-        log::error("TimerSettingsLayer not connected to any layer!");
+    switch (layerType) {
+        case PLAYLAYER:
+            static_cast<TimerPlayLayer*>(TimerPlayLayer::get())->pauseTimer(TimerSettingsLayer::paused);
+            break;
+        case EDITOR:
+            static_cast<EditorUITimer*>(EditorUITimer::get())->pauseTimer(TimerSettingsLayer::paused);
+            break;
+        default:
+            log::error("TimerSettingsLayer not connected to any layer!");
+            break;
     }
 
     updateButtons();
@@ -178,15 +182,15 @@ void TimerSettingsLayer::updateButtons() {
         log::error("Button is nullptr");
     }
 
-    auto sprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
+    auto pauseSprite = cocos2d::CCSprite::createWithSpriteFrameName(TimerSettingsLayer::paused ? "GJ_playBtn2_001.png" : "GJ_pauseEditorBtn_001.png");
 
     if (TimerSettingsLayer::paused) {
-        sprite->setScale(.8125f);
+        pauseSprite->setScale(.8125f);
     } else {
-        sprite->setScale(1.59375f);
+        pauseSprite->setScale(1.59375f);
     }
 
-    btnPointer->setSprite(sprite);
+    btnPointer->setSprite(pauseSprite);
 
     // checks if the pause and play should be enabled
     bool currentLayerEnabled = (m_menuID->getID() == "PauseLayer" && Mod::get()->getSettingValue<bool>("playLayer")) || (m_menuID->getID() == "EditorPauseLayer" && Mod::get()->getSettingValue<bool>("editorLayer"));
@@ -209,18 +213,18 @@ void TimerSettingsLayer::disableButton(CCNode* node, bool enable) {
         auto spr = typeinfo_cast<CCRGBAProtocol*>(btn->getNormalImage());
             spr->setCascadeColorEnabled(true);
             spr->setCascadeOpacityEnabled(true);
-            spr->setColor(enable ? color : greyScale);
+            spr->setColor(enable ? greyScale : color);
             spr->setOpacity(enable ? 255 : 200);
     }
 }
 
 // shows info when the info button is pressed
 void TimerSettingsLayer::createInfoPopup(CCObject* sender) {
-    auto x = FLAlertLayer::create("Info", 
+    auto InfoLayer = FLAlertLayer::create("Info", 
     "<cy>Reset Button:</c> Resets the timer\n<cy>Pause Button:</c> Pauses the timer\n<cy>Settings Button:</c> Opens mod settings", "Ok");
-    x->setTouchPriority(this->getTouchPriority()-1);
-    x->show();
-    x->setID("timer-info-popup"_spr);
+    InfoLayer->setTouchPriority(this->getTouchPriority()-1);
+    InfoLayer->show();
+    InfoLayer->setID("timer-info-popup"_spr);
 }
 
 // dtor to drop the global listeners.

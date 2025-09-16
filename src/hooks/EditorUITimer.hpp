@@ -25,8 +25,6 @@ class $modify(EditorUITimer, EditorUI) {
 		bool paused;
 		int remainingTime; // this is for keeping the time left after pause
 
-		bool isEditorPaused; //TODO: IMPL
-
 		EventListener<EditorTimerTask> timer;
 
 		// resets timer when it is finished

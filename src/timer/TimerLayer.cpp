@@ -67,7 +67,7 @@ bool TimerLayer::setup(int const& waitTime) {
 
     // this is the extra text above the countdown 
     auto extraText = CCLabelBMFont::create(fmt::format("Look away from your screen for {} seconds!", waitTime).c_str(), "bigFont.fnt");
-    extraText->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight() /4*3);
+    extraText->setPosition(m_mainLayer->getContentWidth()/2, m_mainLayer->getContentHeight()/4*3);
     extraText->setScale(.4f);
     m_mainLayer->addChild(extraText);
     extraText->setID("extraText"_spr);
@@ -92,7 +92,6 @@ void TimerLayer::countDown(countTask::Event* event) {
         countDownOver = true;
         auto parent = m_closeBtn->getParent(); // creates the finish button on screen
 
-        
         auto spr = ButtonSprite::create("Finish");
         auto finishBtn = CCMenuItemSpriteExtra::create(spr, this, menu_selector(TimerLayer::onClose));
       
@@ -111,8 +110,7 @@ void TimerLayer::countDown(countTask::Event* event) {
 
     // displays time remaining from the task
     } else if (int* progress = event->getProgress()) {
-        timerText = CCLabelBMFont::create(fmt::format("{}:{} minutes", *progress / 60, *progress % 60).c_str(), "bigFont.fnt");
-    
+        timerText->setString(fmt::format("{} seconds", *progress).c_str());
     // checks if event is cancelled
     } else if (event->isCancelled()) {
         return;

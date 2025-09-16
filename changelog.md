@@ -1,3 +1,6 @@
+# 1.2.6
+- Fixed timer text
+
 # 1.2.5 
 - jitless iOS
 

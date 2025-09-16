@@ -169,10 +169,6 @@ void EditorUITimer::showUI(bool p0){
             stopButton->setVisible(false);
             stopButton->setEnabled(false);
         } 
-
-        // if (stopButton->getChildByID("stop-playtest-button") != nullptr) {
-        //     stopButton->removeChildByID("stop-playtest-button");
-        // }
     }
 }
 
